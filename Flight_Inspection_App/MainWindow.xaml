@@ -6,7 +6,8 @@
         xmlns:local="clr-namespace:Flight_Inspection_App"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid>
-        
+    <Grid Background="LightSkyBlue">
+        <Button Content="LoadCSVFile" HorizontalAlignment="Left" Margin="643,294,0,0" VerticalAlignment="Top" Width="95" Height="64" Click="Button_Click" Background="Beige"/>
+
     </Grid>
 </Window>
