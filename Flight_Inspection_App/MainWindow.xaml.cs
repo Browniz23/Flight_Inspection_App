@@ -27,7 +27,22 @@ namespace Flight_Inspection_App
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            Connect.ExecuteClient();
+            // open file dialog so user can pick a CSV file.
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            bool? response = openFileDialog.ShowDialog();
+            if (response == true)
+            {
+                String filePath = openFileDialog.FileName;
+                if (filePath.EndsWith("CSV"))
+                {
+                    Connect.ExecuteClient(filePath);
+                }
+                else
+                {
+                    MessageBox.Show("Please choose a CSV file");
+                }
+
+            }           
         }
     }
 }

@@ -15,9 +15,9 @@ namespace Flight_Inspection_App
 {
     static class Connect
     {
-        public static void ExecuteClient()
+        public static void ExecuteClient(String CSVFileName)
         {
-            string[] lines = File.ReadAllLines("reg_flight.csv");
+            string[] lines = File.ReadAllLines(CSVFileName);
 
 
             try
@@ -36,17 +36,15 @@ namespace Flight_Inspection_App
                 for (int i = 0; i < lines.Length; i++)
                 {
                     // Translate the passed message into ASCII and store it as a Byte array.
-                    Byte[] data = System.Text.Encoding.ASCII.GetBytes(lines[i]);
-                    Byte[] newline = System.Text.Encoding.ASCII.GetBytes("\n");
+                    Byte[] data = System.Text.Encoding.ASCII.GetBytes(lines[i] + "\n");
+
                     // Send the message to the connected TcpServer.
                     stream.Write(data, 0, data.Length);
-                    // adds new line for FG. in java code add new line automaticlly.
-                    stream.Write(newline, 0, newline.Length);
 
                     // JUST FOR NOW: prints all lines in console.
                     Console.WriteLine("Sent: {0}", lines[i]);
 
-                    stream.Flush();              // TODO: i added. needed?
+                    stream.Flush();              // TODO: needed? also works without it.
                     Thread.Sleep(100);
                 }
 
