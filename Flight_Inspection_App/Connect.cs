@@ -30,6 +30,17 @@ namespace Flight_Inspection_App
                     Int32 port = 5400;
                     TcpClient client = new TcpClient("127.0.0.1", port);
 
+            try
+            {
+                //test
+
+                // Create a TcpClient.
+                // Note, for this client to work you need to have a TcpServer
+                // connected to the same address as specified by the server, port
+                // combination.
+                Int32 port = 5400;
+                TcpClient client = new TcpClient("127.0.0.1", port);
+
                     // Get a client stream for reading and writing.
                     //  Stream stream = client.GetStream();
                     NetworkStream stream = client.GetStream();
