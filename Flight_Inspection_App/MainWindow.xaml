@@ -6,8 +6,10 @@
         xmlns:local="clr-namespace:Flight_Inspection_App"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
-    <Grid Background="LightSkyBlue">
+    <Grid x:Name="grid1" Background="LightSkyBlue">
         <Button Content="LoadCSVFile" HorizontalAlignment="Left" Margin="643,294,0,0" VerticalAlignment="Top" Width="95" Height="64" Click="Button_Click" Background="Beige"/>
+        <WindowsFormsHost Name="fh1" HorizontalAlignment="Left" Height="182" Margin="141,30,0,0" VerticalAlignment="Top" Width="476"/>
+        <Button Name="button1" Content="Button1" HorizontalAlignment="Left" Margin="389,243,0,0" VerticalAlignment="Top" Width="97" Height="47" Click="Button_Click_1"/>
 
     </Grid>
 </Window>
