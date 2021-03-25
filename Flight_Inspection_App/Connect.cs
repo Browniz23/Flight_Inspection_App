@@ -22,6 +22,8 @@ namespace Flight_Inspection_App
 
             try
             {
+                //test
+
                 // Create a TcpClient.
                 // Note, for this client to work you need to have a TcpServer
                 // connected to the same address as specified by the server, port
