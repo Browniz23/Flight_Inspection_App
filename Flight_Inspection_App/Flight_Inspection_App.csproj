@@ -73,6 +73,7 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AsyncObservableCollection.cs" />
     <Compile Include="testModel.cs" />
     <Compile Include="testViewModel.cs" />
     <Page Include="MainWindow.xaml">

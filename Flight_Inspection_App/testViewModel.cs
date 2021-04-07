@@ -21,7 +21,12 @@ namespace Flight_Inspection_App
             this.tm = testM;
             this.tm.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)
             {
-                notifyPropertyChanged("vm_" + e.PropertyName);
+                NotifyPropertyChanged("vm_" + e.PropertyName);
+            };
+            //added!!!!!!!!!!!!!!!!!!!
+            this.connectModel.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)   
+            {
+                NotifyPropertyChanged("vm_" + e.PropertyName);
             };
         }
         /*public Dictionary<string, Chunk> vm_Chunks
@@ -32,18 +37,21 @@ namespace Flight_Inspection_App
         public int vm_CurrLine
         {
             get { return connectModel.CurrLine; }
-            set { connectModel.CurrLine = value; }  // no needed!
+            set { NotifyPropertyChanged("vm_CurrLine"); connectModel.CurrLine = value; }  // no needed!
         }
         public ObservableDictionary<string, Chunk> vm_Chunks
         {
             get { return connectModel.Settings.Chunks; }
-            set { connectModel.Settings.Chunks = value; }  // needed?
+            set { NotifyPropertyChanged("vm_Chunks"); connectModel.Settings.Chunks = value; }  // needed?
         }
         public int vm_X // can change model
         {
             get { return tm.X; }
-            set { if (value != tm.X) 
+            set { if (value != tm.X)
+                {
+                    NotifyPropertyChanged("vm_X");
                     tm.X = value;
+                } 
             }
         }
         public int vm_Y // can change model
@@ -52,19 +60,22 @@ namespace Flight_Inspection_App
             set
             {
                 if (value != tm.Y)
+                {
+                    NotifyPropertyChanged("vm_Y");
                     tm.Y = value;
+                }
             }
         }
 
         public ObservableDictionary<int, int> vm_D
         {
             get { return tm.D; }
-            set { tm.D = value; }
+            set { NotifyPropertyChanged("vm_D"); tm.D = value; }
         }
         public List<int> vm_L {get { return tm.L; } set { tm.L = value; } }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void notifyPropertyChanged(string name)
+        public void NotifyPropertyChanged(string name)
         {
             if (this.PropertyChanged != null)
             {
