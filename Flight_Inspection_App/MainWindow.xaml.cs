@@ -109,14 +109,9 @@ namespace Flight_Inspection_App
             Console.WriteLine(tvm.vm_Y);
         }
 
-        private void testBox3_TextChanged(object sender, TextChangedEventArgs e)
+        private void playPauseButton_Click(object sender, RoutedEventArgs e)
         {
-            //Console.WriteLine(tvm.vm_Chunks["throttle"].values[tvm.vm_Chunks["throttle"].values.Count-1]);
-            //     Console.WriteLine(tvm.vm_Chunks["throttle"].values[tvm.vm_CurrLine]);
-            if (!tvm.vm_D.ContainsKey(15))
-                tvm.vm_D.Add(15, 20);
-            else
-                Console.WriteLine(tvm.vm_Chunks["throttle"].Values[tvm.vm_CurrLine]);
+            tvm.playPause();  //TODO mvvm
         }
     }
 }

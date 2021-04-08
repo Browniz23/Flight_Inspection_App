@@ -5,18 +5,35 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Flight_Inspection_App" d:DataContext="{d:DesignInstance Type=local:testViewModel}"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid x:Name="grid1" Background="LightSkyBlue">
-        <Button Content="LoadCSVFile" HorizontalAlignment="Left" Margin="643,294,0,0" VerticalAlignment="Top" Width="95" Height="64" Click="Button_Click" Background="Beige"/>
-        <WindowsFormsHost Name="fh1" HorizontalAlignment="Left" Height="182" Margin="141,30,0,0" VerticalAlignment="Top" Width="476"/>
-        <Button Name="button1" Content="Button1" HorizontalAlignment="Left" Margin="389,243,0,0" VerticalAlignment="Top" Width="97" Height="47" Click="Button_Click_1"/>
+        Title="MainWindow" Height="450" Width="1100">
+    <Grid x:Name="grid1" Background="White">
+        <Button Content="LoadCSVFile" HorizontalAlignment="Left" Margin="36,306,0,0" VerticalAlignment="Top" Width="96" Height="39" Click="Button_Click" Background="Beige"/>
+        <Button Name="button1" Content="Button1" HorizontalAlignment="Left" Margin="389,243,0,0" VerticalAlignment="Top"
+                Width="97" Height="47" Click="Button_Click_1"/>
         <Button Content="XML Settings" HorizontalAlignment="Left" Margin="27,354,0,0" VerticalAlignment="Top" Width="114" Height="34" Click="Button_Click_2"/>
         <Image x:Name="V" Source="/images/V.jpg" HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="156,354,0,0" Visibility="Hidden"/>
         <Image x:Name="X" Source="/images/X.jpg"  HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="156,354,0,0"/>
-        <TextBox x:Name="testBox" HorizontalAlignment="Left" Height="23" Margin="260,322,0,0" TextWrapping="Wrap" Text="{Binding vm_X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged"/>
-        <TextBox x:Name="testBox2" HorizontalAlignment="Left" Height="23" Margin="260,365,0,0" TextWrapping="Wrap" Text="{Binding vm_Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="120" TextChanged="testBox2_TextChanged"/>
-        <TextBox x:Name="testBox3" HorizontalAlignment="Left" Height="23" Margin="460,365,0,0" TextWrapping="Wrap" Text="{Binding Path=vm_D[2], Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="120" TextChanged="testBox3_TextChanged"/>
-       
+        <TextBox x:Name="testBox" HorizontalAlignment="Left" Height="23" Margin="260,322,0,0" TextWrapping="Wrap" Text="{Binding vm_selectedSpeed, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged"/>
+        <TextBox x:Name="testBox2" HorizontalAlignment="Left" Height="23" Margin="260,365,0,0" TextWrapping="Wrap" Text="{Binding vm_CurrLine, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="120" TextChanged="testBox2_TextChanged"/>
+        <TextBox x:Name="sliderTextBox" HorizontalAlignment="Left" Height="22" Margin="406,360,0,0" TextWrapping="Wrap" 
+                 Text="{Binding Path=vm_D, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top"
+                 Width="120" />
+        <ComboBox HorizontalAlignment="Left" Margin="451,27,0,0" VerticalAlignment="Top" Width="62"
+                  Name="speedBox" SelectedItem="{Binding vm_selectedSpeed, Mode=TwoWay }" ItemsSource="{Binding vm_speeds, Mode=TwoWay}" FontSize="18" >
+        </ComboBox>
+
+
+
+
+        <TextBox Margin="354,30,647,382" Text="Choose speed:" Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" />
+
+        <Slider x:Name="timeSlider" Margin="130,82,130,324" Value="{Binding vm_currLine}" Maximum="{Binding vm_lineLength}" TickFrequency="2" SmallChange="1" RenderTransformOrigin="0.5,0.5"/>
+        <Button Margin="673,0,363,381" Background="{x:Null}" BorderBrush="{x:Null}" Click="playPauseButton_Click">
+            <StackPanel>
+                <Image Source="/images/play_pause.png" Height="63" Width="33" />
+                <TextBlock Text="Blabla" />
+            </StackPanel>
+        </Button>
 
     </Grid>
 </Window>

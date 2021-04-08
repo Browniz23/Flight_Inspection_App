@@ -18,8 +18,26 @@ namespace Flight_Inspection_App
     {
         private string CSVFileName;
         private Settings settings;
-        private int currLine;
-        public int CurrLine { get { return currLine; } set { currLine = value; } }
+        private int currline;
+        private int linelength;
+        public int timeToSleep;
+        private bool stop;
+        public int currLine { get { return currline; } 
+            set 
+            {
+                currline = value;
+                NotifyPropertyChanged("CurrLine");
+            }
+        }
+
+        public int lineLength { get { return linelength; }
+            set
+            {
+                linelength = value;
+                NotifyPropertyChanged("lineLength");
+            }
+        }
+
         public string CSV_Name { get { return CSVFileName; } set { CSVFileName = value; } }
         public Settings Settings { get { return settings; } set { settings = value; } }
         public Connect(String CSV_fileName, Settings settings)
@@ -31,6 +49,8 @@ namespace Flight_Inspection_App
             NotifyPropertyChanged("settings");
 
             currLine = 0;
+            timeToSleep = 100;
+            stop = false;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
@@ -40,6 +60,11 @@ namespace Flight_Inspection_App
             {
                 this.PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
+        }
+
+        public void playPause()
+        {
+            this.stop = this.stop ? false : true;
         }
 
         public void ExecuteClient(String CSVFileName)
@@ -61,33 +86,41 @@ namespace Flight_Inspection_App
                 //  Stream stream = client.GetStream();
                 NetworkStream stream = client.GetStream();
 
-                for (int i = 0; i < lines.Length; i++)
+                    lineLength = lines.Length;
+
+                while (true)  
                 {
+                    // if stop = TRUE, or the csv end, stop send lines from soket.
+                    if(stop || this.currline == this.linelength)
+                        {
+                            Thread.Sleep(500);
+                            continue;
+                        }
                     // Translate the passed message into ASCII and store it as a Byte array.
-                    Byte[] data = System.Text.Encoding.ASCII.GetBytes(lines[i] + "\n");
+                    Byte[] data = System.Text.Encoding.ASCII.GetBytes(lines[currLine] + "\n");
 
                     // Send the message to the connected TcpServer.
                     stream.Write(data, 0, data.Length);
 
                     // JUST FOR NOW: prints all lines in console.
-                    Console.WriteLine("Sent: {0}", lines[i]);
+                    Console.WriteLine("Sent: {0}", lines[currLine]);
                     // added update
 
-                    string[] separetedLine = lines[i].Split(',');
-                    for (int j = 0; j < this.settings.Chunks.Count - 1; j++)
-                    {
-                            if (this.settings.Chunks.ElementAt(j).Value.IsFloat)
-                                this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
+                    string[] separetedLine = lines[currLine].Split(',');
+                    //for (int j = 0; j < this.settings.Chunks.Count - 1; j++)
+                   // {
+                       //     if (this.settings.Chunks.ElementAt(j).Value.IsFloat)
+                                //this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
                                 //this.settings.Chunks.ElementAt(j).Value.Values.AddOnUI(float.Parse(separetedLine[j]));
                             //Application.Current.Dispatcher.BeginInvoke(new Action(() => this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j]))));
-                            else
-                                this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
-                        }
-                        CurrLine = i;
-
-                        stream.Flush();              // TODO: needed? also works without it.
-                        Thread.Sleep(100);
-                    }
+                         //   else
+                           //     this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
+                        //}
+                        
+                    stream.Flush();              // TODO: needed? also works without it.
+                    Thread.Sleep(timeToSleep);
+                    currLine++;
+                 }
                     // Close everything.
                     stream.Close();
                     client.Close();
@@ -103,5 +136,6 @@ namespace Flight_Inspection_App
 
             }).Start();
         }
+
     }
 }
