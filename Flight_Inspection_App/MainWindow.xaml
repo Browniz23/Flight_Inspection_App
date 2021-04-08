@@ -4,12 +4,13 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Flight_Inspection_App" d:DataContext="{d:DesignInstance Type=local:testViewModel}"
+        xmlns:Controls="clr-namespace:Flight_Inspection_App.controls"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="1100">
-    <Grid x:Name="grid1" Background="White">
-        <Button Content="LoadCSVFile" HorizontalAlignment="Left" Margin="36,306,0,0" VerticalAlignment="Top" Width="96" Height="39" Click="Button_Click" Background="Beige"/>
-        <Button Name="button1" Content="Button1" HorizontalAlignment="Left" Margin="389,243,0,0" VerticalAlignment="Top"
-                Width="97" Height="47" Click="Button_Click_1"/>
+        Title="MainWindow" Height="450" Width="1020.667">
+    <Grid x:Name="grid1" Background="LightSkyBlue">
+        <Button Content="LoadCSVFile" HorizontalAlignment="Left" Margin="38,281,0,0" VerticalAlignment="Top" Width="95" Height="64" Click="Button_Click" Background="Beige"/>
+        <WindowsFormsHost Name="fh1" HorizontalAlignment="Left" Height="85" Margin="10,30,0,0" VerticalAlignment="Top" Width="200"/>
+        <Button Name="button1" Content="Button1" HorizontalAlignment="Left" Margin="10,151,0,0" VerticalAlignment="Top" Width="97" Height="47" Click="Button_Click_1"/>
         <Button Content="XML Settings" HorizontalAlignment="Left" Margin="27,354,0,0" VerticalAlignment="Top" Width="114" Height="34" Click="Button_Click_2"/>
         <Image x:Name="V" Source="/images/V.jpg" HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="156,354,0,0" Visibility="Hidden"/>
         <Image x:Name="X" Source="/images/X.jpg"  HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="156,354,0,0"/>
@@ -35,5 +36,6 @@
             </StackPanel>
         </Button>
 
+        <Controls:UserControl1 Name="joystick" Margin="659,30,35,9.667" Loaded="UserControl1_Loaded"/>
     </Grid>
 </Window>

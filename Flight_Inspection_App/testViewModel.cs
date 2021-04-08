@@ -11,8 +11,8 @@ namespace Flight_Inspection_App
 {
     class testViewModel : INotifyPropertyChanged
     {
-        //private Settings settingsModel;
-        private testModel tm;
+        
+        
         private Connect connectModel;
 
         public List<float> vm_speeds
@@ -43,7 +43,7 @@ namespace Flight_Inspection_App
 
             this.connectModel.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)
             {
-                notifyPropertyChanged("vm_" + e.PropertyName);
+                NotifyPropertyChanged("vm_" + e.PropertyName);
             };
         }
         /*public Dictionary<string, Chunk> vm_Chunks
@@ -65,34 +65,12 @@ namespace Flight_Inspection_App
         public ObservableDictionary<string, Chunk> vm_Chunks
         {
             get { return connectModel.Settings.Chunks; }
-            set { connectModel.Settings.Chunks = value; }  // needed?
+            set { NotifyPropertyChanged("vm_Chunks"); connectModel.Settings.Chunks = value; }  // needed?
         }
-        public int vm_X // can change model
-        {
-            get { return tm.X; }
-            set { if (value != tm.X) 
-                    tm.X = value;
-            }
-        }
-        public int vm_Y // can change model
-        {
-            get { return tm.Y; }
-            set
-            {
-                if (value != tm.Y)
-                    tm.Y = value;
-            }
-        }
-
-        public ObservableDictionary<int, int> vm_D
-        {
-            get { return tm.D; }
-            set { tm.D = value; }
-        }
-        public List<int> vm_L {get { return tm.L; } set { tm.L = value; } }
+       
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void notifyPropertyChanged(string name)
+        public void NotifyPropertyChanged(string name)
         {
             if (this.PropertyChanged != null)
             {

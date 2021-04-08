@@ -22,11 +22,11 @@ namespace Flight_Inspection_App
         public ObservableDictionary<string, Chunk> Chunks
         {
             get { return this.chunks; }
-            set { chunks = value; }         // needed?
+            set { NotifyPropertyChanged("Chunks"); chunks = value; }         // needed?
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void notifyPropertyChanged(string name)
+        public void NotifyPropertyChanged(string name)
         {
             if (this.PropertyChanged != null)
             {
@@ -87,7 +87,7 @@ private float aileron;*/
             this.XMLFileName = XML_fileName;
             //    properties = new List<string>();
             //   values = new ArrayList();
-            this.chunks = new ObservableDictionary<string, Chunk>();
+            this.Chunks = new ObservableDictionary<string, Chunk>();
 
             this.namesCount = new ObservableDictionary<string, int>();
         }

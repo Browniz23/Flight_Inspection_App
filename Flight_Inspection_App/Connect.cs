@@ -14,7 +14,7 @@ using System.Windows;
 
 namespace Flight_Inspection_App
 {
-    class Connect : INotifyPropertyChanged
+    internal class Connect : INotifyPropertyChanged
     {
         private string CSVFileName;
         private Settings settings;
@@ -40,6 +40,13 @@ namespace Flight_Inspection_App
 
         public string CSV_Name { get { return CSVFileName; } set { CSVFileName = value; } }
         public Settings Settings { get { return settings; } set { settings = value; } }
+
+        public double getValue(String s) { 
+            
+                  return settings.Chunks[s].CurrValue;
+            
+        }
+
         public Connect(String CSV_fileName, Settings settings)
         {
             this.CSVFileName = CSV_fileName;
@@ -71,20 +78,32 @@ namespace Flight_Inspection_App
         {
             new Thread(delegate ()
             {
-            try
-            {
-                string[] lines = File.ReadAllLines(CSVFileName);
+                try
+                {
+                    string[] lines = File.ReadAllLines(CSVFileName);
 
-                // Create a TcpClient.
-                // Note, for this client to work you need to have a TcpServer
-                // connected to the same address as specified by the server, port
-                // combination.
-                Int32 port = 5400;
-                TcpClient client = new TcpClient("127.0.0.1", port);
+                    for (int i = 0; i < lines.Length; i++)
+                    {
+                        string[] separetedLine = lines[i].Split(',');
+                        for (int j = 0; j < separetedLine.Length; j++)
+                        {
+                            if (this.settings.Chunks.ElementAt(j).Value.IsFloat)                            
+                                this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
+                            else
+                                this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
+                        }
+                        Console.WriteLine(i);
+                    }
+                    // Create a TcpClient.
+                    // Note, for this client to work you need to have a TcpServer
+                    // connected to the same address as specified by the server, port
+                    // combination.
+                    Int32 port = 5400;
+                    TcpClient client = new TcpClient("127.0.0.1", port);
 
-                // Get a client stream for reading and writing.
-                //  Stream stream = client.GetStream();
-                NetworkStream stream = client.GetStream();
+                    // Get a client stream for reading and writing.
+                    //  Stream stream = client.GetStream();
+                    NetworkStream stream = client.GetStream();
 
                     lineLength = lines.Length;
 
@@ -99,8 +118,8 @@ namespace Flight_Inspection_App
                     // Translate the passed message into ASCII and store it as a Byte array.
                     Byte[] data = System.Text.Encoding.ASCII.GetBytes(lines[currLine] + "\n");
 
-                    // Send the message to the connected TcpServer.
-                    stream.Write(data, 0, data.Length);
+                        // Send the message to the connected TcpServer.
+                        stream.Write(data, 0, data.Length);
 
                     // JUST FOR NOW: prints all lines in console.
                     Console.WriteLine("Sent: {0}", lines[currLine]);
@@ -121,6 +140,29 @@ namespace Flight_Inspection_App
                     Thread.Sleep(timeToSleep);
                     currLine++;
                  }
+                        // JUST FOR NOW: prints all lines in console.
+                        Console.WriteLine("Sent: {0}", lines[this.currLine]);
+                        // added update
+                            
+                        string[] separetedLine = lines[this.currLine].Split(',');
+                        for (int j = 0; j < separetedLine.Length; j++)    // this.settings.Chunks.Count -1?
+                        {
+                            if (this.settings.Chunks.ElementAt(j).Value.IsFloat)
+                            {
+                             //   this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
+                                this.settings.Chunks.ElementAt(j).Value.CurrValue = float.Parse(separetedLine[j]);
+                            }
+                            else
+                            {
+                               // this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
+                                this.settings.Chunks.ElementAt(j).Value.CurrValue = double.Parse(separetedLine[j]);
+                            }
+                        }
+                       // CurrLine = i;
+
+                        stream.Flush();              // TODO: needed? also works without it.
+                        Thread.Sleep(100);
+                    }
                     // Close everything.
                     stream.Close();
                     client.Close();

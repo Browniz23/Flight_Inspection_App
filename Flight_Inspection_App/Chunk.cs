@@ -14,22 +14,42 @@ namespace Flight_Inspection_App
         //private List<T> values;        // problem!
         private ObservableCollection<double> values;
         private bool isFloat;
-        public string Name { get { return name; } set { name = value; } } 
-        public bool IsFloat { get { return isFloat; } set { isFloat = value; } }
-        public ObservableCollection<double> Values { get { return values; } set { values = value; } }
+        private double currValue;
+        public double CurrValue {
+            get
+            {
+                return currValue;                                // todo:may be problem for some chunks!
+            }
+            set
+            {
+                currValue = value;
+                NotifyPropertyChanged("CurrValue");
+            }
+        }
+ 
+        public string Name { get { return name; } set { NotifyPropertyChanged("Name"); name = value; } } 
+        public bool IsFloat { get { return isFloat; } set { NotifyPropertyChanged("IsFloat"); isFloat = value; } }
+        public ObservableCollection<double> Values {
+            get { return values; } 
+            set 
+            {
+                NotifyPropertyChanged("Values");
+                values = value; 
+            } 
+        }
 
         public Chunk(string _name, string type)
         {
             name = _name;
-            values = new ObservableCollection<double>();
+            values = new AsyncObservableCollection<double>();       // changed from observerableCollection
             if (type == "double")
                 isFloat = false;
             else           
-                isFloat = true;            
+                isFloat = true;
         }
 
         public event PropertyChangedEventHandler PropertyChanged;
-        public void notifyPropertyChanged(string name)
+        public void NotifyPropertyChanged(string name)
         {
             if (this.PropertyChanged != null)
             {
