@@ -26,12 +26,8 @@ namespace Flight_Inspection_App
         public MainWindow()
         {
             InitializeComponent();
-          //  Settings s = new Settings(" ");
-            //vcvm = new videoControlsViewModel();
-            //DataContext = vcvm;
         }
-        /*        [DllImport("user32.dll")]
-               public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);*/
+     
         private void Button_Click(object sender, RoutedEventArgs e)
         {
             if (X.Visibility == Visibility.Hidden)   // needs to be only if settings are on
@@ -45,31 +41,25 @@ namespace Flight_Inspection_App
                     if (filePath.EndsWith("csv"))
                     {
            
-                        Connect c = new Connect(filePath, s);                       //TODO: is tvm still updated????
+                        Connect c = new Connect(filePath, s);                       
                         c.ExecuteClient(filePath);
 
                         videoControl.setConnect(c);
-                        
-                        //joystick.UpdateConnect(c);
+                        dashboard.setConnect(c);
+
                     }
                     else
                     {
                         MessageBox.Show("Please choose a CSV file");
                     }
                 }
-                /*System.Windows.Forms.SplitContainer sc = new System.Windows.Forms.SplitContainer();
-                //sc.Handle   hWndOriginalParent = SetParent(hWndDocked, Panel1.Handle);
-                fh1.Child.Controls.Add(sc); */
+             
             } else
             {
                 MessageBox.Show("Please insert XMl settings before uploading CSV file");
             }
         }
 
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            button1.Background = Brushes.Aqua;
-        }
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {

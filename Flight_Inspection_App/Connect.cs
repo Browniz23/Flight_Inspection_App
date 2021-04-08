@@ -24,6 +24,7 @@ namespace Flight_Inspection_App
         private int linelength;
         private int timetosleep;
         private bool stop;
+        private double airspeed;
         //***//
 
 
@@ -33,6 +34,15 @@ namespace Flight_Inspection_App
             {
                 currline = value;
                 NotifyPropertyChanged("CurrLine");
+            }
+        }
+
+        public double AirSpeed { get { return airspeed; ; } 
+            set
+            {
+                airspeed = value;
+                NotifyPropertyChanged("AirSpeed");
+
             }
         }
 
@@ -89,7 +99,14 @@ namespace Flight_Inspection_App
 
         public double getValue(String s)
         {
-            return settings.Chunks[s].CurrValue;
+            if (settings != null)
+            {
+                bool keyEx = settings.Chunks.ContainsKey(s);
+                if (keyEx)
+                    return settings.Chunks[s].CurrValue;
+            }
+        
+            return 0;
         }
         //***//
 
@@ -115,6 +132,7 @@ namespace Flight_Inspection_App
                         //}
                         //Console.WriteLine(i);
                     //}
+
                     // Create a TcpClient.
                     // Note, for this client to work you need to have a TcpServer
                     // connected to the same address as specified by the server, port
@@ -160,6 +178,9 @@ namespace Flight_Inspection_App
                              this.settings.Chunks.ElementAt(j).Value.CurrValue = double.Parse(separetedLine[j]);
                            }
                         }
+
+
+                        AirSpeed = getValue("airspeed-kt");
 
                         stream.Flush();              // TODO: needed? also works without it.
                         Thread.Sleep(timeToSleep);
