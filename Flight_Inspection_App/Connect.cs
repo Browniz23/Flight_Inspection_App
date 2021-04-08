@@ -14,7 +14,7 @@ using System.Windows;
 
 namespace Flight_Inspection_App
 {
-    class Connect : INotifyPropertyChanged
+    internal class Connect : INotifyPropertyChanged
     {
         private string CSVFileName;
         private Settings settings;
@@ -22,6 +22,13 @@ namespace Flight_Inspection_App
         public int CurrLine { get { return currLine; } set { NotifyPropertyChanged("CurrLine"); currLine = value; } }
         public string CSV_Name { get { return CSVFileName; } set { NotifyPropertyChanged("CSV_Name"); CSVFileName = value; } }
         public Settings Settings { get { return settings; } set { settings = value; } }
+
+        public double getValue(String s) { 
+            
+                  return settings.Chunks[s].CurrValue;
+            
+        }
+
         public Connect(String CSV_fileName, Settings settings)
         {
             this.CSVFileName = CSV_fileName;
