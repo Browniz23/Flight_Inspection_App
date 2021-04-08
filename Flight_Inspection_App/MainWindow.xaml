@@ -4,19 +4,25 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Flight_Inspection_App" d:DataContext="{d:DesignInstance Type=local:testViewModel}"
+        xmlns:Controls="clr-namespace:Flight_Inspection_App.Graphs"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
+        Title="MainWindow" Height="450" Width="1020.667">
     <Grid x:Name="grid1" Background="LightSkyBlue">
-        <Button Content="LoadCSVFile" HorizontalAlignment="Left" Margin="643,294,0,0" VerticalAlignment="Top" Width="95" Height="64" Click="Button_Click" Background="Beige"/>
-        <WindowsFormsHost Name="fh1" HorizontalAlignment="Left" Height="182" Margin="141,30,0,0" VerticalAlignment="Top" Width="476"/>
-        <Button Name="button1" Content="Button1" HorizontalAlignment="Left" Margin="389,243,0,0" VerticalAlignment="Top" Width="97" Height="47" Click="Button_Click_1"/>
-        <Button Content="XML Settings" HorizontalAlignment="Left" Margin="27,354,0,0" VerticalAlignment="Top" Width="114" Height="34" Click="Button_Click_2"/>
-        <Image x:Name="V" Source="/images/V.jpg" HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="156,354,0,0" Visibility="Hidden"/>
-        <Image x:Name="X" Source="/images/X.jpg"  HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="156,354,0,0"/>
-        <TextBox x:Name="testBox" HorizontalAlignment="Left" Height="23" Margin="260,322,0,0" TextWrapping="Wrap" Text="{Binding vm_X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged"/>
-        <TextBox x:Name="testBox2" HorizontalAlignment="Left" Height="23" Margin="260,365,0,0" TextWrapping="Wrap" Text="{Binding vm_Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="120" TextChanged="testBox2_TextChanged"/>
-        <TextBox x:Name="testBox3" HorizontalAlignment="Left" Height="23" Margin="460,365,0,0" TextWrapping="Wrap" Text="{Binding Path=vm_Chunks[throttle].CurrValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="120" TextChanged="testBox3_TextChanged"/>
-       
-
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <Button Content="LoadCSVFile" HorizontalAlignment="Left" Margin="57,253,0,0" VerticalAlignment="Top" Width="95" Height="64" Click="Button_Click" Background="Beige" Grid.ColumnSpan="5"/>
+        <Button Name="button1" Content="Button1" HorizontalAlignment="Left" Margin="389,243,0,0" VerticalAlignment="Top" Width="97" Height="47" Click="Button_Click_1" Grid.ColumnSpan="5"/>
+        <Button Content="XML Settings" HorizontalAlignment="Left" Margin="27,354,0,0" VerticalAlignment="Top" Width="114" Height="34" Click="Button_Click_2" Grid.ColumnSpan="5"/>
+        <Image x:Name="V" Source="/images/V.jpg" HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="156,354,0,0" Visibility="Hidden" Grid.ColumnSpan="5"/>
+        <Image x:Name="X" Source="/images/X.jpg"  HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="156,354,0,0" Grid.ColumnSpan="5"/>
+        <TextBox x:Name="testBox" HorizontalAlignment="Left" Height="23" Margin="260,322,0,0" TextWrapping="Wrap" Text="{Binding vm_X, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="120" TextChanged="TextBox_TextChanged" Grid.ColumnSpan="5"/>
+        <TextBox x:Name="testBox2" HorizontalAlignment="Left" Height="23" Margin="260,365,0,0" TextWrapping="Wrap" Text="{Binding vm_Y, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="120" TextChanged="testBox2_TextChanged" Grid.ColumnSpan="5"/>
+        <TextBox x:Name="testBox3" HorizontalAlignment="Left" Height="23" Margin="460,365,0,0" TextWrapping="Wrap" Text="{Binding Path=vm_Chunks[throttle].CurrValue, Mode=OneWay, UpdateSourceTrigger=PropertyChanged}"  VerticalAlignment="Top" Width="120" TextChanged="testBox3_TextChanged" Grid.ColumnSpan="5"/>
+        <Controls:ShowGraph1 x:Name="graph" Margin="667,18,27,21.667" Loaded="ShowGraph1_Loaded" Grid.ColumnSpan="5"/>
     </Grid>
 </Window>

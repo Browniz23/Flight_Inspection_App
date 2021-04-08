@@ -14,6 +14,9 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
+using OxyPlot;
+
+
 namespace Flight_Inspection_App
 {
     /// <summary>
@@ -47,7 +50,7 @@ namespace Flight_Inspection_App
                     String filePath = openFileDialog.FileName;
                     if (filePath.EndsWith("csv"))
                     {
-                        BindingOperations.EnableCollectionSynchronization(tvm.vm_Chunks, this);
+                      //  BindingOperations.EnableCollectionSynchronization(tvm.vm_Chunks, this);
                         //          Connect c = new Connect(filePath, settings);
                         //          c.ExecuteClient(filePath);
                         c = new Connect(filePath, s);                       //TODO: is tvm still updated????
@@ -118,5 +121,11 @@ namespace Flight_Inspection_App
             else
                 Console.WriteLine(tvm.vm_Chunks["throttle"].Values[tvm.vm_CurrLine]);
         }
+
+        private void ShowGraph1_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
     }
 }
