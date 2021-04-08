@@ -7,45 +7,22 @@ using System.Text;
 using System.Threading.Tasks;
 
 
-namespace Flight_Inspection_App
+namespace Flight_Inspection_App.viewModel
 {
-    class testViewModel : INotifyPropertyChanged
+    internal class videoControlsViewModel : INotifyPropertyChanged
     {
-        
-        
+
+        //fields
         private Connect connectModel;
 
+        //***property***///
         public List<float> vm_speeds
         {
             get; set;
         }
 
         public float vm_selectedSpeed
-        {
-            set
-            {
-                connectModel.timeToSleep =(int)( 100 / value);
-                Console.WriteLine(value);
-            }
-        }
-
-
-
-        public testViewModel(testModel testM, Connect c)//Settings model)
-        {
-            //            this.settingsModel = model;
-            this.connectModel = c;
-            this.tm = testM;
-
-            float[] speedArr = { 0.25f, 0.5f, 1.0f,2.0f,4.0f };
-            vm_speeds = new List<float>(speedArr);
-            vm_selectedSpeed = 1.0f;
-
-            this.connectModel.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)
-            {
-                NotifyPropertyChanged("vm_" + e.PropertyName);
-            };
-        }
+        { set { connectModel.timeToSleep = (int)(100 / value); } }
         /*public Dictionary<string, Chunk> vm_Chunks
         {
             get { return settingsModel.Chunks; }
@@ -67,8 +44,27 @@ namespace Flight_Inspection_App
             get { return connectModel.Settings.Chunks; }
             set { NotifyPropertyChanged("vm_Chunks"); connectModel.Settings.Chunks = value; }  // needed?
         }
-       
+        //*****////
 
+        //CTOR
+        public videoControlsViewModel()
+        {
+            float[] speedArr = { 0.25f, 0.5f, 1.0f, 2.0f, 4.0f };
+           this.connectModel = new Connect(" ", new Settings(" "));
+            vm_speeds = new List<float>(speedArr);
+            vm_selectedSpeed = 1.0f;
+
+            //connectModel = c;
+
+            // NEEDED?? maybe to put when setConnect
+             //this.connectModel.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)
+             //{
+               //NotifyPropertyChanged("vm_" + e.PropertyName);
+             //};
+        }
+
+
+        //MVVM pattern
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string name)
         {
@@ -77,7 +73,17 @@ namespace Flight_Inspection_App
                 this.PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
         }
+        //**//
 
+
+        public void setConnect(Connect c)
+        {
+            this.connectModel = c;
+            this.connectModel.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)
+            {
+                NotifyPropertyChanged("vm_" + e.PropertyName);
+            };
+        }
         public void playPause()
         {
             connectModel.playPause();

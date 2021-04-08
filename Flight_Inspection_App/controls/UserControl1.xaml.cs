@@ -20,17 +20,16 @@ namespace Flight_Inspection_App.controls
     /// </summary>
     public partial class UserControl1 : UserControl
     {
+  
         private viewModel.joystickViewModel jsvm;
         public UserControl1()
         {
-
-            InitializeComponent();
-            
+            //InitializeComponent();   
             this.jsvm = new viewModel.joystickViewModel();
             DataContext = jsvm;
         }
 
-        public void UpdateConnect(Connect c)
+        void UpdateConnect(Connect c)
         {
             jsvm.setConnect(c);
         }

@@ -22,14 +22,13 @@ namespace Flight_Inspection_App
     public partial class MainWindow : Window
     {
         Settings s;
-        testViewModel tvm;
+        
         public MainWindow()
         {
             InitializeComponent();
-            //tvm = new testViewModel(new testModel(), s);
-            tvm = new testViewModel();
-
-            DataContext = tvm;
+          //  Settings s = new Settings(" ");
+            //vcvm = new videoControlsViewModel();
+            //DataContext = vcvm;
         }
         /*        [DllImport("user32.dll")]
                public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);*/
@@ -45,14 +44,13 @@ namespace Flight_Inspection_App
                     String filePath = openFileDialog.FileName;
                     if (filePath.EndsWith("csv"))
                     {
-                        BindingOperations.EnableCollectionSynchronization(tvm.vm_Chunks, this);
-                        //          Connect c = new Connect(filePath, settings);
-                        //          c.ExecuteClient(filePath);
+           
                         Connect c = new Connect(filePath, s);                       //TODO: is tvm still updated????
                         c.ExecuteClient(filePath);
-                        tvm.setConnect(c);
-                        joystick.UpdateConnect(c);
-                        DataContext = tvm;
+
+                        videoControl.setConnect(c);
+                        
+                        //joystick.UpdateConnect(c);
                     }
                     else
                     {
@@ -84,9 +82,6 @@ namespace Flight_Inspection_App
                 {
                     s = new Settings(filePath);                  //TODO: is tvm still updated????
                     s.UploadSettings();
-                    tvm = new testViewModel();
-                    tvm.setConnect(new Connect("", s));
-                    DataContext = tvm;
                     X.Visibility = Visibility.Hidden;
                     V.Visibility = Visibility.Visible;
                 }
@@ -97,14 +92,6 @@ namespace Flight_Inspection_App
             }
         }
 
-      
-
-    
-
-
-        private void playPauseButton_Click(object sender, RoutedEventArgs e)
-        {
-            tvm.playPause();  //TODO mvvm
-        }
+       
     }
 }

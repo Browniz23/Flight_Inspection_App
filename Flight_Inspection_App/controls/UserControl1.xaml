@@ -3,8 +3,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:viewModel="clr-namespace:Flight_Inspection_App.viewModel" d:DataContext="" d:DataContext="{d:DesignInstance Type=viewModel:joystickViewModel}"
-             xmlns:local="clr-namespace:Flight_Inspection_App.controls" 
+             xmlns:viewModel="clr-namespace:Flight_Inspection_App.viewModel" 
+             xmlns:local="clr-namespace:Flight_Inspection_App.controls" d:DataContext="{d:DesignInstance Type=viewModel:joystickViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="400" d:DesignWidth="400">
     <Grid Background="#FF0B4978">
