@@ -97,24 +97,24 @@ namespace Flight_Inspection_App
         // main thred, send data to FG
         public void ExecuteClient(String CSVFileName)
         {
+            string[] lines = File.ReadAllLines(CSVFileName);
+
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string[] separetedLine = lines[i].Split(',');
+                for (int j = 0; j < separetedLine.Length; j++)
+                {
+                    if (this.settings.Chunks.ElementAt(j).Value.IsFloat)
+                        this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
+                    else
+                        this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
+                }
+                //Console.WriteLine(i);
+            }
             new Thread(delegate ()
             {
                 try
                 {
-                    string[] lines = File.ReadAllLines(CSVFileName);
-
-                    //for (int i = 0; i < lines.Length; i++)
-                    //{
-                      //  string[] separetedLine = lines[i].Split(',');
-                        //for (int j = 0; j < separetedLine.Length; j++)
-                       // {
-                         //   if (this.settings.Chunks.ElementAt(j).Value.IsFloat)                            
-                           //     this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
-                            //else
-                              //  this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
-                        //}
-                        //Console.WriteLine(i);
-                    //}
                     // Create a TcpClient.
                     // Note, for this client to work you need to have a TcpServer
                     // connected to the same address as specified by the server, port

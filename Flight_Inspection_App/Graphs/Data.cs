@@ -8,38 +8,29 @@ namespace Flight_Inspection_App.Graphs
 {
     public class Data
     {
-        public static List<Measurement> GetData()
+        internal static List<Measurement> GetData(Connect c)
         {
             var measurements = new List<Measurement>();
 
             var startDate = DateTime.Now;//.AddMinutes(-10);       
-            var r = new Random();
 
-            // for (int i = 0; i < 5; i++)
-            // {
-            for (int j = 0; j < 1; j++)
-            {
-                measurements.Add(new Measurement() { DetectorId = 0, DateTime = startDate.AddMinutes(j), Value = r.Next(1, 4) });
+            for (int j = 0; j < c.currLine+1; j++)        // -1?
+            {                                                                           // todo: get string as parameter/bind
+                measurements.Add(new Measurement() { DetectorId = 0, DateTime = startDate.AddMinutes(j), Value = c.Settings.Chunks["throttle"].Values[j] });    // c.Settings.Chunks["throttle"].Values[j]
             }
-            for (int j = 0; j < 1; j++)
+            for (int j = 0; j < c.currLine+1; j++)        // cooraltive
             {
-                measurements.Add(new Measurement() { DetectorId = 1, DateTime = startDate.AddMinutes(j), Value = r.Next(10, 30) });
+                measurements.Add(new Measurement() { DetectorId = 1, DateTime = startDate.AddMinutes(j), Value = c.Settings.Chunks["pitch-deg"].Values[j] });   // c.Settings.Chunks["pitch-deg"].Values[j]
             }
-            //  }
             measurements.Sort((m1, m2) => m1.DateTime.CompareTo(m2.DateTime));
             return measurements;
         }
 
-        public static List<Measurement> GetUpdateData(DateTime dateTime)
+        internal static List<Measurement> GetUpdateData(DateTime dateTime, Connect c)
         {
             var measurements = new List<Measurement>();
-            var r = new Random();
-
-            //           for (int i = 0; i < 2; i++)
-            //{
-            measurements.Add(new Measurement() { DetectorId = 0, DateTime = dateTime.AddSeconds(1), Value = r.Next(1, 4) });
-            measurements.Add(new Measurement() { DetectorId = 1, DateTime = dateTime.AddSeconds(1), Value = r.Next(10, 30) });
-            //}
+            measurements.Add(new Measurement() { DetectorId = 0, DateTime = dateTime.AddSeconds(1), Value = c.getValue("throttle") });  // Value = c.getValue("throttle") 
+            measurements.Add(new Measurement() { DetectorId = 1, DateTime = dateTime.AddSeconds(1), Value = c.getValue("pitch-deg") }); // Value = c.getValue("pitch-deg") 
             return measurements;
         }
     }
@@ -47,7 +38,7 @@ namespace Flight_Inspection_App.Graphs
     public class Measurement
     {
         public int DetectorId { get; set; }
-        public int Value { get; set; }
+        public double Value { get; set; }
         public DateTime DateTime { get; set; }
     }
 }

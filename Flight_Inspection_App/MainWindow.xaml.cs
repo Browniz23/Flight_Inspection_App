@@ -52,7 +52,7 @@ namespace Flight_Inspection_App
                         c.ExecuteClient(filePath);
 
                         videoControl.setConnect(c);
-                        
+                        ShowGraph1.setConnect(c);
                         //joystick.UpdateConnect(c);
                     }
                     else
@@ -76,14 +76,15 @@ namespace Flight_Inspection_App
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            bool? response = openFileDialog.ShowDialog();
-            if (response == true)
-            {
-                String filePath = openFileDialog.FileName;
+            //     Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            //     bool? response = openFileDialog.ShowDialog();
+            //     if (response == true)
+            //     {
+            //         String filePath = openFileDialog.FileName;
+            String filePath = "playback_small.xml";
                 if (filePath.EndsWith("xml"))
                 {
-                    s = new Settings(filePath);                  //TODO: is tvm still updated????
+                    s = new Settings(filePath);                
                     s.UploadSettings();
                     X.Visibility = Visibility.Hidden;
                     V.Visibility = Visibility.Visible;
@@ -92,9 +93,12 @@ namespace Flight_Inspection_App
                 {
                     MessageBox.Show("Please choose a XML file");
                 }
-            }
+           // }
         }
 
-       
+        private void ShowGraph1_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

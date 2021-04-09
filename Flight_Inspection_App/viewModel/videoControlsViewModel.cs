@@ -22,7 +22,12 @@ namespace Flight_Inspection_App.viewModel
         }
 
         public float vm_selectedSpeed
-        { set { connectModel.timeToSleep = (int)(100 / value); } }
+        { set { connectModel.timeToSleep = (int)(100 / value); }
+            get { if (connectModel != null)
+                    return connectModel.timeToSleep;
+                return 100; // 100 default                         get ADDED BY OZ
+            }
+        }
         /*public Dictionary<string, Chunk> vm_Chunks
         {
             get { return settingsModel.Chunks; }

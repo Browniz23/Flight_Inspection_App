@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Flight_Inspection_App"
         xmlns:Controls="clr-namespace:Flight_Inspection_App.controls"
-        xmlns:viewModel="clr-namespace:Flight_Inspection_App.viewModel" x:Class="Flight_Inspection_App.MainWindow"
+        xmlns:Graphs="clr-namespace:Flight_Inspection_App.Graphs"
+        xmlns:viewModel="clr-namespace:Flight_Inspection_App.viewModel" xmlns:oxy="http://oxyplot.codeplex.com" x:Class="Flight_Inspection_App.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="1020.667">
 
@@ -15,13 +16,14 @@
             <ColumnDefinition Width="880*"/>
         </Grid.ColumnDefinitions>
         <Button Content="LoadCSVFile" HorizontalAlignment="Left" Margin="38,281,0,0" VerticalAlignment="Top" Width="95" Height="64" Click="Button_Click" Background="Beige"/>
-        <Button x:Name="button1" Content="Button1" HorizontalAlignment="Left" Margin="10,151,0,0" VerticalAlignment="Top" Width="97" Height="47" Click="Button_Click_1"/>
+        <Button x:Name="button1" Content="Button1" HorizontalAlignment="Left" Margin="36,208,0,0" VerticalAlignment="Top" Width="97" Height="47" Click="Button_Click_1"/>
         <Button Content="XML Settings" HorizontalAlignment="Left" Margin="27,354,0,0" VerticalAlignment="Top" Width="114" Height="34" Click="Button_Click_2"/>
         <Image x:Name="V" Source="/images/V.jpg" HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="15,354,0,0" Visibility="Hidden" Grid.Column="1"/>
-        <Image x:Name="X" Source="/images/X.jpg"  HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="15,354,0,0" Grid.Column="1"/>
+        <Image x:Name="X" Source="/images/X.jpg" HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="15,354,0,0" Grid.Column="1"/>
 
         <Controls:videoControl x:Name="videoControl" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Margin="5"/>
-
+        <oxy:Plot x:Name="Plot1" Title="A Graph" Model="{Binding PlotModel}" Margin="80,208,664,75.667" Grid.Column="1" />
+        <Graphs:ShowGraph1 x:Name="ShowGraph1" Margin="0,5,826,212.667" Loaded="ShowGraph1_Loaded" Grid.ColumnSpan="2" />
 
 
 

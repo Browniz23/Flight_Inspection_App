@@ -41,13 +41,16 @@ namespace Flight_Inspection_App.Graphs
 
         private void CompositionTargetRendering(object sender, EventArgs e)
         {
-            //if (stopwatch.ElapsedMilliseconds > lastUpdateMilliSeconds + 100)   //was 5000  need to be speed of or
-            if (stopwatch.ElapsedMilliseconds > lastUpdateMilliSeconds + viewModel.timeToSleep)
+            if (viewModel.isConnectSet() && stopwatch.ElapsedMilliseconds > lastUpdateMilliSeconds + viewModel.TimeToSleep) // 100?
             {
                 viewModel.UpdateModel();
                 Plot1.RefreshPlot(true);
                 lastUpdateMilliSeconds = stopwatch.ElapsedMilliseconds;
             }
+        }
+        internal void setConnect(Connect c)
+        {
+            viewModel.setConnect(c);
         }
     }
 }
