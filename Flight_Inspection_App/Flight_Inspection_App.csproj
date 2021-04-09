@@ -87,19 +87,21 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AsyncObservableCollection.cs" />
+    <Compile Include="controls\Dashboard.xaml.cs">
+      <DependentUpon>Dashboard.xaml</DependentUpon>
+    </Compile>
     <Compile Include="controls\UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
     <Compile Include="controls\videoControl.xaml.cs">
       <DependentUpon>videoControl.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Graphs\Data.cs" />
-    <Compile Include="Graphs\ShowGraph1.xaml.cs">
-      <DependentUpon>ShowGraph1.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="Graphs\ViewModels\MainWindowModel.cs" />
     <Compile Include="viewModel\joystickViewModel.cs" />
     <Compile Include="viewModel\videoControlsViewModel.cs" />
+    <Page Include="controls\Dashboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="controls\UserControl1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

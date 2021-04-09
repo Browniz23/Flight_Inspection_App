@@ -22,21 +22,12 @@ namespace Flight_Inspection_App.viewModel
         }
 
         public float vm_selectedSpeed
-        { set { connectModel.timeToSleep = (int)(100 / value); }
-            get { if (connectModel != null)
-                    return connectModel.timeToSleep;
-                return 100; // 100 default                         get ADDED BY OZ
-            }
-        }
-        /*public Dictionary<string, Chunk> vm_Chunks
-        {
-            get { return settingsModel.Chunks; }
-            // no set for now
-        }*/
+        { set { connectModel.timeToSleep = (int)(100 / value); } }
+     
         public int vm_currLine
         {
             get { return connectModel.currLine; }
-            set { connectModel.currLine = value; }  // no needed!
+            set { connectModel.currLine = value; } 
         }
 
         public int vm_lineLength
@@ -54,18 +45,12 @@ namespace Flight_Inspection_App.viewModel
         //CTOR
         public videoControlsViewModel()
         {
+            this.connectModel = new Connect(" ", new Settings(" "));
+
             float[] speedArr = { 0.25f, 0.5f, 1.0f, 2.0f, 4.0f };
-           this.connectModel = new Connect(" ", new Settings(" "));
             vm_speeds = new List<float>(speedArr);
             vm_selectedSpeed = 1.0f;
 
-            //connectModel = c;
-
-            // NEEDED?? maybe to put when setConnect
-             //this.connectModel.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)
-             //{
-               //NotifyPropertyChanged("vm_" + e.PropertyName);
-             //};
         }
 
 
