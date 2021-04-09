@@ -38,7 +38,7 @@ namespace Flight_Inspection_App
             }
         }
 
-        public double AirSpeed { get { return airspeed; ; } 
+        public double AirSpeed { get { return airspeed; } 
             set
             {
                 airspeed = value;

@@ -8,14 +8,21 @@
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition/>
+            <RowDefinition Height="100"/>
+            <RowDefinition Height="100"/>
+
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <TextBlock HorizontalAlignment="Left" Margin="110,46,0,0" Text="altimeter" TextWrapping="Wrap" VerticalAlignment="Top" Width="95" Height="50" FontSize="15"/>
-        <TextBox HorizontalAlignment="Left" Text="{Binding vm_airSpeed, Mode=OneWay}" Margin="267,46,0,0"  TextWrapping="Wrap" VerticalAlignment="Top" Width="127" Height="33"/>
+        <TextBlock  Grid.Row="0"
+                   Margin="5" Text="Air Speed" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" Width="95" Height="50" FontSize="15"/>
+        <TextBox Grid.Row="0" HorizontalAlignment="Center"
+                 Text="{Binding vm_airSpeed, Mode=OneWay}" Margin="5"  TextWrapping="Wrap" VerticalAlignment="Center" Width="127" Height="33"/>
+        <TextBlock  Grid.Row="0" HorizontalAlignment="Right"
+                   Margin="5" Text="kt" TextWrapping="Wrap" VerticalAlignment="Center"  Width="95" Height="50" FontSize="15"/>
 
+      
     </Grid>
 </UserControl>
