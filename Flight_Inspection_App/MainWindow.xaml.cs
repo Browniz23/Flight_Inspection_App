@@ -68,12 +68,12 @@ namespace Flight_Inspection_App
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-            //     Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-            //     bool? response = openFileDialog.ShowDialog();
-            //     if (response == true)
-            //     {
-            //         String filePath = openFileDialog.FileName;
-            String filePath = "playback_small.xml";
+                 Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+                 bool? response = openFileDialog.ShowDialog();
+                 if (response == true)
+                 {
+                     String filePath = openFileDialog.FileName;
+        //    String filePath = "playback_small.xml";
                 if (filePath.EndsWith("xml"))
                 {
                     s = new Settings(filePath);                
@@ -85,7 +85,7 @@ namespace Flight_Inspection_App
                 {
                     MessageBox.Show("Please choose a XML file");
                 }
-           // }
+            }
         }
 
         private void ShowGraph1_Loaded(object sender, RoutedEventArgs e)

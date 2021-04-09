@@ -13,6 +13,10 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
+using System.Runtime.InteropServices;
+// [DllImport("Data_Process.dll")]
+// public static extern float Pearson(float []x, float []y, int size)
+
 
 
 namespace Flight_Inspection_App.Graphs

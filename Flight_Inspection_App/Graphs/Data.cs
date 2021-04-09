@@ -14,11 +14,14 @@ namespace Flight_Inspection_App.Graphs
 
             var startDate = DateTime.Now;//.AddMinutes(-10);       
 
-            for (int j = 0; j < c.currLine+1; j++)        // -1?
+            int PointsNum = c.currLine;
+            if (PointsNum == 0)
+                PointsNum++;
+            for (int j = 0; j < PointsNum; j++)        // -1?
             {                                                                           // todo: get string as parameter/bind
                 measurements.Add(new Measurement() { DetectorId = 0, DateTime = startDate.AddMinutes(j), Value = c.Settings.Chunks["throttle"].Values[j] });    // c.Settings.Chunks["throttle"].Values[j]
             }
-            for (int j = 0; j < c.currLine+1; j++)        // cooraltive
+            for (int j = 0; j < PointsNum; j++)        // cooraltive
             {
                 measurements.Add(new Measurement() { DetectorId = 1, DateTime = startDate.AddMinutes(j), Value = c.Settings.Chunks["pitch-deg"].Values[j] });   // c.Settings.Chunks["pitch-deg"].Values[j]
             }

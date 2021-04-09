@@ -8,7 +8,7 @@
         xmlns:Graphs="clr-namespace:Flight_Inspection_App.Graphs"
         xmlns:viewModel="clr-namespace:Flight_Inspection_App.viewModel" xmlns:oxy="http://oxyplot.codeplex.com" x:Class="Flight_Inspection_App.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="1020.667">
+        Title="MainWindow" Height="1068" Width="2000.167">
 
     <Grid x:Name="grid1" Background="LightSkyBlue">
         <Grid.RowDefinitions>
@@ -16,8 +16,8 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        
+
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
@@ -35,12 +35,11 @@
                 HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="114" Height="34" Click="Button_Click_2"/>
         <Image x:Name="V" Grid.Row="2" Grid.Column="1"
                Source="/images/V.jpg" HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="5" Visibility="Hidden" />
-        <Image x:Name="X" Grid.Row="2" Grid.Column="1"
-               Source="/images/X.jpg"  HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="5" />
+        <Image x:Name="X" Grid.Row="2"
+               Source="/images/X.jpg"  HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="168,0.333,0,0" />
 
-        <Controls:videoControl x:Name="videoControl" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Margin="5"/>
-        <oxy:Plot x:Name="Plot1" Title="A Graph" Model="{Binding PlotModel}" Margin="80,208,664,75.667" Grid.Column="1" />
-        <Graphs:ShowGraph1 x:Name="ShowGraph1" Margin="0,5,826,212.667" Loaded="ShowGraph1_Loaded" Grid.ColumnSpan="2" />
+        <oxy:Plot x:Name="Plot1" Title="A Graph" Model="{Binding PlotModel}" Margin="106.333,98.333,194.333,44.667" Grid.Column="1" Grid.Row="2" />
+        <Graphs:ShowGraph1 x:Name="ShowGraph1" Margin="0.333,0,10.333,10.667" Loaded="ShowGraph1_Loaded" Grid.Column="1" Grid.Row="1" />
         <Controls:Dashboard x:Name="dashboard" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1" Margin="5"/>
 
 
