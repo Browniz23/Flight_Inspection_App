@@ -45,12 +45,14 @@ namespace Flight_Inspection_App
                     {
            
                         Connect c = new Connect(filePath, s);                       
-                        c.ExecuteClient(filePath);
 
                         videoControl.setConnect(c);
                         ShowGraph1.setConnect(c);
                         //joystick.UpdateConnect(c);
                         dashboard.setConnect(c);
+                        graphControl.setConnect(c);
+
+                        c.ExecuteClient(filePath);
 
                     }
                     else
