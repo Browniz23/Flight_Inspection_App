@@ -24,17 +24,14 @@ namespace Flight_Inspection_App
     /// </summary>
     public partial class MainWindow : Window
     {
-        testViewModel tvm;
         Settings s;
-        Connect c;
+        
         public MainWindow()
         {
             InitializeComponent();
-            //tvm = new testViewModel(new testModel(), s);
-            s = new Settings("");
-            c = new Connect("", s);
-            tvm = new testViewModel(new testModel(30,40), c);
-            DataContext = tvm;
+          //  Settings s = new Settings(" ");
+            //vcvm = new videoControlsViewModel();
+            //DataContext = vcvm;
         }
         /*        [DllImport("user32.dll")]
                public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);*/
@@ -50,13 +47,13 @@ namespace Flight_Inspection_App
                     String filePath = openFileDialog.FileName;
                     if (filePath.EndsWith("csv"))
                     {
-                      //  BindingOperations.EnableCollectionSynchronization(tvm.vm_Chunks, this);
-                        //          Connect c = new Connect(filePath, settings);
-                        //          c.ExecuteClient(filePath);
-                        c = new Connect(filePath, s);                       //TODO: is tvm still updated????
+           
+                        Connect c = new Connect(filePath, s);                       //TODO: is tvm still updated????
                         c.ExecuteClient(filePath);
-                        tvm = new testViewModel(new testModel(60,70), c);
-                        DataContext = tvm;
+
+                        videoControl.setConnect(c);
+                        
+                        //joystick.UpdateConnect(c);
                     }
                     else
                     {
@@ -88,8 +85,6 @@ namespace Flight_Inspection_App
                 {
                     s = new Settings(filePath);                  //TODO: is tvm still updated????
                     s.UploadSettings();
-                    tvm = new testViewModel(new testModel(80,90), new Connect("", s));
-                    DataContext = tvm;
                     X.Visibility = Visibility.Hidden;
                     V.Visibility = Visibility.Visible;
                 }
@@ -100,32 +95,6 @@ namespace Flight_Inspection_App
             }
         }
 
-        private void TextBox_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            Console.WriteLine(tvm.vm_X);
-            //tvm.vm_y = 20;
-            //testBox.Text = Convert.ToString(tvm.vm_x);
-        }
-
-        private void testBox2_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            Console.WriteLine(tvm.vm_Y);
-        }
-
-        private void testBox3_TextChanged(object sender, TextChangedEventArgs e)
-        {
-            //Console.WriteLine(tvm.vm_Chunks["throttle"].values[tvm.vm_Chunks["throttle"].values.Count-1]);
-            //     Console.WriteLine(tvm.vm_Chunks["throttle"].values[tvm.vm_CurrLine]);
-            if (!tvm.vm_D.ContainsKey(15))
-                tvm.vm_D.Add(15, 20);
-            else
-                Console.WriteLine(tvm.vm_Chunks["throttle"].Values[tvm.vm_CurrLine]);
-        }
-
-        private void ShowGraph1_Loaded(object sender, RoutedEventArgs e)
-        {
-
-        }
-
+       
     }
 }

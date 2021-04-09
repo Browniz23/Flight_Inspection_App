@@ -16,19 +16,60 @@ namespace Flight_Inspection_App
 {
     class Connect : INotifyPropertyChanged
     {
+
+        // ****model field*****//
         private string CSVFileName;
         private Settings settings;
-        private int currLine;
-        public int CurrLine { get { return currLine; } set { NotifyPropertyChanged("CurrLine"); currLine = value; } }
-        public string CSV_Name { get { return CSVFileName; } set { NotifyPropertyChanged("CSV_Name"); CSVFileName = value; } }
+        private int currline;
+        private int linelength;
+        private int timetosleep;
+        private bool stop;
+        //***//
+
+
+        //****model property****///
+        public int currLine { get { return currline; } 
+            set 
+            {
+                currline = value;
+                NotifyPropertyChanged("CurrLine");
+            }
+        }
+
+        public int timeToSleep
+        {
+            get { return timetosleep; }
+            set
+            {
+                this.timetosleep = value;
+                NotifyPropertyChanged("timeToSleep");
+
+            }
+        }
+
+        public int lineLength { get { return linelength; }
+            set
+            {
+                linelength = value;
+                NotifyPropertyChanged("lineLength");
+            }
+        }
+
+        public string CSV_Name { get { return CSVFileName; } set { CSVFileName = value; } }
         public Settings Settings { get { return settings; } set { settings = value; } }
+        //***///
+
+        //CTOR
         public Connect(String CSV_fileName, Settings settings)
         {
             this.CSVFileName = CSV_fileName;
             this.settings = settings;
-            CurrLine = 0;
+            currLine = 0;
+            timeToSleep = 100;
+            stop = false;
         }
 
+        //MVVM pattern
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string name)
         {
@@ -37,7 +78,23 @@ namespace Flight_Inspection_App
                 this.PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
         }
+        //***//
 
+
+        // mvvm function
+        public void playPause()
+        {
+            this.stop = this.stop ? false : true;
+        }
+
+        public double getValue(String s)
+        {
+            return settings.Chunks[s].CurrValue;
+        }
+        //***//
+
+
+        // main thred, send data to FG
         public void ExecuteClient(String CSVFileName)
         {
             new Thread(delegate ()
@@ -46,18 +103,18 @@ namespace Flight_Inspection_App
                 {
                     string[] lines = File.ReadAllLines(CSVFileName);
 
-                    for (int i = 0; i < lines.Length; i++)
-                    {
-                        string[] separetedLine = lines[i].Split(',');
-                        for (int j = 0; j < separetedLine.Length; j++)
-                        {
-                            if (this.settings.Chunks.ElementAt(j).Value.IsFloat)                            
-                                this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
-                            else
-                                this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
-                        }
-                        Console.WriteLine(i);
-                    }
+                    //for (int i = 0; i < lines.Length; i++)
+                    //{
+                      //  string[] separetedLine = lines[i].Split(',');
+                        //for (int j = 0; j < separetedLine.Length; j++)
+                       // {
+                         //   if (this.settings.Chunks.ElementAt(j).Value.IsFloat)                            
+                           //     this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
+                            //else
+                              //  this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
+                        //}
+                        //Console.WriteLine(i);
+                    //}
                     // Create a TcpClient.
                     // Note, for this client to work you need to have a TcpServer
                     // connected to the same address as specified by the server, port
@@ -68,38 +125,48 @@ namespace Flight_Inspection_App
                     // Get a client stream for reading and writing.
                     //  Stream stream = client.GetStream();
                     NetworkStream stream = client.GetStream();
+                    lineLength = lines.Length;
 
-                    for (this.currLine = 0; this.currLine < lines.Length; this.currLine++)
+                    while (true)  
                     {
+                        // if stop = TRUE, or the csv end, stop send lines from soket.
+                        if(stop || this.currline == this.linelength)
+                        {
+                            Thread.Sleep(500);
+                            continue;
+                        }
+
                         // Translate the passed message into ASCII and store it as a Byte array.
-                        Byte[] data = System.Text.Encoding.ASCII.GetBytes(lines[this.currLine] + "\n");
+                        Byte[] data = System.Text.Encoding.ASCII.GetBytes(lines[currLine] + "\n");
 
                         // Send the message to the connected TcpServer.
                         stream.Write(data, 0, data.Length);
 
                         // JUST FOR NOW: prints all lines in console.
-                        Console.WriteLine("Sent: {0}", lines[this.currLine]);
+                        Console.WriteLine("Sent: {0}", lines[currLine]);
                         // added update
-                            
-                        string[] separetedLine = lines[this.currLine].Split(',');
+
+                        string[] separetedLine = lines[currLine].Split(',');
                         for (int j = 0; j < separetedLine.Length; j++)    // this.settings.Chunks.Count -1?
                         {
-                            if (this.settings.Chunks.ElementAt(j).Value.IsFloat)
-                            {
+                           if (this.settings.Chunks.ElementAt(j).Value.IsFloat)
+                           {
                              //   this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
-                                this.settings.Chunks.ElementAt(j).Value.CurrValue = float.Parse(separetedLine[j]);
-                            }
-                            else
-                            {
-                               // this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
-                                this.settings.Chunks.ElementAt(j).Value.CurrValue = double.Parse(separetedLine[j]);
-                            }
+                             this.settings.Chunks.ElementAt(j).Value.CurrValue = float.Parse(separetedLine[j]);
+                           }
+                           else
+                           {
+                             // this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
+                             this.settings.Chunks.ElementAt(j).Value.CurrValue = double.Parse(separetedLine[j]);
+                           }
                         }
-                       // CurrLine = i;
 
                         stream.Flush();              // TODO: needed? also works without it.
-                        Thread.Sleep(100);
+                        Thread.Sleep(timeToSleep);
+                        currLine++;
+                            
                     }
+                    
                     // Close everything.
                     stream.Close();
                     client.Close();
@@ -116,4 +183,6 @@ namespace Flight_Inspection_App
             }).Start();
         }
     }
+
 }
+
