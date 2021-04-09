@@ -25,6 +25,7 @@ namespace Flight_Inspection_App
         private int timetosleep;
         private bool stop;
         private double airspeed;
+        private string[] chunkName;
         //***//
 
 
@@ -62,6 +63,14 @@ namespace Flight_Inspection_App
             {
                 linelength = value;
                 NotifyPropertyChanged("lineLength");
+            }
+        }
+
+        public string[] ChunkName { get { return chunkName; }
+            set
+            {
+                chunkName = value;
+                NotifyPropertyChanged("ChunkName");
             }
         }
 
@@ -114,6 +123,8 @@ namespace Flight_Inspection_App
         // main thred, send data to FG
         public void ExecuteClient(String CSVFileName)
         {
+            ChunkName = this.Settings.chunksName;
+
             new Thread(delegate ()
             {
                 try

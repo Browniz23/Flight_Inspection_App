@@ -25,6 +25,8 @@ namespace Flight_Inspection_App
             set { NotifyPropertyChanged("Chunks"); chunks = value; }         // needed?
         }
 
+        public string[] chunksName { get { return Chunks.Keys.ToArray(); } }
+
         public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string name)
         {

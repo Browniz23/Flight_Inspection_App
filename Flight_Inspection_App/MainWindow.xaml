@@ -5,7 +5,8 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:Flight_Inspection_App"
         xmlns:Controls="clr-namespace:Flight_Inspection_App.controls"
-        xmlns:viewModel="clr-namespace:Flight_Inspection_App.viewModel" x:Class="Flight_Inspection_App.MainWindow"
+        xmlns:viewModel="clr-namespace:Flight_Inspection_App.viewModel" 
+        x:Class="Flight_Inspection_App.MainWindow"
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="1020.667">
 
@@ -15,8 +16,8 @@
             <RowDefinition/>
             <RowDefinition/>
         </Grid.RowDefinitions>
-        
-        
+
+
         <Grid.ColumnDefinitions>
             <ColumnDefinition />
             <ColumnDefinition />
@@ -24,20 +25,24 @@
         </Grid.ColumnDefinitions>
 
 
-        <Controls:videoControl x:Name="videoControl" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="1" Margin="5"/>
+        <Controls:videoControl x:Name="videoControl" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,1,5"/>
 
 
         <Button Content="LoadCSVFile"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1"
-                HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="95" Height="64" Click="Button_Click" Background="Beige"/>
+                HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" Width="95" Height="40" Click="Button_Click" Background="Beige"/>
 
-        <Button Content="XML Settings" Grid.Row="2" Grid.Column="0"
-                HorizontalAlignment="Left" Margin="5" VerticalAlignment="Top" Width="114" Height="34" Click="Button_Click_2"/>
-        <Image x:Name="V" Grid.Row="2" Grid.Column="1"
-               Source="/images/V.jpg" HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="5" Visibility="Hidden" />
-        <Image x:Name="X" Grid.Row="2" Grid.Column="1"
-               Source="/images/X.jpg"  HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="5" />
+        <Button Content="XML Settings" Grid.Row="1" Grid.Column="0"
+                HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5"  Width="114" Height="34" Click="Button_Click_2"/>
+        <Image x:Name="V" Grid.Row="1" Grid.Column="0"
+               Source="/images/V.jpg" HorizontalAlignment="Center" Height="34" VerticalAlignment="Bottom" Width="33" Margin="5" Visibility="Hidden" />
+        <Image x:Name="X" Grid.Row="1" Grid.Column="0"
+               Source="/images/X.jpg"  HorizontalAlignment="Center" Height="34" VerticalAlignment="Bottom" Width="33" Margin="5" />
 
         <Controls:Dashboard x:Name="dashboard" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1" Margin="5"/>
+
+        <Controls:GraphControl x:Name="graphControl" Grid.Row="2" Grid.Column="2"/>
+
+
 
 
 
