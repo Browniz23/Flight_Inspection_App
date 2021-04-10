@@ -15,6 +15,8 @@ namespace Flight_Inspection_App
         private ObservableCollection<double> values;
         private bool isFloat;
         private double currValue;
+        private string corrChunk = "none";
+        private float correlation = 0;
         public double CurrValue {
             get
             {
@@ -26,7 +28,25 @@ namespace Flight_Inspection_App
                 NotifyPropertyChanged("CurrValue");
             }
         }
- 
+        public string CorrChunk
+        {
+            get { return corrChunk; }
+            set 
+            {
+                corrChunk = value;
+                NotifyPropertyChanged("CorrChunk");     // added. not sure needed
+            }      
+        }
+        public float Correlation
+        {
+            get { return correlation; }
+            set
+            {
+                correlation = value;
+                NotifyPropertyChanged("Correlation");   // added. not sure needed
+            }
+        }
+
         public string Name { get { return name; } set { NotifyPropertyChanged("Name"); name = value; } } 
         public bool IsFloat { get { return isFloat; } set { NotifyPropertyChanged("IsFloat"); isFloat = value; } }
         public ObservableCollection<double> Values {

@@ -36,59 +36,9 @@ namespace Flight_Inspection_App
             }
         }
 
-        /*  // <!-- Flight Controls -->
-private float aileron;
-private float elevator;
-private float rudder;
-private float flaps;
-private float slats;
-private float speedbrake;
-// <!-- Engines -->
-private float throttle1;    //1
-private float throttle2;    //2
-// <!-- Gear -->
-// <!-- Hydraulics -->
-private float engine_pump;  // _ instead of -
-private float engine-pump;
-private float electric-pump;
-private float electric-pump;
-// <!-- Electric -->
-private float external-power;
-private float APU-generator;
-// <!-- Autoflight -->
-// <!-- Position -->
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;
-private float aileron;*/
-
         public Settings(string XML_fileName)
         {
             this.XMLFileName = XML_fileName;
-            //    properties = new List<string>();
-            //   values = new ArrayList();
             this.Chunks = new ObservableDictionary<string, Chunk>();
 
             this.namesCount = new ObservableDictionary<string, int>();
@@ -132,20 +82,6 @@ private float aileron;*/
                 }
             }
             //Console.ReadKey();        does error
-
-         /*   string[] lines = File.ReadAllLines(this.XMLFileName);
-            for (int i = 0; i < lines.Length; i++)
-            {
-                int idx1 = lines[i].IndexOf("<name>");
-                if (idx1 >= 0)
-                {
-                    int idx2 = lines[i].IndexOf("</name>", idx1);
-                    string name = lines[i].Substring(idx1 + 6, idx2-idx1-6);
-                  //  properties.Add(name);
-                  //  values.Add((float) 0);         // do casting??
-            //        chunks.Add(new Chunk(name, ))
-                }
-            }*/
         }
 
     }

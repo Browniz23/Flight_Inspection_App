@@ -11,6 +11,7 @@ using System.IO;
 using System.Threading;
 using System.ComponentModel;
 using System.Windows;
+using System.Runtime.InteropServices;
 
 namespace Flight_Inspection_App
 {
@@ -26,6 +27,7 @@ namespace Flight_Inspection_App
         private bool stop;
         private double airspeed;
         private string[] chunkName;
+        private float minCorr = 0.9F;               // todo: add button to change corr
         //***//
 
 
@@ -119,8 +121,41 @@ namespace Flight_Inspection_App
         }
         //***//
 
+        public bool isHighCorr(float corr)
+        {
+            return (corr > 0 && corr >= minCorr) || (corr < 0 && corr <= -minCorr);
+        }
 
-        // main thred, send data to FG
+        [DllImport("Data_Process.dll")]
+        public static extern float Pearson(float[] x, float[] y, int size);
+        public void updateCorrelation()
+        {
+            int size = 0;
+            if (settings != null)
+                size = settings.Chunks.ElementAt(0).Value.Values.Count;
+            for (int i = 0; i < this.settings.chunksName.Length; i++)
+            {
+                float maxCorr = 0;
+                string bestMatch = "none";
+                for (int j = i + 1; j < this.settings.chunksName.Length; j++)
+                {
+                    double[] firstC = settings.Chunks[chunkName[i]].Values.ToArray();
+                    double[] secondC = settings.Chunks[chunkName[j]].Values.ToArray();
+                    float[] floatArray1 = Array.ConvertAll(firstC, x => (float)x);
+                    float[] floatArray2 = Array.ConvertAll(firstC, x => (float)x);
+                    float pear = Pearson(floatArray1, floatArray2, size);
+                    if (Math.Abs(pear) > maxCorr && isHighCorr(pear))
+                    {
+                        maxCorr = pear;
+                        bestMatch = chunkName[j];
+                    }
+                }
+                settings.Chunks[chunkName[i]].CorrChunk = bestMatch;
+                settings.Chunks[chunkName[i]].Correlation = maxCorr;
+            }
+        }
+
+        // main thread, send data to FG
         public void ExecuteClient(String CSVFileName)
         {
             string[] lines = File.ReadAllLines(CSVFileName);
@@ -138,6 +173,7 @@ namespace Flight_Inspection_App
                 //Console.WriteLine(i);
             }
             ChunkName = this.Settings.chunksName;
+//            updateCorrelation();
 
             new Thread(delegate ()
             {
