@@ -126,7 +126,7 @@ namespace Flight_Inspection_App
             return (corr > 0 && corr >= minCorr) || (corr < 0 && corr <= -minCorr);
         }
 
-        [DllImport("Data_Process.dll")]
+        [DllImport("Data_Process.dll", CallingConvention = CallingConvention.Cdecl)]
         public static extern float Pearson(float[] x, float[] y, int size);
         public void updateCorrelation()
         {
@@ -151,6 +151,7 @@ namespace Flight_Inspection_App
                     }
                 }
                 settings.Chunks[chunkName[i]].CorrChunk = bestMatch;
+
                 settings.Chunks[chunkName[i]].Correlation = maxCorr;
             }
         }
@@ -173,7 +174,7 @@ namespace Flight_Inspection_App
                 //Console.WriteLine(i);
             }
             ChunkName = this.Settings.chunksName;
-//            updateCorrelation();
+            updateCorrelation();
 
             new Thread(delegate ()
             {
