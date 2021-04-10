@@ -94,6 +94,9 @@
     <Compile Include="controls\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
+    <Compile Include="controls\data.xaml.cs">
+      <DependentUpon>data.xaml</DependentUpon>
+    </Compile>
     <Compile Include="controls\GraphControl.xaml.cs">
       <DependentUpon>GraphControl.xaml</DependentUpon>
     </Compile>
@@ -113,6 +116,10 @@
     <Compile Include="viewModel\joystickViewModel.cs" />
     <Compile Include="viewModel\videoControlsViewModel.cs" />
     <Page Include="controls\Dashboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="controls\data.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
