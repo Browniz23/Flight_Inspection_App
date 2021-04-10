@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
+using Flight_Inspection_App.viewModel;
 // [DllImport("Data_Process.dll")]
 // public static extern float Pearson(float []x, float []y, int size)
 
@@ -26,11 +27,11 @@ namespace Flight_Inspection_App.Graphs
     /// </summary>
     public partial class ShowGraph1 : UserControl
     {
-        private MainWindowModel viewModel;      // doesnt need ViewModels.?
+        private GraphViewModel viewModel;      // doesnt need ViewModels.?
 
         public ShowGraph1()
         {
-            viewModel = new MainWindowModel();    // doesnt need ViewModels.?
+            viewModel = new GraphViewModel();    // doesnt need ViewModels.?
             DataContext = viewModel;
 
             CompositionTarget.Rendering += CompositionTargetRendering;
@@ -55,6 +56,13 @@ namespace Flight_Inspection_App.Graphs
         internal void setConnect(Connect c)
         {
             viewModel.setConnect(c);
+            Console.WriteLine(viewModel.vm_ChunkName);   // even here works!
+          //  DataContext = viewModel;
+        }
+
+        private void ListBox_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
+        {
+
         }
     }
 }

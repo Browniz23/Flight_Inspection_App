@@ -17,6 +17,6 @@
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <ListBox Grid.Row="0" Grid.Column="0" Margin="5" ItemsSource="{Binding vm_ChunkName, Mode=OneWay}"  />
+        <ListBox Grid.Row="0" Grid.Column="0" Margin="5" ItemsSource="{Binding vm_ChunkName, Mode=OneWay}" SelectedItem="{Binding ChosenChunk}" />
     </Grid>
 </UserControl>

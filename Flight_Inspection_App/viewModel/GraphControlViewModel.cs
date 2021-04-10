@@ -20,6 +20,8 @@ namespace Flight_Inspection_App.viewModel
 
         public double vm_airSpeed { get { return connectModel.AirSpeed; } }
 
+        public string ChosenChunk { get ; set; }
+
         //***//
 
 
@@ -44,6 +46,7 @@ namespace Flight_Inspection_App.viewModel
         public void setConnect(Connect c)
         {
             this.connectModel = c;
+            this.ChosenChunk = c.ChunkName[0];
             this.connectModel.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)
             {
                 NotifyPropertyChanged("vm_" + e.PropertyName);

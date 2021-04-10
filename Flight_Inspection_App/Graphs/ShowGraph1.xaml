@@ -6,9 +6,10 @@
              xmlns:local="clr-namespace:Flight_Inspection_App.Graphs"
              xmlns:oxy="http://oxyplot.codeplex.com"
              mc:Ignorable="d" 
-             d:DesignHeight="450" d:DesignWidth="800">
-    <Grid>
-        <oxy:Plot x:Name="Plot1" Title="A Graph" Model="{Binding PlotModel}" Margin="10" Grid.Row="1">
-        </oxy:Plot>
+             d:DataContext="{d:DesignInstance Type=local:GraphViewModel}"
+             d:DesignHeight="450" d:DesignWidth="500">
+    <Grid Margin="290,0,10,0">
+        <oxy:Plot x:Name="Plot1" Title="A Graph" Model="{Binding PlotModel}"/>
+        <ListBox ItemsSource="{Binding vm_ChunkName, Mode=OneWay}" SelectedItem="{Binding ChosenChunk}" HorizontalAlignment="Left" Height="439" VerticalAlignment="Top" Width="111" Margin="-191,0,0,0"/>
     </Grid>
 </UserControl>

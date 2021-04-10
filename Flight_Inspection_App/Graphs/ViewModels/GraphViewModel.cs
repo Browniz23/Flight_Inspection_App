@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Linq;
+using Flight_Inspection_App.viewModel;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
@@ -10,17 +11,25 @@ using OxyPlot.Series;
 namespace Flight_Inspection_App.Graphs
 {
 
-    public class MainWindowModel : INotifyPropertyChanged
+    public class GraphViewModel : INotifyPropertyChanged
     {
         private PlotModel plotModel;
-        private Connect connectModel;
+        private Connect connectModel;               // maybe dont need because GraphControl
+        private string chosenChunk;
+       // GraphControlViewModel graphicViewModel;
+
+        public GraphViewModel()
+        {
+            PlotModel = new PlotModel();
+            SetUpModel();
+        }
 
         public PlotModel PlotModel
         {
             get { return plotModel; }
-            set { plotModel = value; OnPropertyChanged("PlotModel"); }
+            set { plotModel = value; NotifyPropertyChanged("PlotModel"); }
         }
-
+ 
         public int TimeToSleep
         {
             get 
@@ -30,6 +39,34 @@ namespace Flight_Inspection_App.Graphs
             }      
             // no need for set
         }
+        public string[] vm_ChunkName
+        {
+            get
+            {
+                if (isConnectSet())
+                    return connectModel.ChunkName;
+                return new string[] { "no chunks" };
+            }
+            set{; }
+        }
+        public string ChosenChunk
+        {
+            get 
+            {   if (this.chosenChunk != null) 
+                {
+                    return this.chosenChunk;
+                }
+                return vm_ChunkName[0];
+            }
+            set 
+            {   if (this.chosenChunk != value) 
+                {
+                    this.chosenChunk = value;
+                    LoadData();
+                }
+            }
+        }
+        
         internal Settings Settings
         {
             get { return connectModel.Settings; }
@@ -38,7 +75,13 @@ namespace Flight_Inspection_App.Graphs
         internal void setConnect(Connect c)
         {
             this.connectModel = c;
-            LoadData();
+            this.ChosenChunk = c.ChunkName[0];      // only this or loadData needed?
+            this.vm_ChunkName = c.ChunkName;
+            this.connectModel.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)
+            {
+                NotifyPropertyChanged("vm_" + e.PropertyName);
+            };
+          //  LoadData();
         }
         internal bool isConnectSet()
         {
@@ -47,12 +90,6 @@ namespace Flight_Inspection_App.Graphs
 
         private DateTime lastUpdate = DateTime.Now;
 
-        public MainWindowModel()
-        {
-            PlotModel = new PlotModel();
-            SetUpModel();
-            // LoadData();
-        }
 
         private readonly List<OxyColor> colors = new List<OxyColor>
                                         {
@@ -83,7 +120,6 @@ namespace Flight_Inspection_App.Graphs
             PlotModel.LegendBackground = OxyColor.FromAColor(200, OxyColors.AliceBlue);
             PlotModel.LegendBorder = OxyColors.Chocolate;
             // added
-           // PlotModel.LegendMaxWidth = 20;
             PlotModel.LegendTitleFontSize = 9;
 
             var dateAxis = new DateTimeAxis(AxisPosition.Bottom, "Date", "HH:mm") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, IntervalLength = 80 };
@@ -95,7 +131,7 @@ namespace Flight_Inspection_App.Graphs
 
         private void LoadData()
         {
-            List<Measurement> measurements = Data.GetData(this.connectModel);
+            List<Measurement> measurements = Data.GetData(this.connectModel, ChosenChunk);
 
             var dataPerDetector = measurements.GroupBy(m => m.DetectorId).OrderBy(m => m.Key).ToList();
             foreach (var data in dataPerDetector)
@@ -118,12 +154,12 @@ namespace Flight_Inspection_App.Graphs
 
         public void UpdateModel()
         {
-            List<Measurement> measurements = Data.GetUpdateData(lastUpdate, this.connectModel);
+            List<Measurement> measurements = Data.GetUpdateData(lastUpdate, this.connectModel, ChosenChunk);
             var dataPerDetector = measurements.GroupBy(m => m.DetectorId).OrderBy(m => m.Key).ToList();
 
             foreach (var data in dataPerDetector)
             {
-                var lineSerie = PlotModel.Series[data.Key] as LineSeries;          // 0 changed from data.Key
+                var lineSerie = PlotModel.Series[data.Key] as LineSeries;          
                 if (lineSerie != null)
                 {
                     data.ToList()
@@ -137,7 +173,7 @@ namespace Flight_Inspection_App.Graphs
         public event PropertyChangedEventHandler PropertyChanged;
 
 //           [NotifyPropertyChangedInvocator]
-        protected virtual void OnPropertyChanged(string propertyName)
+        protected virtual void NotifyPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = PropertyChanged;
             if (handler != null) handler(this, new PropertyChangedEventArgs(propertyName));

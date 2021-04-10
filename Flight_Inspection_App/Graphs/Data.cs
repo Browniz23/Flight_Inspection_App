@@ -8,7 +8,7 @@ namespace Flight_Inspection_App.Graphs
 {
     public class Data
     {
-        internal static List<Measurement> GetData(Connect c)
+        internal static List<Measurement> GetData(Connect c, string chosenChunk)
         {
             var measurements = new List<Measurement>();
 
@@ -19,7 +19,7 @@ namespace Flight_Inspection_App.Graphs
                 PointsNum++;
             for (int j = 0; j < PointsNum; j++)        // -1?
             {                                                                           // todo: get string as parameter/bind
-                measurements.Add(new Measurement() { DetectorId = 0, DateTime = startDate.AddMinutes(j), Value = c.Settings.Chunks["throttle"].Values[j] });    // c.Settings.Chunks["throttle"].Values[j]
+                measurements.Add(new Measurement() { DetectorId = 0, DateTime = startDate.AddMinutes(j), Value = c.Settings.Chunks[chosenChunk].Values[j] });    // c.Settings.Chunks["throttle"].Values[j]
             }
             for (int j = 0; j < PointsNum; j++)        // cooraltive
             {
@@ -29,10 +29,10 @@ namespace Flight_Inspection_App.Graphs
             return measurements;
         }
 
-        internal static List<Measurement> GetUpdateData(DateTime dateTime, Connect c)
+        internal static List<Measurement> GetUpdateData(DateTime dateTime, Connect c, string chosenChunk)
         {
             var measurements = new List<Measurement>();
-            measurements.Add(new Measurement() { DetectorId = 0, DateTime = dateTime.AddSeconds(1), Value = c.getValue("throttle") });  // Value = c.getValue("throttle") 
+            measurements.Add(new Measurement() { DetectorId = 0, DateTime = dateTime.AddSeconds(1), Value = c.getValue(chosenChunk) });  // Value = c.getValue("throttle") 
             measurements.Add(new Measurement() { DetectorId = 1, DateTime = dateTime.AddSeconds(1), Value = c.getValue("pitch-deg") }); // Value = c.getValue("pitch-deg") 
             return measurements;
         }

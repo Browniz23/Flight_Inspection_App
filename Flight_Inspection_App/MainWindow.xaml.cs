@@ -44,15 +44,16 @@ namespace Flight_Inspection_App
                     if (filePath.EndsWith("csv"))
                     {
            
-                        Connect c = new Connect(filePath, s);                       
-
-                        videoControl.setConnect(c);
-                        ShowGraph1.setConnect(c);
-                        //joystick.UpdateConnect(c);
-                        dashboard.setConnect(c);
-                        graphControl.setConnect(c);
+                        Connect c = new Connect(filePath, s);
 
                         c.ExecuteClient(filePath);
+
+                        videoControl.setConnect(c);
+                        graphControl.setConnect(c);
+                        ShowGraph1.setConnect(c);           // must get graph?
+                        //joystick.UpdateConnect(c);
+                        dashboard.setConnect(c);
+
 
                     }
                     else
@@ -91,6 +92,11 @@ namespace Flight_Inspection_App
         }
 
         private void ShowGraph1_Loaded(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void graphControl_Loaded(object sender, RoutedEventArgs e)
         {
 
         }

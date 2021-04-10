@@ -37,5 +37,14 @@ namespace Flight_Inspection_App.controls
             gcvm.setConnect(c);
         }
 
+        private void GraphControl_Loaded(object sender, RoutedEventArgs e)
+        {
+            
+        }
+
+        private void ListBox_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            
+        }
     }
 }

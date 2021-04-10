@@ -107,7 +107,7 @@
     <Compile Include="Graphs\ShowGraph1.xaml.cs">
       <DependentUpon>ShowGraph1.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Graphs\ViewModels\MainWindowModel.cs" />
+    <Compile Include="Graphs\ViewModels\GraphViewModel.cs" />
     <Compile Include="viewModel\dashboardViewModel.cs" />
     <Compile Include="viewModel\GraphControlViewModel.cs" />
     <Compile Include="viewModel\joystickViewModel.cs" />
