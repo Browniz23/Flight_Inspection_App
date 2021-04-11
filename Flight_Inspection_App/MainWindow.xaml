@@ -9,22 +9,19 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="1020.667">
 
-    <Grid x:Name="grid1" Background="LightSkyBlue">
+    <Grid x:Name="grid1" Background="LightSkyBlue" Margin="2,0,-2,-0.333">
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="141*"/>
-            <ColumnDefinition Width="880*"/>
+            <ColumnDefinition Width="0*"/>
+            <ColumnDefinition Width="70*"/>
+            <ColumnDefinition Width="437*"/>
         </Grid.ColumnDefinitions>
-        <Button Content="LoadCSVFile" HorizontalAlignment="Left" Margin="38,281,0,0" VerticalAlignment="Top" Width="95" Height="64" Click="Button_Click" Background="Beige"/>
-        <Button x:Name="button1" Content="Button1" HorizontalAlignment="Left" Margin="10,151,0,0" VerticalAlignment="Top" Width="97" Height="47" Click="Button_Click_1"/>
-        <Button Content="XML Settings" HorizontalAlignment="Left" Margin="27,354,0,0" VerticalAlignment="Top" Width="114" Height="34" Click="Button_Click_2"/>
-        <Image x:Name="V" Source="/images/V.jpg" HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="15,354,0,0" Visibility="Hidden" Grid.Column="1"/>
-        <Image x:Name="X" Source="/images/X.jpg"  HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="15,354,0,0" Grid.Column="1"/>
+        <Button Content="LoadCSVFile" HorizontalAlignment="Left" Margin="38,281,0,0" VerticalAlignment="Top" Width="95" Height="64" Click="Button_Click" Background="Beige" Grid.ColumnSpan="2"/>
+        <Button x:Name="button1" Content="Button1" HorizontalAlignment="Left" Margin="10,151,0,0" VerticalAlignment="Top" Width="97" Height="47" Click="Button_Click_1" Grid.ColumnSpan="2"/>
+        <Button Content="XML Settings" HorizontalAlignment="Left" Margin="27,354,0,0" VerticalAlignment="Top" Width="114" Height="34" Click="Button_Click_2" Grid.ColumnSpan="3"/>
+        <Image x:Name="V" Source="/images/V.jpg" HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="15,354,0,0" Visibility="Hidden" Grid.Column="2"/>
+        <Image x:Name="X" Source="/images/X.jpg"  HorizontalAlignment="Left" Height="34" VerticalAlignment="Top" Width="33" Margin="15,354,0,0" Grid.Column="2"/>
 
-        <Controls:videoControl x:Name="videoControl" Grid.Column="1" Grid.Row="1" Grid.RowSpan="4" Margin="5"/>
-
-
-
-
-
+        <Controls:videoControl x:Name="videoControl" Grid.Column="2" Margin="5,5,5,4.667"/>
+        <Controls:joystickPanelControl x:Name="joystickPanel" Margin="541,114,32,6" Grid.Column="2"/>
     </Grid>
 </Window>

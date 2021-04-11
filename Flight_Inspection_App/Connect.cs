@@ -23,6 +23,10 @@ namespace Flight_Inspection_App
         private int currline;
         private int linelength;
         private int timetosleep;
+        private double throttle;
+        private double rudder;
+        private double elevator;
+        private double aileron;
         private bool stop;
         //***//
 
@@ -52,6 +56,40 @@ namespace Flight_Inspection_App
             {
                 linelength = value;
                 NotifyPropertyChanged("lineLength");
+            }
+        }
+
+        public double Rudder { get { return rudder; }
+            set
+            {
+                rudder = value;
+                NotifyPropertyChanged("Rudder");
+            }
+        }
+
+        public double Throttle { get { return throttle; }
+            set
+            {
+                throttle = value;
+                NotifyPropertyChanged("Throttle");
+            }
+        }
+
+        public double Aileron { get { return aileron; }
+            set
+            {
+                aileron = value;
+                NotifyPropertyChanged("Aileron");
+            }
+        }
+
+        public double Elevator
+        {
+            get { return elevator; }
+            set
+            {
+                elevator = value;
+                NotifyPropertyChanged("Elevator");
             }
         }
 
@@ -161,6 +199,10 @@ namespace Flight_Inspection_App
                            }
                         }
 
+                        Throttle = getValue("throttle");
+                        Rudder = getValue("rudder");
+                        Aileron = getValue("aileron");
+                        Elevator = getValue("elevator");
                         stream.Flush();              // TODO: needed? also works without it.
                         Thread.Sleep(timeToSleep);
                         currLine++;

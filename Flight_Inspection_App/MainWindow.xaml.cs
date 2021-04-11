@@ -49,8 +49,7 @@ namespace Flight_Inspection_App
                         c.ExecuteClient(filePath);
 
                         videoControl.setConnect(c);
-                        
-                        //joystick.UpdateConnect(c);
+                        joystickPanel.setConnect(c);
                     }
                     else
                     {
@@ -91,7 +90,5 @@ namespace Flight_Inspection_App
                 }
             }
         }
-
-       
     }
 }
