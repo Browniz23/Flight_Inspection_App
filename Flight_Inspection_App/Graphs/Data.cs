@@ -8,34 +8,44 @@ namespace Flight_Inspection_App.Graphs
 {
     public class Data
     {
-        internal static List<Measurement> GetData(Connect c, string chosenChunk)
+        internal static List<Measurement> GetData(Connect c, string chosenChunk, DateTime d)
         {
             var measurements = new List<Measurement>();
 
-            var startDate = DateTime.Now;//.AddMinutes(-10);       
+            //var startDate = DateTime.Now;//.AddMinutes(-10);       
+         //   var startDate = new DateTime(2000,1,1,0,0,0,0);
 
             int PointsNum = c.currLine;
             if (PointsNum == 0)
                 PointsNum++;
             for (int j = 0; j < PointsNum; j++)        // -1?
-            {                                                                           // todo: get string as parameter/bind
-                measurements.Add(new Measurement() { DetectorId = 0, DateTime = startDate.AddMinutes(j), Value = c.Settings.Chunks[chosenChunk].Values[j] });    // c.Settings.Chunks["throttle"].Values[j]
+            {                                                                             // todo: change from minutes to..??    
+                measurements.Add(new Measurement() { DetectorId = 0, dateTime = d.AddMilliseconds(100 * j), Value = c.Settings.Chunks[chosenChunk].Values[j] });    // c.Settings.Chunks["throttle"].Values[j]
             }
             string corrChosenChunk = c.Settings.Chunks[chosenChunk].CorrChunk;
-            for (int j = 0; j < PointsNum; j++)        // cooraltive
+            if (corrChosenChunk != "none")
             {
-                measurements.Add(new Measurement() { DetectorId = 1, DateTime = startDate.AddMinutes(j), Value = c.Settings.Chunks[corrChosenChunk].Values[j] });   // c.Settings.Chunks["pitch-deg"].Values[j]
+                for (int j = 0; j < PointsNum; j++)        // cooraltive
+                {                                                                                       // c.timeToSleep
+                    measurements.Add(new Measurement() { DetectorId = 1, dateTime = d.AddMilliseconds(100 * j), Value = c.Settings.Chunks[corrChosenChunk].Values[j] });   // c.Settings.Chunks["pitch-deg"].Values[j]
+                }
+                measurements.Sort((m1, m2) => m1.dateTime.CompareTo(m2.dateTime));
+            } else
+            {
+                // need to show in textBox?
             }
-            measurements.Sort((m1, m2) => m1.DateTime.CompareTo(m2.DateTime));
             return measurements;
         }
 
-        internal static List<Measurement> GetUpdateData(DateTime dateTime, Connect c, string chosenChunk)
+        internal static List<Measurement> GetUpdateData(DateTime d, Connect c, string chosenChunk)
         {
-            var measurements = new List<Measurement>();
-            measurements.Add(new Measurement() { DetectorId = 0, DateTime = dateTime.AddSeconds(1), Value = c.getValue(chosenChunk) });  // Value = c.getValue("throttle") 
+            var measurements = new List<Measurement>();                                 // addMilies chaged from c.timeToSleep
+            measurements.Add(new Measurement() { DetectorId = 0, dateTime = d.AddMilliseconds(100), Value = c.getValue(chosenChunk), Name = chosenChunk });  // Value = c.getValue("throttle") 
+            string corrChosenChunkForName = "correlative:\n";
             string corrChosenChunk = c.Settings.Chunks[chosenChunk].CorrChunk;
-            measurements.Add(new Measurement() { DetectorId = 1, DateTime = dateTime.AddSeconds(1), Value = c.getValue(corrChosenChunk) }); // Value = c.getValue("pitch-deg") 
+            corrChosenChunkForName += corrChosenChunk;
+            if (corrChosenChunk != "none")
+                measurements.Add(new Measurement() { DetectorId = 1, dateTime = d.AddMilliseconds(100), Value = c.getValue(corrChosenChunk), Name = corrChosenChunkForName }); // Value = c.getValue("pitch-deg") 
             return measurements;
         }
     }
@@ -44,6 +54,21 @@ namespace Flight_Inspection_App.Graphs
     {
         public int DetectorId { get; set; }
         public double Value { get; set; }
-        public DateTime DateTime { get; set; }
+        //private DateTime datetime;// = DateTime.MinValue;
+       // public DateTime dateTime { get; set; }
+        public DateTime dateTime
+        {
+            get;
+            /*get
+            {
+                if (dateTime == DateTime.MinValue)
+                    dateTime = new DateTime(2000,1,1,0,0,0,0);
+                return dateTime;
+            }*/
+            set;
+        }
+        //DateTime Axis?
+
+        public string Name { get; set; }            // maybe doesnt need?!
     }
 }

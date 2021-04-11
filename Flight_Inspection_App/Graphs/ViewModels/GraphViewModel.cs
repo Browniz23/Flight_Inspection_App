@@ -16,20 +16,30 @@ namespace Flight_Inspection_App.Graphs
         private PlotModel plotModel;
         private Connect connectModel;               // maybe dont need because GraphControl
         private string chosenChunk;
-       // GraphControlViewModel graphicViewModel;
+        private DateTime startDate;
+        //private long startDate;
+        private int currline = 0;
+        // GraphControlViewModel graphicViewModel;
 
         public GraphViewModel()
         {
             PlotModel = new PlotModel();
             SetUpModel();
+            this.startDate = DateTime.Now;//new DateTime();
+            this.lastUpdate = DateTime.Now;//new DateTime();
         }
 
+        internal Connect ConnectModel                   // added
+        {
+            get { return connectModel; }
+        }
         public PlotModel PlotModel
         {
             get { return plotModel; }
             set { plotModel = value; NotifyPropertyChanged("PlotModel"); }
         }
- 
+
+        // need mvvm fix
         public int TimeToSleep
         {
             get 
@@ -47,26 +57,72 @@ namespace Flight_Inspection_App.Graphs
                     return connectModel.ChunkName;
                 return new string[] { "no chunks" };
             }
-            set{; }
         }
+        
         public string ChosenChunk
         {
-            get 
+            // first chosen as defalut
+            get                                                 // maybe doesnt need
             {   if (this.chosenChunk != null) 
                 {
                     return this.chosenChunk;
                 }
                 return vm_ChunkName[0];
             }
+            // when choose another - if we started the run (means there is data) - starts from begining
             set 
             {   if (this.chosenChunk != value) 
                 {
                     this.chosenChunk = value;
-                    LoadData();
+
+                    if (!vm_Stop || vm_currLine > 0)            // todo:check currline addition!!1
+                    {
+                      //  PlotModel = new PlotModel();            // not sure if true! doesnt work!!!
+                       // SetUpModel();
+                        PlotModel.Series.Clear();
+
+                        LoadData();
+                    }                         
                 }
             }
         }
-        
+        public bool vm_Stop
+        {
+            // returns stop. but in first time also load data when start
+            get 
+            {
+                if (!connectModel.Stop && vm_currLine == 0) // maybe doesnt need only first time?// && connectModel.currLine == 0)       // not sure...
+                {
+                    // need to be only first time!
+                    //              this.startDate = DateTime.Now;              // todo:gives exception when there is no breakpoint!
+                    //this.startDate = 0;
+                    //this.startDate = TimeSpan.Zero; // needed?
+                    //         if (datetime == DateTime.MinValue)
+                    //datetime = new DateTime(0, 0, 0, 0, 0, 0, 0);
+                 
+                    //this.startDate = new DateTime();
+                    //this.lastUpdate = new DateTime();                 both moved to ctor
+                    LoadData();
+                }
+                return connectModel.Stop; 
+            }
+        }
+        public int vm_currLine
+        {
+            // update currline and load data again if jumped with bar backward or forward
+            get 
+            {
+                //if (currline != connectModel.currLine - 1 && currline != connectModel.currLine)      
+                if (currline > connectModel.currLine)
+                {
+                    currline = connectModel.currLine;
+                    PlotModel.Series.Clear();
+                    LoadData();
+                }
+                currline = connectModel.currLine;
+                return connectModel.currLine; 
+            }
+        }
         internal Settings Settings
         {
             get { return connectModel.Settings; }
@@ -75,20 +131,23 @@ namespace Flight_Inspection_App.Graphs
         internal void setConnect(Connect c)
         {
             this.connectModel = c;
-            this.ChosenChunk = c.ChunkName[0];      // only this or loadData needed?
-            this.vm_ChunkName = c.ChunkName;
+            // updates (first or second time?) first chunk to be chosen
+            this.ChosenChunk = c.ChunkName[0];      // only this or loadData needed?    needed?????????????????????????
+            //this.vm_ChunkName = c.ChunkName;
             this.connectModel.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)
             {
                 NotifyPropertyChanged("vm_" + e.PropertyName);
             };
-          //  LoadData();
+           // LoadData(); // neededd??????????????????????????????????????????????????????????
         }
         internal bool isConnectSet()
         {
             return this.connectModel != null;
         }
 
-        private DateTime lastUpdate = DateTime.Now;
+        private DateTime lastUpdate;// = DateTime.MinValue;        //min value?
+        //private long lastUpdate = 0;
+        //private TimeSpan lastUpdate = TimeSpan.Zero;
 
 
         private readonly List<OxyColor> colors = new List<OxyColor>
@@ -113,7 +172,7 @@ namespace Flight_Inspection_App.Graphs
 
         private void SetUpModel()
         {
-            PlotModel.LegendTitle = "Legend";
+            PlotModel.LegendTitle = "Chunks";
             PlotModel.LegendOrientation = LegendOrientation.Vertical;
             PlotModel.LegendPlacement = LegendPlacement.Outside;
             PlotModel.LegendPosition = LegendPosition.TopRight;
@@ -121,8 +180,7 @@ namespace Flight_Inspection_App.Graphs
             PlotModel.LegendBorder = OxyColors.Chocolate;
             // added
             PlotModel.LegendTitleFontSize = 9;
-
-            var dateAxis = new DateTimeAxis(AxisPosition.Bottom, "Date", "HH:mm") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, IntervalLength = 80 };
+            var dateAxis = new TimeSpanAxis(AxisPosition.Bottom, "Time", "mm:ss") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, IntervalLength = 80 };
             PlotModel.Axes.Add(dateAxis);
             var valueAxis = new LinearAxis(AxisPosition.Left, 0) { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Value" };
             PlotModel.Axes.Add(valueAxis);
@@ -131,11 +189,14 @@ namespace Flight_Inspection_App.Graphs
 
         private void LoadData()
         {
-            List<Measurement> measurements = Data.GetData(this.connectModel, ChosenChunk);
+            List<Measurement> measurements = Data.GetData(this.connectModel, ChosenChunk, this.startDate);
 
             var dataPerDetector = measurements.GroupBy(m => m.DetectorId).OrderBy(m => m.Key).ToList();
             foreach (var data in dataPerDetector)
             {
+                string name = ChosenChunk;
+                if (data.Key != 0 && !vm_Stop)
+                    name = "correlative:\n"+connectModel.Settings.Chunks[ChosenChunk].CorrChunk;
                 var lineSerie = new LineSeries
                 {
                     StrokeThickness = 2,
@@ -143,13 +204,18 @@ namespace Flight_Inspection_App.Graphs
                     MarkerStroke = colors[data.Key],
                     MarkerType = markerTypes[5],
                     CanTrackerInterpolatePoints = false,
-                    Title = string.Format("Detector {0}", data.Key),
+                    //Title = string.Format(name),
+                    Title = name,   // need to switch to name from measure?
+                //    Title = measurements[0].Name, 
                     Smooth = false,
                 };
-                data.ToList().ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.DateTime), d.Value)));
+                data.ToList().ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.dateTime), d.Value)));
                 PlotModel.Series.Add(lineSerie);
             }
-            lastUpdate = DateTime.Now;
+
+            //lastUpdate = DateTime.Now;
+            //lastUpdate = startDate.AddMilliseconds(vm_currLine * 100);
+            lastUpdate = startDate.AddMilliseconds(vm_currLine * 100);
         }
 
         public void UpdateModel()
@@ -163,10 +229,13 @@ namespace Flight_Inspection_App.Graphs
                 if (lineSerie != null)
                 {
                     data.ToList()
-                        .ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.DateTime), d.Value)));
+                        .ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.dateTime), d.Value)));
+                    //.ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.DateTime), d.Value)));
                 }
             }
-            lastUpdate = DateTime.Now;
+            //lastUpdate = DateTime.Now;
+            //lastUpdate = startDate.AddMilliseconds(vm_currLine * 100);
+            lastUpdate = startDate.AddMilliseconds(vm_currLine * 100);
         }
 
 

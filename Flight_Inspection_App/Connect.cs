@@ -27,11 +27,21 @@ namespace Flight_Inspection_App
         private bool stop;
         private double airspeed;
         private string[] chunkName;
-        private float minCorr = 0.9F;               // todo: add button to change corr
+        private float minCorr = 0F;               // todo: add button to change corr
         //***//
 
 
         //****model property****///
+        ///////////////////////////////////// added + changed stop to be true at begining and false when thread starts.
+        public bool Stop
+        {
+            get { return stop; }
+            set
+            {
+                stop = value;
+                NotifyPropertyChanged("Stop");
+            }////////////////////////////////
+        }
         public int currLine { get { return currline; } 
             set 
             {
@@ -85,9 +95,10 @@ namespace Flight_Inspection_App
         {
             this.CSVFileName = CSV_fileName;
             this.settings = settings;
+            ChunkName = this.Settings.chunksName;
             currLine = 0;
             timeToSleep = 100;
-            stop = false;
+            stop = true;                                            // changed!
         }
 
         //MVVM pattern
@@ -121,13 +132,13 @@ namespace Flight_Inspection_App
         }
         //***//
 
-        public bool isHighCorr(float corr)
+        public bool isHighCorr(double corr)
         {
             return (corr > 0 && corr >= minCorr) || (corr < 0 && corr <= -minCorr);
         }
 
-        [DllImport("Data_Process.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern float Pearson(float[] x, float[] y, int size);
+        /*[DllImport("Data_Process.dll", CallingConvention = CallingConvention.Cdecl)]
+        public static extern float Pearson(float[] x, float[] y, int size);*/
         public void updateCorrelation()
         {
             int size = 0;
@@ -135,30 +146,41 @@ namespace Flight_Inspection_App
                 size = settings.Chunks.ElementAt(0).Value.Values.Count;
             for (int i = 0; i < this.settings.chunksName.Length; i++)
             {
-                float maxCorr = 0;
+                double maxCorr = 0;
                 string bestMatch = "none";
-                for (int j = i + 1; j < this.settings.chunksName.Length; j++)
-                {
-                    double[] firstC = settings.Chunks[chunkName[i]].Values.ToArray();
-                    double[] secondC = settings.Chunks[chunkName[j]].Values.ToArray();
-                    float[] floatArray1 = Array.ConvertAll(firstC, x => (float)x);
-                    float[] floatArray2 = Array.ConvertAll(firstC, x => (float)x);
-                    float pear = Pearson(floatArray1, floatArray2, size);
-                    if (Math.Abs(pear) > maxCorr && isHighCorr(pear))
+                for (int j = 0; j < this.settings.chunksName.Length; j++)
+                {   
+                    if (j != i)
                     {
-                        maxCorr = pear;
-                        bestMatch = chunkName[j];
+                        double[] firstC = settings.Chunks[chunkName[i]].Values.ToArray();
+                        double[] secondC = settings.Chunks[chunkName[j]].Values.ToArray();
+                        double pear = probabilityLib.pearson(firstC, secondC);
+                        if (Math.Abs(pear) > Math.Abs(maxCorr) && isHighCorr(pear))
+                        {
+                            maxCorr = pear;
+                            bestMatch = chunkName[j];
+                        }
                     }
                 }
                 settings.Chunks[chunkName[i]].CorrChunk = bestMatch;
-
                 settings.Chunks[chunkName[i]].Correlation = maxCorr;
+                if (bestMatch != "none")
+                {
+     //               settings.Chunks[bestMatch].CorrChunk = chunkName[i];
+     //               settings.Chunks[bestMatch].Correlation = maxCorr;
+                    settings.Chunks[chunkName[i]].lin_reg = probabilityLib.linearReg(settings.Chunks[chunkName[i]].Values.ToArray(),
+                        settings.Chunks[bestMatch].Values.ToArray());
+                } else
+                {
+                    //settings.Chunks[chunkName[i]].lin_reg = new Line(0, 0);           not really need
+                }
             }
         }
 
         // main thread, send data to FG
         public void ExecuteClient(String CSVFileName)
         {
+            ChunkName = this.Settings.chunksName;
             string[] lines = File.ReadAllLines(CSVFileName);
 
             for (int i = 0; i < lines.Length; i++)
@@ -173,8 +195,8 @@ namespace Flight_Inspection_App
                 }
                 //Console.WriteLine(i);
             }
-            ChunkName = this.Settings.chunksName;
             updateCorrelation();
+            Stop = false;                           // update as property - start running
 
             new Thread(delegate ()
             {

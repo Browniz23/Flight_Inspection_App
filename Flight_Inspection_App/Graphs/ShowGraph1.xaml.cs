@@ -27,11 +27,11 @@ namespace Flight_Inspection_App.Graphs
     /// </summary>
     public partial class ShowGraph1 : UserControl
     {
-        private GraphViewModel viewModel;      // doesnt need ViewModels.?
+        private GraphViewModel viewModel;    
 
         public ShowGraph1()
         {
-            viewModel = new GraphViewModel();    // doesnt need ViewModels.?
+            viewModel = new GraphViewModel();    
             DataContext = viewModel;
 
             CompositionTarget.Rendering += CompositionTargetRendering;
@@ -46,17 +46,36 @@ namespace Flight_Inspection_App.Graphs
 
         private void CompositionTargetRendering(object sender, EventArgs e)
         {
-            if (viewModel.isConnectSet() && stopwatch.ElapsedMilliseconds > lastUpdateMilliSeconds + viewModel.TimeToSleep) // 100?
+            if (!viewModel.isConnectSet() || viewModel.vm_Stop)
+            {
+                stopwatch.Stop();
+            } 
+            else
+            {
+                if (!stopwatch.IsRunning)
+                    stopwatch.Start();
+                //if (stopwatch.ElapsedMilliseconds > lastUpdateMilliSeconds + viewModel.TimeToSleep)
+                if (stopwatch.ElapsedMilliseconds > viewModel.TimeToSleep)
+                {
+                    viewModel.UpdateModel();
+                    Plot1.RefreshPlot(true);
+                    //lastUpdateMilliSeconds = stopwatch.ElapsedMilliseconds;
+                    stopwatch.Restart();
+                }
+            }
+            // 100 instead of viewModel.TimeToSleep 
+        /*    if (viewModel.isConnectSet() && stopwatch.ElapsedMilliseconds > lastUpdateMilliSeconds + viewModel.TimeToSleep && !viewModel.vm_Stop) // 100?
+          //  if (!viewModel.vm_Stop && viewModel.ConnectModel.currLine )  
             {
                 viewModel.UpdateModel();
                 Plot1.RefreshPlot(true);
                 lastUpdateMilliSeconds = stopwatch.ElapsedMilliseconds;
-            }
+            }*/
         }
         internal void setConnect(Connect c)
         {
             viewModel.setConnect(c);
-            Console.WriteLine(viewModel.vm_ChunkName);   // even here works!
+            listbox.ItemsSource = c.ChunkName;
           //  DataContext = viewModel;
         }
 

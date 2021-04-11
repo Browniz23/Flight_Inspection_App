@@ -16,7 +16,8 @@ namespace Flight_Inspection_App
         private bool isFloat;
         private double currValue;
         private string corrChunk = "none";
-        private float correlation = 0;
+        private double correlation = 0;
+        public Line lin_reg { get; set; }
         public double CurrValue {
             get
             {
@@ -37,7 +38,7 @@ namespace Flight_Inspection_App
                 NotifyPropertyChanged("CorrChunk");     // added. not sure needed
             }      
         }
-        public float Correlation
+        public double Correlation
         {
             get { return correlation; }
             set
