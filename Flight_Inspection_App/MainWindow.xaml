@@ -21,7 +21,7 @@
 
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition />
+            <ColumnDefinition Width="200" />
             <ColumnDefinition />
             <ColumnDefinition />
         </Grid.ColumnDefinitions>
@@ -41,7 +41,7 @@
                Source="/images/X.jpg"  HorizontalAlignment="Center" Height="34" VerticalAlignment="Bottom" Width="33" Margin="5" />
 
 
-        <Graphs:ShowGraph1 x:Name="ShowGraph1" Margin="0.333,0,376.333,188.667" Loaded="ShowGraph1_Loaded" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" />
+        <Graphs:ShowGraph1 x:Name="ShowGraph1" Margin="0.333,5,10.333,42.667" Loaded="ShowGraph1_Loaded" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Grid.Column="1" />
         <Controls:Dashboard x:Name="dashboard" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1" Margin="5"/>
 
         <Controls:GraphControl x:Name="graphControl" Grid.Row="2" Grid.Column="1" Loaded="graphControl_Loaded" Margin="148.333,196.333,446.333,47.667"/>

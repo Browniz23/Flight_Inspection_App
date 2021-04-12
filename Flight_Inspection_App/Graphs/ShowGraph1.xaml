@@ -7,9 +7,21 @@
              xmlns:oxy="http://oxyplot.codeplex.com"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:GraphViewModel}"
-             d:DesignHeight="450" d:DesignWidth="500">
-    <Grid Margin="290,0,10,0">
-        <oxy:Plot x:Name="Plot1" Title="A Graph" Model="{Binding PlotModel}" Margin="-51,0,10,0"/>
-        <ListBox x:Name="listbox" ItemsSource="{Binding vm_ChunkName, Mode=OneWay}" SelectedItem="{Binding ChosenChunk}" HorizontalAlignment="Left" Height="439" VerticalAlignment="Top" Width="135" Margin="-191,0,0,0"/>
+             d:DesignHeight="650" Width="1034">
+    <Grid >
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
+        </Grid.ColumnDefinitions>
+        <oxy:Plot x:Name="Plot1" Title="A Graph" Grid.Column="1" Model="{Binding PlotModel}" Margin="5"/>
+        <oxy:Plot x:Name="Plot_corr" Title="B Graph" Grid.Column="2" Model="{Binding PlotModel_corr}" Margin="5"/>
+        <oxy:Plot x:Name="Plot_reg" Title="A Corr Graph" Model="{Binding PlotModel_reg}" Margin="5" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"/>
+        <ListBox x:Name="listbox" ItemsSource="{Binding vm_ChunkName, Mode=OneWay}" SelectedItem="{Binding ChosenChunk}" Grid.RowSpan="2"  Margin="5"/>
     </Grid>
 </UserControl>

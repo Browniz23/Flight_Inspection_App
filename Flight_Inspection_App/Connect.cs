@@ -28,6 +28,7 @@ namespace Flight_Inspection_App
         private double airspeed;
         private string[] chunkName;
         private float minCorr = 0F;               // todo: add button to change corr
+        private string[] lines;
         //***//
 
 
@@ -98,7 +99,13 @@ namespace Flight_Inspection_App
             ChunkName = this.Settings.chunksName;
             currLine = 0;
             timeToSleep = 100;
-            stop = true;                                            // changed!
+            stop = true;
+            if (CSVFileName != " ")
+            {
+                lines = File.ReadAllLines(CSVFileName);
+                lineLength = lines.Length;
+                updateData();
+            }
         }
 
         //MVVM pattern
@@ -112,7 +119,22 @@ namespace Flight_Inspection_App
         }
         //***//
 
-
+        void updateData()
+        {
+            for (int i = 0; i < lines.Length; i++)
+            {
+                string[] separetedLine = lines[i].Split(',');
+                for (int j = 0; j < separetedLine.Length; j++)
+                {
+                    if (this.settings.Chunks.ElementAt(j).Value.IsFloat)
+                        this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
+                    else
+                        this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
+                }
+                //Console.WriteLine(i);
+            }
+            updateCorrelation();
+        }
         // mvvm function
         public void playPause()
         {
@@ -142,6 +164,7 @@ namespace Flight_Inspection_App
         public void updateCorrelation()
         {
             int size = 0;
+            ChunkName = this.Settings.chunksName;
             if (settings != null)
                 size = settings.Chunks.ElementAt(0).Value.Values.Count;
             for (int i = 0; i < this.settings.chunksName.Length; i++)
@@ -149,8 +172,9 @@ namespace Flight_Inspection_App
                 double maxCorr = 0;
                 string bestMatch = "none";
                 for (int j = 0; j < this.settings.chunksName.Length; j++)
-                {   
+                {
                     if (j != i)
+                    //corr 1 //        if (true)
                     {
                         double[] firstC = settings.Chunks[chunkName[i]].Values.ToArray();
                         double[] secondC = settings.Chunks[chunkName[j]].Values.ToArray();
@@ -181,21 +205,7 @@ namespace Flight_Inspection_App
         public void ExecuteClient(String CSVFileName)
         {
             ChunkName = this.Settings.chunksName;
-            string[] lines = File.ReadAllLines(CSVFileName);
 
-            for (int i = 0; i < lines.Length; i++)
-            {
-                string[] separetedLine = lines[i].Split(',');
-                for (int j = 0; j < separetedLine.Length; j++)
-                {
-                    if (this.settings.Chunks.ElementAt(j).Value.IsFloat)
-                        this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
-                    else
-                        this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
-                }
-                //Console.WriteLine(i);
-            }
-            updateCorrelation();
             Stop = false;                           // update as property - start running
 
             new Thread(delegate ()
@@ -229,8 +239,6 @@ namespace Flight_Inspection_App
                         // Send the message to the connected TcpServer.
                         stream.Write(data, 0, data.Length);
 
-                        // JUST FOR NOW: prints all lines in console.
-                        Console.WriteLine("Sent: {0}", lines[currLine]);
                         // added update
 
                         string[] separetedLine = lines[currLine].Split(',');

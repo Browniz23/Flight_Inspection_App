@@ -17,6 +17,7 @@ namespace Flight_Inspection_App
         private double currValue;
         private string corrChunk = "none";
         private double correlation = 0;
+        // x axe is chunk, y axe is correlative chunk
         public Line lin_reg { get; set; }
         public double CurrValue {
             get

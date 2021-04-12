@@ -54,29 +54,22 @@ namespace Flight_Inspection_App.Graphs
             {
                 if (!stopwatch.IsRunning)
                     stopwatch.Start();
-                //if (stopwatch.ElapsedMilliseconds > lastUpdateMilliSeconds + viewModel.TimeToSleep)
                 if (stopwatch.ElapsedMilliseconds > viewModel.TimeToSleep)
                 {
-                    viewModel.UpdateModel();
+                    viewModel.UpdateModel(viewModel.PlotModel, viewModel.ChosenChunk, ref viewModel.lastUpdate);
+                    viewModel.UpdateModel(viewModel.PlotModel_corr, viewModel.CorrelatedChunk, ref viewModel.lastUpdateCorr);
+                    viewModel.updateRegLine();
                     Plot1.RefreshPlot(true);
-                    //lastUpdateMilliSeconds = stopwatch.ElapsedMilliseconds;
+                    Plot_corr.RefreshPlot(true);
+                    Plot_reg.RefreshPlot(true);
                     stopwatch.Restart();
                 }
             }
-            // 100 instead of viewModel.TimeToSleep 
-        /*    if (viewModel.isConnectSet() && stopwatch.ElapsedMilliseconds > lastUpdateMilliSeconds + viewModel.TimeToSleep && !viewModel.vm_Stop) // 100?
-          //  if (!viewModel.vm_Stop && viewModel.ConnectModel.currLine )  
-            {
-                viewModel.UpdateModel();
-                Plot1.RefreshPlot(true);
-                lastUpdateMilliSeconds = stopwatch.ElapsedMilliseconds;
-            }*/
         }
         internal void setConnect(Connect c)
         {
             viewModel.setConnect(c);
             listbox.ItemsSource = c.ChunkName;
-          //  DataContext = viewModel;
         }
 
         private void ListBox_IsEnabledChanged(object sender, DependencyPropertyChangedEventArgs e)
