@@ -91,6 +91,9 @@
       <SubType>Designer</SubType>
     </ApplicationDefinition>
     <Compile Include="AsyncObservableCollection.cs" />
+    <Compile Include="ControlScreen.xaml.cs">
+      <DependentUpon>ControlScreen.xaml</DependentUpon>
+    </Compile>
     <Compile Include="controls\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
@@ -111,10 +114,12 @@
       <DependentUpon>ShowGraph1.xaml</DependentUpon>
     </Compile>
     <Compile Include="Graphs\ViewModels\GraphViewModel.cs" />
+    <Compile Include="probabilityLib.cs" />
     <Compile Include="viewModel\dashboardViewModel.cs" />
     <Compile Include="viewModel\GraphControlViewModel.cs" />
     <Compile Include="viewModel\joystickViewModel.cs" />
     <Compile Include="viewModel\videoControlsViewModel.cs" />
+    <Page Include="ControlScreen.xaml" />
     <Page Include="controls\Dashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -188,6 +193,18 @@
   <ItemGroup>
     <Resource Include="images\V.jpg" />
     <Resource Include="images\X.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\Additional Settings.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\Fly!.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\main window background.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\start again.png" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

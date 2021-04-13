@@ -15,7 +15,12 @@ namespace Flight_Inspection_App.viewModel
 
         //***property***//
 
-        public double vm_airSpeed{ get { return connectModel.AirSpeed; } }
+        public double vm_Height{ get { return connectModel.Height; } }
+        public double vm_AirSpeed{ get { return connectModel.AirSpeed; } }
+        public double vm_FlightDirection{ get { return connectModel.FlightDirection; } }
+        public double vm_Yaw{ get { return connectModel.Yaw; } }
+        public double vm_Pitch{ get { return connectModel.Pitch; } }
+        public double vm_Roll{ get { return connectModel.Roll; } }
 
 
 

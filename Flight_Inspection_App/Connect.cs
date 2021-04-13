@@ -3,10 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
 using System.Net;
 using System.Net.Sockets;
-
 using System.IO;
 using System.Threading;
 using System.ComponentModel;
@@ -17,50 +15,122 @@ namespace Flight_Inspection_App
 {
     class Connect : INotifyPropertyChanged
     {
-
         // ****model field*****//
         private string CSVFileName;
         private Settings settings;
         private int currline;
         private int linelength;
         private int timetosleep;
+        private int currTime;
         private bool stop;
-        private double airspeed;
+        private double height;
+        private double airSpeed;
+        private double flightDirection;
+        private double yaw;
+        private double roll;
+        private double pitch;
         private string[] chunkName;
-        private float minCorr = 0.9F;               // todo: add button to change corr
+
+        private float minCorr = 0.9F; // todo: add button to change corr
         //***//
 
 
         //****model property****///
-        public int currLine { get { return currline; } 
-            set 
+        public int currLine
+        {
+            get { return currline; }
+            set
             {
                 currline = value;
+                CurrTime = value==0? 0: value / 10;
                 NotifyPropertyChanged("CurrLine");
             }
         }
 
-        public double AirSpeed { get { return airspeed; } 
+        public int CurrTime
+        {
+            get { return currTime; }
             set
             {
-                airspeed = value;
-                NotifyPropertyChanged("AirSpeed");
+                currTime = value;
+                NotifyPropertyChanged("CurrTime");
+            }
 
+        }
+
+        public double Height
+        {
+            get => height;
+            set
+            {
+                height = value;
+                NotifyPropertyChanged("Height");
+            }
+        }
+
+        public double AirSpeed
+        {
+            get => airSpeed;
+            set
+            {
+                airSpeed = value;
+                NotifyPropertyChanged("AirSpeed");
+            }
+        }
+
+        public double FlightDirection
+        {
+            get => flightDirection;
+            set
+            {
+                flightDirection = value;
+                NotifyPropertyChanged("FlightDirection");
+            }
+        }
+
+        public double Yaw
+        {
+            get => yaw;
+            set
+            {
+                yaw = value;
+                NotifyPropertyChanged("Yaw");
+            }
+        }
+
+        public double Roll
+        {
+            get => roll;
+            set
+            {
+                roll = value;
+                NotifyPropertyChanged("Roll");
+            }
+        }
+
+        public double Pitch
+        {
+            get => pitch;
+            set
+            {
+                pitch = value;
+                NotifyPropertyChanged("Pitch");
             }
         }
 
         public int timeToSleep
         {
-            get { return timetosleep; }
+            get => timetosleep;
             set
             {
                 this.timetosleep = value;
                 NotifyPropertyChanged("timeToSleep");
-
             }
         }
 
-        public int lineLength { get { return linelength; }
+        public int lineLength
+        {
+            get { return linelength; }
             set
             {
                 linelength = value;
@@ -68,7 +138,9 @@ namespace Flight_Inspection_App
             }
         }
 
-        public string[] ChunkName { get { return chunkName; }
+        public string[] ChunkName
+        {
+            get { return chunkName; }
             set
             {
                 chunkName = value;
@@ -76,8 +148,17 @@ namespace Flight_Inspection_App
             }
         }
 
-        public string CSV_Name { get { return CSVFileName; } set { CSVFileName = value; } }
-        public Settings Settings { get { return settings; } set { settings = value; } }
+        public string CSV_Name
+        {
+            get { return CSVFileName; }
+            set { CSVFileName = value; }
+        }
+
+        public Settings Settings
+        {
+            get { return settings; }
+            set { settings = value; }
+        }
         //***///
 
         //CTOR
@@ -92,6 +173,7 @@ namespace Flight_Inspection_App
 
         //MVVM pattern
         public event PropertyChangedEventHandler PropertyChanged;
+
         public void NotifyPropertyChanged(string name)
         {
             if (this.PropertyChanged != null)
@@ -103,6 +185,10 @@ namespace Flight_Inspection_App
 
 
         // mvvm function
+        /// <summary>
+        /// function changed stop field.
+        /// make the thread that send data to FG to stop or proceed.
+        /// </summary>
         public void playPause()
         {
             this.stop = this.stop ? false : true;
@@ -116,48 +202,30 @@ namespace Flight_Inspection_App
                 if (keyEx)
                     return settings.Chunks[s].CurrValue;
             }
-        
+
             return 0;
         }
+
+        /// <summary>
+        /// function update all data that need to be
+        /// update in every line send to FG.
+        /// the data will be displayed on the dashboard.
+        /// </summary>
+        private void updateDashboardProperty()
+        {
+            Height = getValue("altitude-ft");
+            AirSpeed = getValue("airspeed-kt");
+            FlightDirection = getValue("heading-deg");
+            Yaw = getValue("side-slip-deg");
+            Roll = getValue("roll-deg");
+            Pitch = getValue("pitch-deg");
+        }
+
         //***//
 
-        public bool isHighCorr(float corr)
-        {
-            return (corr > 0 && corr >= minCorr) || (corr < 0 && corr <= -minCorr);
-        }
-
-        [DllImport("Data_Process.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern float Pearson(float[] x, float[] y, int size);
-        public void updateCorrelation()
-        {
-            int size = 0;
-            if (settings != null)
-                size = settings.Chunks.ElementAt(0).Value.Values.Count;
-            for (int i = 0; i < this.settings.chunksName.Length; i++)
-            {
-                float maxCorr = 0;
-                string bestMatch = "none";
-                for (int j = i + 1; j < this.settings.chunksName.Length; j++)
-                {
-                    double[] firstC = settings.Chunks[chunkName[i]].Values.ToArray();
-                    double[] secondC = settings.Chunks[chunkName[j]].Values.ToArray();
-                    float[] floatArray1 = Array.ConvertAll(firstC, x => (float)x);
-                    float[] floatArray2 = Array.ConvertAll(firstC, x => (float)x);
-                    float pear = Pearson(floatArray1, floatArray2, size);
-                    if (Math.Abs(pear) > maxCorr && isHighCorr(pear))
-                    {
-                        maxCorr = pear;
-                        bestMatch = chunkName[j];
-                    }
-                }
-                settings.Chunks[chunkName[i]].CorrChunk = bestMatch;
-
-                settings.Chunks[chunkName[i]].Correlation = maxCorr;
-            }
-        }
 
         // main thread, send data to FG
-        public void ExecuteClient(String CSVFileName)
+        public void ExecuteClient()
         {
             string[] lines = File.ReadAllLines(CSVFileName);
 
@@ -167,16 +235,19 @@ namespace Flight_Inspection_App
                 for (int j = 0; j < separetedLine.Length; j++)
                 {
                     if (this.settings.Chunks.ElementAt(j).Value.IsFloat)
-                        this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
+                        this.settings.Chunks.ElementAt(j).Value.Values
+                            .Add(float.Parse(separetedLine[j])); //maybe need to casr differently
                     else
-                        this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
+                        this.settings.Chunks.ElementAt(j).Value.Values
+                            .Add(double.Parse(separetedLine[j])); //maybe need to casr differently
                 }
+
                 //Console.WriteLine(i);
             }
-            ChunkName = this.Settings.chunksName;
-            updateCorrelation();
 
-            new Thread(delegate ()
+            ChunkName = this.Settings.chunksName;
+
+            new Thread(delegate()
             {
                 try
                 {
@@ -192,10 +263,10 @@ namespace Flight_Inspection_App
                     NetworkStream stream = client.GetStream();
                     lineLength = lines.Length;
 
-                    while (true)  
+                    while (true)
                     {
                         // if stop = TRUE, or the csv end, stop send lines from soket.
-                        if(stop || this.currline == this.linelength)
+                        if (stop || this.currline == this.linelength)
                         {
                             Thread.Sleep(500);
                             continue;
@@ -212,29 +283,28 @@ namespace Flight_Inspection_App
                         // added update
 
                         string[] separetedLine = lines[currLine].Split(',');
-                        for (int j = 0; j < separetedLine.Length; j++)    // this.settings.Chunks.Count -1?
+                        for (int j = 0; j < separetedLine.Length; j++) // this.settings.Chunks.Count -1?
                         {
-                           if (this.settings.Chunks.ElementAt(j).Value.IsFloat)
-                           {
-                             //   this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
-                             this.settings.Chunks.ElementAt(j).Value.CurrValue = float.Parse(separetedLine[j]);
-                           }
-                           else
-                           {
-                             // this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
-                             this.settings.Chunks.ElementAt(j).Value.CurrValue = double.Parse(separetedLine[j]);
-                           }
+                            if (this.settings.Chunks.ElementAt(j).Value.IsFloat)
+                            {
+                                //   this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
+                                this.settings.Chunks.ElementAt(j).Value.CurrValue = float.Parse(separetedLine[j]);
+                            }
+                            else
+                            {
+                                // this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
+                                this.settings.Chunks.ElementAt(j).Value.CurrValue = double.Parse(separetedLine[j]);
+                            }
                         }
 
+                        updateDashboardProperty();
 
-                        AirSpeed = getValue("airspeed-kt");
 
-                        stream.Flush();              // TODO: needed? also works without it.
+                        stream.Flush(); // TODO: needed? also works without it.
                         Thread.Sleep(timeToSleep);
                         currLine++;
-                            
                     }
-                    
+
                     // Close everything.
                     stream.Close();
                     client.Close();
@@ -247,10 +317,7 @@ namespace Flight_Inspection_App
                 {
                     Console.WriteLine("SocketException: {0}", e);
                 }
-
             }).Start();
         }
     }
-
 }
-

@@ -10,41 +10,56 @@
         xmlns:viewModel="clr-namespace:Flight_Inspection_App.viewModel" 
         x:Class="Flight_Inspection_App.MainWindow"
         mc:Ignorable="d"
-        Title="MainWindow" Height="1068" Width="2000.167">
+        Title="MainWindow" Height="460" Width="800" ResizeMode="CanMinimize">
 
-    <Grid x:Name="grid1" Background="LightSkyBlue">
+    <Window.Background>
+        <ImageBrush ImageSource="/images/main window background.jpg"/>
+    </Window.Background>
+
+    <Grid x:Name="grid1">
         <Grid.RowDefinitions>
-            <RowDefinition/>
-            <RowDefinition/>
-            <RowDefinition/>
+            <RowDefinition Height="160" />
+            <RowDefinition Height="200"  />
+            <RowDefinition Height="100"  />
         </Grid.RowDefinitions>
 
 
-        <Grid.ColumnDefinitions>
-            <ColumnDefinition />
-            <ColumnDefinition />
-            <ColumnDefinition />
-        </Grid.ColumnDefinitions>
 
 
-        <Controls:videoControl x:Name="videoControl" Grid.Row="0" Grid.Column="0" Grid.ColumnSpan="2" Margin="5,5,1,5"/>
+
+        <TextBlock Text="Welcome to FlightGear Simulator Control!"  VerticalAlignment="Top"
+                   HorizontalAlignment="Center" FontWeight="Bold" Margin="0,5,0,0" FontSize="40" />
+        <TextBlock Text="Before you begin, please check that the simulator settings look like this:" VerticalAlignment="Top" TextWrapping="Wrap"
+                   HorizontalAlignment="Center" FontWeight="Bold"  FontSize="23"  Margin="0,52,0,0" />
+       
+        <Image Grid.Row="1" Margin="5" Source="images/Additional Settings.jpg"/>    
+       
+        
 
 
-        <Button Content="LoadCSVFile"  Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="1"
-                HorizontalAlignment="Left" Margin="5,5,0,0" VerticalAlignment="Top" Width="95" Height="40" Click="Button_Click" Background="Beige"/>
-
-        <Button Content="XML Settings" Grid.Row="1" Grid.Column="0"
-                HorizontalAlignment="Left" VerticalAlignment="Bottom" Margin="5"  Width="114" Height="34" Click="Button_Click_2"/>
-        <Image x:Name="V" Grid.Row="1" Grid.Column="0"
-               Source="/images/V.jpg" HorizontalAlignment="Center" Height="34" VerticalAlignment="Bottom" Width="33" Margin="5" Visibility="Hidden" />
-        <Image x:Name="X" Grid.Row="1" Grid.Column="0"
-               Source="/images/X.jpg"  HorizontalAlignment="Center" Height="34" VerticalAlignment="Bottom" Width="33" Margin="5" />
+        <Button Content="Load xml File" Grid.Row="2" HorizontalAlignment="Left"
+                VerticalAlignment="Bottom" Margin="99,0,0,50"  Width="114" Height="34" Click="Button_Click_2"/>
+        <Image x:Name="V" Grid.Row="2" Source="/images/V.jpg" HorizontalAlignment="Left" Height="34"
+               VerticalAlignment="Bottom" Width="33" Margin="226,0,0,49" Visibility="Hidden"  />
+        <Image x:Name="X" Grid.Row="2" Source="/images/X.jpg"  HorizontalAlignment="Left" Height="34"
+               VerticalAlignment="Top" Width="32" Margin="227,16,0,0"  />
 
 
-        <Graphs:ShowGraph1 x:Name="ShowGraph1" Margin="0.333,0,376.333,188.667" Loaded="ShowGraph1_Loaded" Grid.Column="1" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" />
-        <Controls:Dashboard x:Name="dashboard" Grid.Row="0" Grid.Column="2" Grid.ColumnSpan="1" Margin="5"/>
+        <Button Content="Load CSV File"  Grid.Row="2"  HorizontalAlignment="Left"
+                Margin="289,15,0,0" VerticalAlignment="Top" Width="114" Height="34"
+                Click="Button_Click"/>
+        <Image x:Name="X_Copy" Grid.Row="2" Source="/images/X.jpg"  HorizontalAlignment="Left" Height="34"
+            VerticalAlignment="Top" Width="32" Margin="412,16,0,0"  />
+        <Image x:Name="V_Copy" Grid.Row="2" Source="/images/V.jpg" HorizontalAlignment="Left" Height="34"
+            VerticalAlignment="Top" Width="32" Margin="412,16,0,0" Visibility="Hidden"  />
 
-        <Controls:GraphControl x:Name="graphControl" Grid.Row="2" Grid.Column="1" Loaded="graphControl_Loaded" Margin="148.333,196.333,446.333,47.667"/>
+        <Button Name="startButton" Grid.Row="2" Width="100" Height="59" Margin="522,14,164,52" Click="startButton_Click" >
+            <StackPanel>
+                <Image Source="/images/Fly!.png" Height="59"  HorizontalAlignment="Left" Width="159"/>
+            </StackPanel>
+        </Button>
+
+
 
 
 

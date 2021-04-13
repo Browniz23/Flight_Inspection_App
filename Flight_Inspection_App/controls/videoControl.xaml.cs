@@ -39,5 +39,11 @@ namespace Flight_Inspection_App.controls
         {
             vcvm.playPause();  //TODO mvvm
         }
+
+        private void startAgain_Click(object sender, RoutedEventArgs e)
+        {
+            vcvm.startAgain();
+        }
+
     }
 }

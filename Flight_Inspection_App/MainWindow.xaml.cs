@@ -13,7 +13,6 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-
 using OxyPlot;
 
 
@@ -25,15 +24,17 @@ namespace Flight_Inspection_App
     public partial class MainWindow : Window
     {
         Settings s;
-        
+        Connect c;
+        ControlScreen cs;
+
         public MainWindow()
         {
             InitializeComponent();
         }
-     
+
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            if (X.Visibility == Visibility.Hidden)   // needs to be only if settings are on
+            if (X.Visibility == Visibility.Hidden) // needs to be only if settings are on
             {
                 // open file dialog so user can pick a CSV file.
                 Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
@@ -43,26 +44,19 @@ namespace Flight_Inspection_App
                     String filePath = openFileDialog.FileName;
                     if (filePath.EndsWith("csv"))
                     {
-           
-                        Connect c = new Connect(filePath, s);
-
-                        c.ExecuteClient(filePath);
-
-                        videoControl.setConnect(c);
-                        graphControl.setConnect(c);
-                        ShowGraph1.setConnect(c);           // must get graph?
-                        //joystick.UpdateConnect(c);
-                        dashboard.setConnect(c);
-
-
+                        X_Copy.Visibility = Visibility.Hidden;
+                        V_Copy.Visibility = Visibility.Visible;
+                        c = new Connect(filePath, s);
+                        
+                        
                     }
                     else
                     {
                         MessageBox.Show("Please choose a CSV file");
                     }
                 }
-             
-            } else
+            }
+            else
             {
                 MessageBox.Show("Please insert XMl settings before uploading CSV file");
             }
@@ -71,15 +65,14 @@ namespace Flight_Inspection_App
 
         private void Button_Click_2(object sender, RoutedEventArgs e)
         {
-                 Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-                 bool? response = openFileDialog.ShowDialog();
-                 if (response == true)
-                 {
-                     String filePath = openFileDialog.FileName;
-        //    String filePath = "playback_small.xml";
+            Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+            bool? response = openFileDialog.ShowDialog();
+            if (response == true)
+            {
+                String filePath = openFileDialog.FileName;
                 if (filePath.EndsWith("xml"))
                 {
-                    s = new Settings(filePath);                
+                    s = new Settings(filePath);
                     s.UploadSettings();
                     X.Visibility = Visibility.Hidden;
                     V.Visibility = Visibility.Visible;
@@ -91,14 +84,13 @@ namespace Flight_Inspection_App
             }
         }
 
-        private void ShowGraph1_Loaded(object sender, RoutedEventArgs e)
+        private void startButton_Click(object sender, RoutedEventArgs e)
         {
-
-        }
-
-        private void graphControl_Loaded(object sender, RoutedEventArgs e)
-        {
-
+            c.ExecuteClient();
+            cs = new ControlScreen();
+            cs.setConnect(c);
+            cs.Show();
+            this.Close();
         }
     }
 }

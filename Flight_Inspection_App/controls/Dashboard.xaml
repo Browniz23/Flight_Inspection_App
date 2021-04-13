@@ -3,13 +3,19 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:Flight_Inspection_App.controls" xmlns:viewmodel="clr-namespace:Flight_Inspection_App.viewModel" d:DataContext="{d:DesignInstance Type=viewmodel:dashboardViewModel}"
+             xmlns:local="clr-namespace:Flight_Inspection_App.controls"
+             xmlns:viewmodel="clr-namespace:Flight_Inspection_App.viewModel" 
+             d:DataContext="{d:DesignInstance Type=viewmodel:dashboardViewModel}"
              mc:Ignorable="d" 
              d:DesignHeight="450" d:DesignWidth="800">
     <Grid>
         <Grid.RowDefinitions>
-            <RowDefinition Height="100"/>
-            <RowDefinition Height="100"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
+            <RowDefinition Height="50"/>
 
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -17,12 +23,45 @@
         </Grid.ColumnDefinitions>
 
         <TextBlock  Grid.Row="0"
-                   Margin="5" Text="Air Speed" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" Width="95" Height="50" FontSize="15"/>
+                   Margin="5" Text="Height" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" Width="95" Height="50" FontSize="15"/>
         <TextBox Grid.Row="0" HorizontalAlignment="Center"
-                 Text="{Binding vm_airSpeed, Mode=OneWay}" Margin="5"  TextWrapping="Wrap" VerticalAlignment="Center" Width="127" Height="33"/>
+                 Text="{Binding vm_Height, Mode=OneWay}" Margin="5"  TextWrapping="Wrap" VerticalAlignment="Center" Width="127" Height="33"/>
         <TextBlock  Grid.Row="0" HorizontalAlignment="Right"
                    Margin="5" Text="kt" TextWrapping="Wrap" VerticalAlignment="Center"  Width="95" Height="50" FontSize="15"/>
 
-      
+        <TextBlock  Grid.Row="1"
+                   Margin="5" Text="Air Speed" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" Width="95" Height="50" FontSize="15"/>
+        <TextBox Grid.Row="1" HorizontalAlignment="Center"
+                 Text="{Binding vm_AirSpeed, Mode=OneWay}" Margin="5"  TextWrapping="Wrap" VerticalAlignment="Center" Width="127" Height="33"/>
+        <TextBlock  Grid.Row="1" HorizontalAlignment="Right"
+                   Margin="5" Text="kt" TextWrapping="Wrap" VerticalAlignment="Center"  Width="95" Height="50" FontSize="15"/>
+        
+        <TextBlock  Grid.Row="2"
+                    Margin="5" Text="Flight Direction" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" Width="95" Height="50" FontSize="15"/>
+        <TextBox Grid.Row="2" HorizontalAlignment="Center"
+                 Text="{Binding vm_FlightDirection, Mode=OneWay}" Margin="5"  TextWrapping="Wrap" VerticalAlignment="Center" Width="127" Height="33"/>
+        <TextBlock  Grid.Row="2" HorizontalAlignment="Right"
+                    Margin="5" Text="kt" TextWrapping="Wrap" VerticalAlignment="Center"  Width="95" Height="50" FontSize="15"/>
+
+        <TextBlock  Grid.Row="3"
+                    Margin="5" Text="Yaw" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" Width="95" Height="50" FontSize="15"/>
+        <TextBox Grid.Row="3" HorizontalAlignment="Center"
+                 Text="{Binding vm_Yaw, Mode=OneWay}" Margin="5"  TextWrapping="Wrap" VerticalAlignment="Center" Width="127" Height="33"/>
+        <TextBlock  Grid.Row="3" HorizontalAlignment="Right"
+                    Margin="5" Text="kt" TextWrapping="Wrap" VerticalAlignment="Center"  Width="95" Height="50" FontSize="15"/>
+
+        <TextBlock  Grid.Row="4"
+                    Margin="5" Text="Roll" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" Width="95" Height="50" FontSize="15"/>
+        <TextBox Grid.Row="4" HorizontalAlignment="Center"
+                 Text="{Binding vm_Roll, Mode=OneWay}" Margin="5"  TextWrapping="Wrap" VerticalAlignment="Center" Width="127" Height="33"/>
+        <TextBlock  Grid.Row="4" HorizontalAlignment="Right"
+                    Margin="5" Text="kt" TextWrapping="Wrap" VerticalAlignment="Center"  Width="95" Height="50" FontSize="15"/>
+        
+        <TextBlock  Grid.Row="5"
+                    Margin="5" Text="Pitch" TextWrapping="Wrap" VerticalAlignment="Center" HorizontalAlignment="Left" Width="95" Height="50" FontSize="15"/>
+        <TextBox Grid.Row="5" HorizontalAlignment="Center"
+                 Text="{Binding vm_Pitch, Mode=OneWay}" Margin="5"  TextWrapping="Wrap" VerticalAlignment="Center" Width="127" Height="33"/>
+        <TextBlock  Grid.Row="5" HorizontalAlignment="Right"
+                    Margin="5" Text="kt" TextWrapping="Wrap" VerticalAlignment="Center"  Width="95" Height="50" FontSize="15"/>
     </Grid>
 </UserControl>
