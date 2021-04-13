@@ -6,10 +6,11 @@ using Flight_Inspection_App.viewModel;
 using OxyPlot;
 using OxyPlot.Axes;
 using OxyPlot.Series;
-
+//using OxyPlotDemo.Annotations;
 
 namespace Flight_Inspection_App.Graphs
 {
+
     public class GraphViewModel : INotifyPropertyChanged
     {
         private PlotModel plotModel;
@@ -24,21 +25,17 @@ namespace Flight_Inspection_App.Graphs
         private PlotModel plotModel_reg;
         private PlotModel plotModel_corr;
 
-        public const int LINE_PER_SEC = 10;
-        public const int MS_PER_LINE = 100;
-        public const int LAST_POINTS = 30;
-
         public GraphViewModel()
         {
             PlotModel = new PlotModel();
             SetUpModel(PlotModel);
             plotModel_corr = new PlotModel();
             SetUpModel(plotModel_corr);
+            this.startDate = DateTime.MinValue;//new DateTime();
+            this.lastUpdate = DateTime.MinValue;//new DateTime();
+            this.lastUpdateCorr = DateTime.MinValue;
             plotModel_reg = new PlotModel();
             setUpModel_reg();
-            this.startDate = DateTime.MinValue;
-            this.lastUpdate = DateTime.MinValue;
-            this.lastUpdateCorr = DateTime.MinValue;
         }
 
         public PlotModel PlotModel_reg
@@ -60,12 +57,13 @@ namespace Flight_Inspection_App.Graphs
         {
             get { return connectModel; }
         }
+        // need mvvm fix
         public int TimeToSleep
         {
             get 
             { if (connectModel != null) 
                    return connectModel.timeToSleep;
-                return MS_PER_LINE;     // defalut 100
+                return 100;     // defalut 100
             }      
             // no need for set
         }
@@ -108,7 +106,7 @@ namespace Flight_Inspection_App.Graphs
                         if (correlatedChunk != "none")
                         {
                             LoadData(plotModel_corr, correlatedChunk, ref lastUpdateCorr);
-                            loadScatter();     
+                            loadScatter();      // here also?
                         }
                     }                         
                 }
@@ -128,9 +126,16 @@ namespace Flight_Inspection_App.Graphs
 
         public bool vm_Stop
         {
+            // returns stop. but in first time also load data when start
             get 
             {
-                
+                //if (!connectModel.Stop && vm_currLine == 0)
+                //{
+                    // need to be only first time!
+                   
+                    //this.startDate = new DateTime();
+                    //this.lastUpdate = new DateTime();                 both moved to 
+                //}
                 return connectModel.Stop; 
             }
         }
@@ -140,7 +145,7 @@ namespace Flight_Inspection_App.Graphs
             get 
             {
                 //if (currline != connectModel.currLine - 1 && currline != connectModel.currLine)      
-                if (currline > connectModel.currLine || currline + 1 < connectModel.currLine)
+                if (currline > connectModel.currLine)
                 {
                     currline = connectModel.currLine;
                     PlotModel.Axes.Clear();
@@ -149,13 +154,11 @@ namespace Flight_Inspection_App.Graphs
                     PlotModel.Series.Clear();
                     PlotModel_reg.Series.Clear();
                     PlotModel_corr.Series.Clear();
-                    lastUpdate = startDate.AddMilliseconds(MS_PER_LINE * currline);
-                    lastUpdateCorr = startDate.AddMilliseconds(MS_PER_LINE * currline);
                     LoadData(plotModel, ChosenChunk, ref lastUpdate);
                     if (correlatedChunk != "none")
                     {
                         LoadData(plotModel_corr, correlatedChunk, ref lastUpdateCorr);
-                        loadScatter();          
+                        loadScatter();          // here?
                     }
                 }
                 currline = connectModel.currLine;
@@ -223,7 +226,12 @@ namespace Flight_Inspection_App.Graphs
             plot.LegendBorder = OxyColors.Chocolate;
             plot.IsLegendVisible = true;
             plot.LegendTitleFontSize = 9;                                                                                                               // maybe change this?
-         
+            //var dateAxis = new DateTimeAxis(AxisPosition.Bottom, "Time", "mm:ss") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, IntervalLength = 80 };
+
+/*            var dateAxis = new LinearAxis(AxisPosition.Bottom, "Time") { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, IntervalLength = 80 };
+            plot.Axes.Add(dateAxis);
+            var valueAxis = new LinearAxis(AxisPosition.Left, 0) { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Value" };
+            plot.Axes.Add(valueAxis);*/
 
         }
 
@@ -235,77 +243,193 @@ namespace Flight_Inspection_App.Graphs
             plotModel_reg.LegendPosition = LegendPosition.TopRight;
             plotModel_reg.LegendBackground = OxyColor.FromAColor(200, OxyColors.AliceBlue);
             plotModel_reg.LegendBorder = OxyColors.Chocolate;
+            // added
             plotModel_reg.LegendTitleFontSize = 9;
+            /*var chunkAxisX = new LinearAxis(AxisPosition.Bottom, 0) { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, IntervalLength = 80, Title = "Chunk"};
+            plotModel_reg.Axes.Add(chunkAxisX);
+            var chunkAxisY = new LinearAxis(AxisPosition.Left, 0) { MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Corroleated Chunk" };
+            plotModel_reg.Axes.Add(chunkAxisY);*/
         }
         private void loadScatter()
         {
             double min1 = connectModel.Settings.Chunks[ChosenChunk].Values.Min(), max1 = connectModel.Settings.Chunks[ChosenChunk].Values.Max();
             double min2 = connectModel.Settings.Chunks[correlatedChunk].Values.Min(), max2 = connectModel.Settings.Chunks[correlatedChunk].Values.Max();
+            //todo: maybe need to choose minimum for axes according to linreg also? ( minimum(f(min1), min2) . maximum(f(max2), max2).
             var chunkAxisX = new LinearAxis(AxisPosition.Bottom, 0) { Minimum = min1, Maximum = max1, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, IntervalLength = 80, Title = "Chunk" };
             var chunkAxisY = new LinearAxis(AxisPosition.Left, 0) { Minimum = min2, Maximum = max2, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Corroleated Chunk" };
+            // adding axes at bottom after inserting min\max
+            var s1 = new LineSeries
+            {
+                StrokeThickness = 0,
+                MarkerSize = 1.2,
+                MarkerStroke = OxyColors.ForestGreen,
+                MarkerType = MarkerType.Circle,
+            };
+            for (int i = 0; i < connectModel.lineLength; i++)
+            {
+                s1.Points.Add(new DataPoint(connectModel.Settings.Chunks[ChosenChunk].Values[i], connectModel.Settings.Chunks[correlatedChunk].Values[i]));
+            }
+            plotModel_reg.Series.Add(s1);
 
-            Data.CreateScatterLine(plotModel_reg, connectModel.Settings.Chunks[ChosenChunk].Values.ToList(), connectModel.Settings.Chunks[CorrelatedChunk].Values.ToList(), 0, connectModel.lineLength-1, false);
-
+            var lin_reg = new LineSeries
+            {
+                StrokeThickness = 1,
+                MarkerSize = 0.3,
+                MarkerStroke = OxyColors.GreenYellow,
+                MarkerType = markerTypes[5],
+                CanTrackerInterpolatePoints = false,
+                Title = "reg_line",
+                Smooth = false,
+            };
             double a = connectModel.Settings.Chunks[ChosenChunk].lin_reg.a, b = connectModel.Settings.Chunks[ChosenChunk].lin_reg.b;
- 
-            List<double> valuesX = new List<double>();
-            List<double> valuesY = new List<double>();
-            valuesX.Add(min1);
-            valuesX.Add(max1);
-            valuesY.Add(min1 * a + b);
-            valuesY.Add(max1 * a + b);
-            if (min2 > min1 * a + b)
-                min2 = min1 * a + b;
-            if (max2 < max1 * a + b)
-                max2 = max1 * a + b;
-    
-            Data.CreateLinearLine(plotModel_reg, valuesX, valuesY, "correlation");
-
+            //for (int i = ; i < 700; i++)
+            //{
+            //double x1 = min1, x2 = max1;
+            //double y1 = a * x1 + b, y2 = a * x2 + b;
+            double addition = (max1-min1) / 300, x = min1;
+            double y = a * x + b; ;
+            /*if (y > a * max1 + b)
+            {
+                chunkAxisY.Maximum = y;
+            }*/
+            while (x < max1)
+            {
+                x += addition;
+                y = a * x + b;
+                lin_reg.Points.Add(new DataPoint(x, y));
+            }
+            /*if (chunkAxisX.Minimum > lin_reg.MinX)
+                chunkAxisX.Minimum = lin_reg.MinX;
+            if (chunkAxisY.Minimum > lin_reg.MinY)
+                chunkAxisY.Minimum = lin_reg.MinY;
+            if (chunkAxisX.Maximum < lin_reg.MaxX)
+                chunkAxisX.Maximum = lin_reg.MaxX;
+            if (chunkAxisY.Maximum < lin_reg.MaxY)
+                chunkAxisY.Maximum = lin_reg.MaxY;*/
+            /*if (y < a*min1 + b)
+            {
+                chunkAxisY.Minimum = y;
+            }*/
             plotModel_reg.Axes.Add(chunkAxisX);
             plotModel_reg.Axes.Add(chunkAxisY);
+            //lin_reg.Points.Add(new DataPoint(x1, y1));
+            //lin_reg.Points.Add(new DataPoint(x2, y2));
+            //}
+            plotModel_reg.Series.Add(lin_reg);
 
-            int start = 0, end = vm_currLine;
-            if (connectModel.currLine > LAST_POINTS * LINE_PER_SEC)            // 30 seconds when 10 lines per sec
+            var sCurrLasrPoints = new LineSeries
             {
-                start = connectModel.currLine - LAST_POINTS * LINE_PER_SEC;
+                StrokeThickness = 0,
+                MarkerSize = 1.4,
+                MarkerStroke = OxyColors.Black,
+                MarkerType = MarkerType.Circle,
+            };
+            int start = 0;
+            if (connectModel.currLine > 30 * 10)            // 30 seconds when 10 lines per sec
+            {
+                start = connectModel.currLine - 30 * 10;
             }
-            if (end == ConnectModel.lineLength)
-                end--;
-            Data.CreateScatterLine(plotModel_reg, connectModel.Settings.Chunks[ChosenChunk].Values.ToList(), connectModel.Settings.Chunks[CorrelatedChunk].Values.ToList(), start, end, true); 
+            //todo: chage currline in connect so stop is true when got to end.
+            for (int i = start; i <= vm_currLine; i++)
+            {
+                sCurrLasrPoints.Points.Add(new DataPoint(connectModel.Settings.Chunks[ChosenChunk].Values[i], connectModel.Settings.Chunks[correlatedChunk].Values[i]));
+            }
+            plotModel_reg.Series.Add(sCurrLasrPoints);
         }
         private void LoadData(PlotModel plot, string chunk, ref DateTime updated)
         {
-            DateTime min1 = new DateTime(), max1 = min1.AddMilliseconds(MS_PER_LINE * this.connectModel.lineLength);
+            //int min1 = 0, max1 = this.connectModel.lineLength;
+            DateTime min1 = new DateTime(), max1 = min1.AddMilliseconds(100 * this.connectModel.lineLength);
             updated = min1;
             double min2 = connectModel.Settings.Chunks[chunk].Values.Min();
             double max2 = connectModel.Settings.Chunks[chunk].Values.Max();                       // need to do each 10 seconds  
             var dateAxis = new DateTimeAxis(AxisPosition.Bottom, "Time") { StringFormat = "mm:ss", Minimum = DateTimeAxis.ToDouble(min1), Maximum = DateTimeAxis.ToDouble(max1), MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, IntervalType = DateTimeIntervalType.Seconds, IntervalLength = 1 }; // MajorTickSize = 10};
 
+                                        
+            //var dateAxis = new LinearAxis(AxisPosition.Bottom, "Time") { Minimum = min1, Maximum = max1, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, IntervalLength = 80 };
             plot.Axes.Add(dateAxis);
             var valueAxis = new LinearAxis(AxisPosition.Left, 0) { Minimum = min2, Maximum = max2, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Value" };
             plot.Axes.Add(valueAxis);
 
-            int size = vm_currLine;
-            if (size == connectModel.lineLength)
-                size--;
-            Data.CreateDateLine(plot, ConnectModel.Settings.Chunks[chunk].Values.ToList(), size, updated, chunk);
+            List<Measurement> measurements = Data.GetData(this.connectModel, chunk, min1);
+            var lineSerie = new LineSeries
+            {
+                StrokeThickness = 2,
+                MarkerSize = 3,
+                MarkerStroke = colors[0],                   // color always green!
+                MarkerType = markerTypes[5],
+                CanTrackerInterpolatePoints = false,
+                //Title = string.Format(name),
+                Title = chunk,   // need to switch to name from measure?
+                                //    Title = measurements[0].Name, 
+                Smooth = false,
+            };
+            for (int i = 0; i < measurements.Count; i++)
+            {
+                //lineSerie.Points.Add(new DataPoint(i, measurements[i].Value));
+                lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(measurements[i].dateTime), measurements[i].Value));
+            }
+            plot.Series.Add(lineSerie);
+            /*var dataPerDetector = measurements.GroupBy(m => m.DetectorId).OrderBy(m => m.Key).ToList(); 
+            foreach (var data in dataPerDetector)
+            {
+                string name = chunk;
+                var lineSerie = new LineSeries
+                {
+                    StrokeThickness = 2,
+                    MarkerSize = 3,
+                    MarkerStroke = colors[data.Key],
+                    MarkerType = markerTypes[5],
+                    CanTrackerInterpolatePoints = false,
+                    //Title = string.Format(name),
+                    Title = name,   // need to switch to name from measure?
+                //    Title = measurements[0].Name, 
+                    Smooth = false,
+                };
+                //data.ToList().ForEach(d => lineSerie.Points.Add(new DataPoint(count, d.Value)));
+                data.ToList().ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.dateTime), d.Value)));
+                plot.Series.Add(lineSerie);
+            }*/
 
-            updated = startDate.AddMilliseconds(vm_currLine * MS_PER_LINE);
+            //lastUpdate = DateTime.Now;
+            //lastUpdate = startDate.AddMilliseconds(vm_currLine * 100);
+            updated = startDate.AddMilliseconds(vm_currLine * 100);
         }
 
         public void updateRegLine()
         {
-            if (CorrelatedChunk != "none" && vm_currLine != connectModel.lineLength)
+            // if currline not at end. updtae at connect
+            var series = plotModel_reg.Series[2] as LineSeries;
+            if (vm_currLine > 30 * 10)
             {
-                Data.UpdateScatterLine(PlotModel_reg, connectModel.Settings.Chunks[ChosenChunk].Values.ToList(), connectModel.Settings.Chunks[correlatedChunk].Values.ToList(), vm_currLine);
+                series.Points.RemoveAt(0);
             }
+            series.Points.Add(new DataPoint(connectModel.Settings.Chunks[ChosenChunk].Values[vm_currLine], connectModel.Settings.Chunks[correlatedChunk].Values[vm_currLine]));
+            /*if (connectModel.Settings.Chunks[ChosenChunk].CorrChunk != "none")
+            {
+                var scatterSerie = plotModel_reg.Series[0] as ScatterSeries;
+            }*/
         }
         public void UpdateModel(PlotModel plot, string chunk, ref DateTime updated)
         {
-            if (chunk != "none" && vm_currLine != connectModel.lineLength)
+            if (chunk != "none")
             {
-                Data.UpdateDateLine(plot, this.connectModel.Settings.Chunks[chunk].Values.ToList(), vm_currLine, updated);
-                updated = startDate.AddMilliseconds(vm_currLine * MS_PER_LINE);
+                List<Measurement> measurements = Data.GetUpdateData(updated, this.connectModel, chunk);
+                var dataPerDetector = measurements.GroupBy(m => m.DetectorId).OrderBy(m => m.Key).ToList();
+
+                foreach (var data in dataPerDetector)
+                {
+                    var lineSerie = plot.Series[data.Key] as LineSeries;
+                    if (lineSerie != null)
+                    {
+                        data.ToList().ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.dateTime), d.Value)));
+                        //data.ToList().ForEach(d => lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(d.dateTime), d.Value)));
+                    }
+                }
+                //lastUpdate = DateTime.Now;
+                //lastUpdate = startDate.AddMilliseconds(vm_currLine * 100);
+                updated = startDate.AddMilliseconds(vm_currLine * 100);
+                //updated = updated.AddMilliseconds(100);
             }
         }
 

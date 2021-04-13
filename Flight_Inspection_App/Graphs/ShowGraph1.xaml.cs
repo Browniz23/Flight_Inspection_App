@@ -40,9 +40,9 @@ namespace Flight_Inspection_App.Graphs
             InitializeComponent();
         }
 
-       // private long frameCounter;
+        private long frameCounter;
         private System.Diagnostics.Stopwatch stopwatch = new Stopwatch();
-        //private long lastUpdateMilliSeconds;
+        private long lastUpdateMilliSeconds;
 
         private void CompositionTargetRendering(object sender, EventArgs e)
         {
