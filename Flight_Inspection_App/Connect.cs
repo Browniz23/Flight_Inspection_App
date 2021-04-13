@@ -22,6 +22,10 @@ namespace Flight_Inspection_App
         private int linelength;
         private int timetosleep;
         private int currTime;
+        private double throttle;
+        private double rudder;
+        private double elevator;
+        private double aileron;
         private bool stop;
         private double height;
         private double airSpeed;
@@ -138,6 +142,42 @@ namespace Flight_Inspection_App
             }
         }
 
+        public double Rudder { get { return rudder; }
+            set
+            {
+                rudder = value;
+                NotifyPropertyChanged("Rudder");
+            }
+        }
+
+        public double Throttle { get { return throttle; }
+            set
+            {
+                throttle = value;
+                NotifyPropertyChanged("Throttle");
+            }
+        }
+
+        public double Aileron { get { return aileron; }
+            set
+            {
+                aileron = value;
+                NotifyPropertyChanged("Aileron");
+            }
+        }
+
+        public double Elevator
+        {
+            get { return elevator; }
+            set
+            {
+                elevator = value;
+                NotifyPropertyChanged("Elevator");
+            }
+        }
+
+        public string CSV_Name { get { return CSVFileName; } set { CSVFileName = value; } }
+        public Settings Settings { get { return settings; } set { settings = value; } }
         public string[] ChunkName
         {
             get { return chunkName; }
@@ -148,17 +188,7 @@ namespace Flight_Inspection_App
             }
         }
 
-        public string CSV_Name
-        {
-            get { return CSVFileName; }
-            set { CSVFileName = value; }
-        }
-
-        public Settings Settings
-        {
-            get { return settings; }
-            set { settings = value; }
-        }
+       
         //***///
 
         //CTOR
@@ -300,7 +330,12 @@ namespace Flight_Inspection_App
                         updateDashboardProperty();
 
 
-                        stream.Flush(); // TODO: needed? also works without it.
+                       
+                        Throttle = getValue("throttle");
+                        Rudder = getValue("rudder");
+                        Aileron = getValue("aileron");
+                        Elevator = getValue("elevator");
+                        stream.Flush();              // TODO: needed? also works without it.
                         Thread.Sleep(timeToSleep);
                         currLine++;
                     }

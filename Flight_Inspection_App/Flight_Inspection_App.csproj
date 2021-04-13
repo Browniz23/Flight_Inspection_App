@@ -103,6 +103,14 @@
     <Compile Include="controls\GraphControl.xaml.cs">
       <DependentUpon>GraphControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="controls\converters\AileronToXConverter.cs" />
+    <Compile Include="controls\converters\ElevatorToYConverter.cs" />
+    <Compile Include="controls\joystickControl.xaml.cs">
+      <DependentUpon>joystickControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\joystickPanelControl.xaml.cs">
+      <DependentUpon>joystickPanelControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="controls\UserControl1.xaml.cs">
       <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
@@ -117,6 +125,7 @@
     <Compile Include="probabilityLib.cs" />
     <Compile Include="viewModel\dashboardViewModel.cs" />
     <Compile Include="viewModel\GraphControlViewModel.cs" />
+    <Compile Include="viewModel\joystickPanelViewModel.cs" />
     <Compile Include="viewModel\joystickViewModel.cs" />
     <Compile Include="viewModel\videoControlsViewModel.cs" />
     <Page Include="ControlScreen.xaml" />
@@ -129,6 +138,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="controls\GraphControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="controls\joystickControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="controls\joystickPanelControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -1,42 +1,40 @@
 ﻿using System;
 using System.Collections.Generic;
+using NSwag.Collections;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Flight_Inspection_App.viewModel
 {
-    internal class joystickViewModel : INotifyPropertyChanged
+    internal class joystickPanelViewModel : INotifyPropertyChanged
     {
 
         //fields
         private Connect connectModel;
 
         //***property***///
-
-        public double vm_elevator
+  
+        public double vm_throttle
         {
-            get
-            {
+            get {
                 if (connectModel == null) return 0;
-                else return connectModel.Elevator;
+                else return connectModel.Throttle;
             }
         }
 
-        public double vm_aileron
+        public double vm_rudder
         {
-            get
-            {
-                if (connectModel == null) return 0;
-                else return connectModel.Aileron;
+            get { if (connectModel == null) return 0;
+                else return connectModel.Rudder;
             }
         }
         //*****////
 
         //CTOR
-        public joystickViewModel()
-        {
+        public joystickPanelViewModel() {
         } // maybe add empty model
 
 

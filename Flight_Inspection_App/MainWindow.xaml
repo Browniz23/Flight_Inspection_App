@@ -67,5 +67,7 @@
 
 
 
+        <Controls:videoControl x:Name="videoControl" Grid.Column="2" Margin="5,5,5,4.667"/>
+        <Controls:joystickPanelControl x:Name="joystickPanel" Margin="541,114,32,6" Grid.Column="2"/>
     </Grid>
 </Window>
