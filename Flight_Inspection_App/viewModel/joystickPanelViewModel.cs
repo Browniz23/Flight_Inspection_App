@@ -1,37 +1,41 @@
 ﻿using System;
 using System.Collections.Generic;
+using NSwag.Collections;
 using System.ComponentModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
+
 namespace Flight_Inspection_App.viewModel
 {
-    class dashboardViewModel : INotifyPropertyChanged
+    internal class joystickPanelViewModel : INotifyPropertyChanged
     {
 
         //fields
         private Connect connectModel;
 
-        //***property***//
+        //***property***///
+  
+        public double vm_throttle
+        {
+            get {
+                if (connectModel == null) return 0;
+                else return connectModel.Throttle;
+            }
+        }
 
-        public double vm_Height{ get { return connectModel.Height; } }
-        public double vm_AirSpeed{ get { return connectModel.AirSpeed; } }
-        public double vm_FlightDirection{ get { return connectModel.FlightDirection; } }
-        public double vm_Yaw{ get { return connectModel.Yaw; } }
-        public double vm_Pitch{ get { return connectModel.Pitch; } }
-        public double vm_Roll{ get { return connectModel.Roll; } }
-
-
-
-
-        //***//
+        public double vm_rudder
+        {
+            get { if (connectModel == null) return 0;
+                else return connectModel.Rudder;
+            }
+        }
+        //*****////
 
         //CTOR
-        public dashboardViewModel()
-        {
-            this.connectModel = new Connect(" ", new Settings(" "));
-        }
+        public joystickPanelViewModel() {
+        } // maybe add empty model
 
 
         //MVVM pattern
@@ -44,6 +48,7 @@ namespace Flight_Inspection_App.viewModel
             }
         }
         //**//
+
 
         public void setConnect(Connect c)
         {

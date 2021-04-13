@@ -14,6 +14,7 @@ namespace Flight_Inspection_App.viewModel
 
         //fields
         private Connect connectModel;
+        private string currentTime;
 
         //***property***///
         public List<float> vm_speeds
@@ -27,8 +28,22 @@ namespace Flight_Inspection_App.viewModel
         public int vm_currLine
         {
             get { return connectModel.currLine; }
-            set { connectModel.currLine = value; } 
+            set {  connectModel.currLine = value; } 
         }
+
+        public string vm_CurrTime {
+            get {
+                int minute = connectModel.CurrTime/60;
+                int second = connectModel.CurrTime % 60;
+                currentTime = second < 10 ? minute + " : 0" + second : minute + " : " + second;
+                return currentTime;
+            }
+            set
+            {
+                currentTime = value;
+            }
+        }
+
 
         public int vm_lineLength
         {
@@ -50,6 +65,7 @@ namespace Flight_Inspection_App.viewModel
             float[] speedArr = { 0.25f, 0.5f, 1.0f, 2.0f, 4.0f };
             vm_speeds = new List<float>(speedArr);
             vm_selectedSpeed = 1.0f;
+            vm_CurrTime = "0:00";
 
         }
 
@@ -77,6 +93,11 @@ namespace Flight_Inspection_App.viewModel
         public void playPause()
         {
             connectModel.playPause();
+        }
+
+        public void startAgain()
+        {
+            vm_currLine = 0;
         }
     }
 }

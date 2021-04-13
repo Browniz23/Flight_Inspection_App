@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Flight_Inspection_App.viewModel;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,38 +13,31 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
-using Flight_Inspection_App.viewModel;
 
 namespace Flight_Inspection_App.controls
 {
     /// <summary>
-    /// Interaction logic for UserControl2.xaml
+    /// Interaction logic for joystickPanelControl.xaml
     /// </summary>
-    public partial class videoControl : UserControl
+    public partial class joystickPanelControl : UserControl
     {
-        private videoControlsViewModel vcvm;
-
-        public videoControl()
+        private joystickPanelViewModel jpvm;
+        public joystickPanelControl()
         {
             InitializeComponent();
-            vcvm = new videoControlsViewModel();
-            this.DataContext = vcvm;
+            jpvm = new joystickPanelViewModel();
+            this.DataContext = jpvm;
         }
 
         internal void setConnect(Connect c)
         {
-            vcvm.setConnect(c);
+            jpvm.setConnect(c);
+            joystick.setConnect(c);
         }
 
-        private void playPauseButton_Click(object sender, RoutedEventArgs e)
+        private void joystickControl_Loaded(object sender, RoutedEventArgs e)
         {
-            vcvm.playPause();  //TODO mvvm
-        }
 
-        private void startAgain_Click(object sender, RoutedEventArgs e)
-        {
-            vcvm.startAgain();
         }
-
     }
 }

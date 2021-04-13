@@ -7,25 +7,41 @@ using System.Threading.Tasks;
 
 namespace Flight_Inspection_App.viewModel
 {
-    class joystickViewModel : INotifyPropertyChanged
+    internal class joystickViewModel : INotifyPropertyChanged
     {
+
+        //fields
         private Connect connectModel;
 
-        public joystickViewModel()//Settings model)
+        //***property***///
+
+        public double vm_elevator
         {
-           
-            //added!!!!!!!!!!!!!!!!!!!
-            this.connectModel.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)
+            get
             {
-                NotifyPropertyChanged("vm_" + e.PropertyName);
-            };
+                if (connectModel == null) return 0;
+                else return connectModel.Elevator;
+            }
         }
 
-        public void setConnect(Connect c)
+        public double vm_aileron
         {
-            this.connectModel = c;
+            get
+            {
+                if (connectModel == null) return 0;
+                else return connectModel.Aileron;
+            }
         }
+        //*****////
 
+        //CTOR
+        public joystickViewModel()
+        {
+        } // maybe add empty model
+
+
+        //MVVM pattern
+        public event PropertyChangedEventHandler PropertyChanged;
         public void NotifyPropertyChanged(string name)
         {
             if (this.PropertyChanged != null)
@@ -33,13 +49,16 @@ namespace Flight_Inspection_App.viewModel
                 this.PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
         }
+        //**//
 
-        public event PropertyChangedEventHandler PropertyChanged;
 
-        public double vm_throttle
+        public void setConnect(Connect c)
         {
-            get { return this.connectModel.getValue("throttle"); }
-           
+            this.connectModel = c;
+            this.connectModel.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)
+            {
+                NotifyPropertyChanged("vm_" + e.PropertyName);
+            };
         }
     }
 }

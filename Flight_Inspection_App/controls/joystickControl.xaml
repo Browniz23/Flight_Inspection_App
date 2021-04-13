@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="Flight_Inspection_App.controls.joystickControl"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:Flight_Inspection_App.controls"
+             xmlns:viewmodel="clr-namespace:Flight_Inspection_App.viewModel"
+             xmlns:converters="clr-namespace:Flight_Inspection_App.controls.converters"
+             d:DataContext="{d:DesignInstance Type=viewmodel:joystickViewModel}"
+             mc:Ignorable="d" 
+             d:DesignHeight="200" d:DesignWidth="200" RenderTransformOrigin="0.5,0.5">
+    <UserControl.Resources>
+        <converters:ElevatorToYConverter x:Key="ElevatorToY"/>
+        <converters:AileronToXConverter x:Key="AileronToX"/>
+    </UserControl.Resources>
+    <Grid x:Name="joystickGrid" Background="Gray" Width="200" Height="200">
+        <Ellipse Fill="#FFF4F4F5" HorizontalAlignment="Center" Height="100" Stroke="Black" VerticalAlignment="Center" Width="100" RenderTransformOrigin="0.5,0.5">
+            <Ellipse.RenderTransform>
+                <TransformGroup>
+                    <ScaleTransform/>
+                    <SkewTransform/>
+                    <RotateTransform/>
+                    <TranslateTransform Y="{Binding vm_elevator, Converter={StaticResource ElevatorToY}, Mode=OneWay}" X="{Binding vm_aileron, Converter={StaticResource AileronToX}, Mode=OneWay}"/>
+                </TransformGroup>
+            </Ellipse.RenderTransform>
+        </Ellipse>
+        <TextBox x:Name="elevatorText" HorizontalAlignment="Left" Height="23" Text="{Binding vm_elevator, Mode=OneWay}" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="8,11,0,0"/>
+        <TextBox x:Name="aileronText" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" Text="{Binding vm_aileron, Mode=OneWay}" VerticalAlignment="Top" Width="120" Margin="12,167,0,0"/>
+    </Grid>
+</UserControl>
