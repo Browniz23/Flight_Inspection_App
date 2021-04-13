@@ -229,6 +229,8 @@ namespace Flight_Inspection_App
                         // if stop = TRUE, or the csv end, stop send lines from soket.
                         if(stop || this.currline == this.linelength)
                         {
+                            if (this.currline == this.linelength)
+                                Stop = true;
                             Thread.Sleep(500);
                             continue;
                         }
