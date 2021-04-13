@@ -97,12 +97,6 @@
     <Compile Include="controls\Dashboard.xaml.cs">
       <DependentUpon>Dashboard.xaml</DependentUpon>
     </Compile>
-    <Compile Include="controls\data.xaml.cs">
-      <DependentUpon>data.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="controls\GraphControl.xaml.cs">
-      <DependentUpon>GraphControl.xaml</DependentUpon>
-    </Compile>
     <Compile Include="controls\converters\AileronToXConverter.cs" />
     <Compile Include="controls\converters\ElevatorToYConverter.cs" />
     <Compile Include="controls\joystickControl.xaml.cs">
@@ -110,9 +104,6 @@
     </Compile>
     <Compile Include="controls\joystickPanelControl.xaml.cs">
       <DependentUpon>joystickPanelControl.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="controls\UserControl1.xaml.cs">
-      <DependentUpon>UserControl1.xaml</DependentUpon>
     </Compile>
     <Compile Include="controls\videoControl.xaml.cs">
       <DependentUpon>videoControl.xaml</DependentUpon>
@@ -133,23 +124,11 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
-    <Page Include="controls\data.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="controls\GraphControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="controls\joystickControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="controls\joystickPanelControl.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Page Include="controls\UserControl1.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -222,6 +201,10 @@
   </ItemGroup>
   <ItemGroup>
     <Resource Include="images\start again.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="plugins\LinearRegDll.dll" />
+    <Content Include="plugins\MinCircleDll.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

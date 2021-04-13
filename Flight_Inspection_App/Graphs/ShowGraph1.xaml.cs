@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -27,11 +28,11 @@ namespace Flight_Inspection_App.Graphs
     /// </summary>
     public partial class ShowGraph1 : UserControl
     {
-        private GraphViewModel viewModel;    
+        private GraphViewModel viewModel;
 
         public ShowGraph1()
         {
-            viewModel = new GraphViewModel();    
+            viewModel = new GraphViewModel();
             DataContext = viewModel;
 
             CompositionTarget.Rendering += CompositionTargetRendering;
@@ -40,16 +41,16 @@ namespace Flight_Inspection_App.Graphs
             InitializeComponent();
         }
 
-        private long frameCounter;
+        // private long frameCounter;
         private System.Diagnostics.Stopwatch stopwatch = new Stopwatch();
-        private long lastUpdateMilliSeconds;
+        //private long lastUpdateMilliSeconds;
 
         private void CompositionTargetRendering(object sender, EventArgs e)
         {
             if (!viewModel.isConnectSet() || viewModel.vm_Stop)
             {
                 stopwatch.Stop();
-            } 
+            }
             else
             {
                 if (!stopwatch.IsRunning)

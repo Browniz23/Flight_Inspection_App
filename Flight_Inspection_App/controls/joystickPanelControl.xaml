@@ -5,8 +5,8 @@
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
              xmlns:local="clr-namespace:Flight_Inspection_App.controls" xmlns:viewmodel="clr-namespace:Flight_Inspection_App.viewModel" d:DataContext="{d:DesignInstance Type=viewmodel:joystickPanelViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="300" d:DesignWidth="300">
-    <Grid x:Name="joystickPanelGrid" Width="300" Height="300" Background="White" HorizontalAlignment="Right">
+             d:DesignHeight="300" d:DesignWidth="300" MinWidth="300" MinHeight="300">
+    <Grid x:Name="joystickPanelGrid" Background="White" >
         <local:joystickControl x:Name="joystick" Loaded="joystickControl_Loaded" HorizontalAlignment="Right" VerticalAlignment="Top"/>
         <Slider x:Name="ruddle" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,266,61,4" Width="201" Minimum="-1" Maximum="1" SmallChange="1E-07" Value="{Binding vm_rudder, Mode=OneWay}" Height="30" RenderTransformOrigin="0.552,1.3" IsEnabled="False"/>
         <Slider x:Name="throttle" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,76,271,24" Width="18" Orientation="Vertical" Height="200" Maximum="1" SmallChange="1E-07" Value="{Binding vm_throttle, Mode=OneWay}" RenderTransformOrigin="0.315,0.563" IsEnabled="False"/>

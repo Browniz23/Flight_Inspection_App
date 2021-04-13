@@ -7,7 +7,7 @@
              xmlns:oxy="http://oxyplot.codeplex.com"
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:GraphViewModel}"
-             d:DesignHeight="650" Width="1034">
+             d:DesignHeight="350" Width="600">
     <Grid >
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -15,7 +15,7 @@
         </Grid.RowDefinitions>
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition/>
+            <ColumnDefinition Width="100"/>
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>

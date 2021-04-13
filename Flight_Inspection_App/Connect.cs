@@ -236,9 +236,9 @@ namespace Flight_Inspection_App
                 for (int j = 0; j < separetedLine.Length; j++)
                 {
                     if (this.settings.Chunks.ElementAt(j).Value.IsFloat)
-                        this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
+                        this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); 
                     else
-                        this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
+                        this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); 
                 }
                 //Console.WriteLine(i);
             }
@@ -384,9 +384,6 @@ namespace Flight_Inspection_App
                         }
 
                         updateDashboardProperty();
-
-
-                       
                         Throttle = getValue("throttle");
                         Rudder = getValue("rudder");
                         Aileron = getValue("aileron");

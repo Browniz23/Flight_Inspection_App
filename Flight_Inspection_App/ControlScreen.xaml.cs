@@ -12,6 +12,8 @@ namespace Flight_Inspection_App
         internal void setConnect(Connect c)
         {
             videoControl.setConnect(c);
+            showGraph.setConnect(c);
+            joystick.setConnect(c);
             dashboard.setConnect(c);
 
         }
