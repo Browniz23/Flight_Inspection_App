@@ -14,7 +14,6 @@ namespace Flight_Inspection_App
     class Settings : INotifyPropertyChanged 
     {
         private string XMLFileName;
-       // private List<string> properties;
       //  public ArrayList values;
         //public List<Chunk> chunks;
         private ObservableDictionary<string, Chunk> chunks;
