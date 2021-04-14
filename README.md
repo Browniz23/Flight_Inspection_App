@@ -1,18 +1,16 @@
 # Flight_Inspection_App
 
-This is the first mile-stone of our 'Advanced Programing 2' course.
-This app enables the user to visualizing flight data using a flight simulator and analyzing it.
+This is the first milestone of our 'Advanced Programming 2' course. This app enables the user to visualize flight data using a flight simulator and analyze it.
 
 ![FlightGearApp GUI](https://github.com/Browniz23/Flight_Inspection_App/blob/0f2cb39bb84fe93ac7fced8bc744d17682814ae4/Flight_Inspection_App/images/example_flight.jpg)
 
-One main achievement of this task is to use the MVVM architecture.
-Therefore, the project can be divided into three main parts:
+One main achievement of this task is to use the MVVM architecture. Therefore, the project can be divided into three main parts:
 
 **Model** - The 'mind' behind the program. This part is responsible for making all calculations and keeping the data.
 
-**View** - This part is in charge of represnting the data to the user.
+**View** - This part is in charge of representing the data to the user.
 
-**View Model** - The link between the other two parts. One main idea of adding this part is that the **View** and the **Model** don't have to know each other and can be programed independently.
+**View Model** - The link between the other two parts. One main idea of adding this part is that the **View** and the **Model** don't have to know each other and can be programmed independently.
 
 ## Folder Structure
 
