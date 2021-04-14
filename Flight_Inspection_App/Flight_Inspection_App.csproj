@@ -35,8 +35,41 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="Data_Process, Version=0.0.0.0, Culture=neutral, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>bin\Debug\Data_Process.dll</HintPath>
+    </Reference>
+    <Reference Include="Namotion.Reflection, Version=1.0.18.0, Culture=neutral, PublicKeyToken=c2f9c3bdfae56102, processorArchitecture=MSIL">
+      <HintPath>..\packages\Namotion.Reflection.1.0.18\lib\net45\Namotion.Reflection.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=9.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.9.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="NJsonSchema, Version=10.3.11.0, Culture=neutral, PublicKeyToken=c2f9c3bdfae56102, processorArchitecture=MSIL">
+      <HintPath>..\packages\NJsonSchema.10.3.11\lib\net45\NJsonSchema.dll</HintPath>
+    </Reference>
+    <Reference Include="NSwag.Core, Version=13.10.8.0, Culture=neutral, PublicKeyToken=c2d88086e098d109, processorArchitecture=MSIL">
+      <HintPath>..\packages\NSwag.Core.13.10.8\lib\net45\NSwag.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot, Version=2.1.0.0, Culture=neutral, PublicKeyToken=638079a8f0bd61e9, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OxyPlot.Core.2013.1.38.1\lib\portable-net4+sl4+wp71+win8\OxyPlot.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Wpf, Version=2.1.0.0, Culture=neutral, PublicKeyToken=75e952ba404cdbb0, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\packages\OxyPlot.Wpf.2013.1.38.1\lib\NET40\OxyPlot.Wpf.dll</HintPath>
+    </Reference>
+    <Reference Include="OxyPlot.Xps">
+      <HintPath>..\packages\OxyPlot.Wpf.2013.1.38.1\lib\NET40\OxyPlot.Xps.dll</HintPath>
+    </Reference>
+    <Reference Include="ReachFramework" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Net" />
+    <Reference Include="System.Printing" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -46,15 +79,75 @@
     <Reference Include="System.Xaml">
       <RequiredTargetFramework>4.0</RequiredTargetFramework>
     </Reference>
+    <Reference Include="UIAutomationProvider" />
     <Reference Include="WindowsBase" />
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
+    <Reference Include="WindowsFormsIntegration" />
   </ItemGroup>
   <ItemGroup>
     <ApplicationDefinition Include="App.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="AsyncObservableCollection.cs" />
+    <Compile Include="ControlScreen.xaml.cs">
+      <DependentUpon>ControlScreen.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\Dashboard.xaml.cs">
+      <DependentUpon>Dashboard.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\converters\AileronToXConverter.cs" />
+    <Compile Include="controls\converters\ElevatorToYConverter.cs" />
+    <Compile Include="controls\ErorControl.xaml.cs">
+      <DependentUpon>ErorControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\joystickControl.xaml.cs">
+      <DependentUpon>joystickControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\joystickPanelControl.xaml.cs">
+      <DependentUpon>joystickPanelControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="controls\videoControl.xaml.cs">
+      <DependentUpon>videoControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Graphs\Data.cs" />
+    <Compile Include="Graphs\ShowGraph1.xaml.cs">
+      <DependentUpon>ShowGraph1.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="Graphs\ViewModels\GraphViewModel.cs" />
+    <Compile Include="probabilityLib.cs" />
+    <Compile Include="viewModel\dashboardViewModel.cs" />
+    <Compile Include="viewModel\ErorControlViewModel.cs" />
+    <Compile Include="viewModel\GraphControlViewModel.cs" />
+    <Compile Include="viewModel\joystickPanelViewModel.cs" />
+    <Compile Include="viewModel\joystickViewModel.cs" />
+    <Compile Include="viewModel\videoControlsViewModel.cs" />
+    <Page Include="ControlScreen.xaml" />
+    <Page Include="controls\Dashboard.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="controls\ErorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="controls\joystickControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="controls\joystickPanelControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="controls\videoControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Graphs\ShowGraph1.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -63,6 +156,9 @@
       <DependentUpon>App.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="Chunk.cs" />
+    <Compile Include="Settings.cs" />
+    <Compile Include="Connect.cs" />
     <Compile Include="MainWindow.xaml.cs">
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
@@ -86,6 +182,7 @@
       <Generator>ResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -93,6 +190,31 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\play_pause.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\V.jpg" />
+    <Resource Include="images\X.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\Additional Settings.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\Fly!.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\main window background.jpg" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\start again.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Resource Include="images\control screen background.jpg" />
+    <Content Include="plugins\LinearReg.dll" />
+    <Content Include="plugins\LinearRegDll.dll" />
+    <Content Include="plugins\MinCircleDll.dll" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

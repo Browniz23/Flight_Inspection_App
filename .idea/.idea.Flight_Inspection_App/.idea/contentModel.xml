@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ContentModelStore">
+    <e p="C:\Users\Or\AppData\Local\JetBrains\Rider2020.3\extResources" t="IncludeRecursive" />
+    <e p="C:\Users\Or\AppData\Local\JetBrains\Rider2020.3\resharper-host\Local\Transient\Rider\v203\SolutionCaches\_Flight_Inspection_App.1726359909.00" t="ExcludeRecursive" />
+    <e p="C:\Users\Or\Desktop\Advenced Progremming ex1\flight_Inspection_App" t="IncludeFlat">
+      <e p="flight_Inspection_App" t="IncludeRecursive">
+        <e p="App.config" t="Include" />
+        <e p="App.xaml" t="Include" />
+        <e p="App.xaml.cs" t="Include" />
+        <e p="AsyncObservableCollection.cs" t="Include" />
+        <e p="bin" t="ExcludeRecursive" />
+        <e p="Chunk.cs" t="Include" />
+        <e p="Connect.cs" t="Include" />
+        <e p="controls" t="Include">
+          <e p="Dashboard.xaml" t="Include" />
+          <e p="Dashboard.xaml.cs" t="Include" />
+          <e p="data.xaml" t="Include" />
+          <e p="data.xaml.cs" t="Include" />
+          <e p="GraphControl.xaml" t="Include" />
+          <e p="GraphControl.xaml.cs" t="Include" />
+          <e p="UserControl1.xaml" t="Include" />
+          <e p="UserControl1.xaml.cs" t="Include" />
+          <e p="videoControl.xaml" t="Include" />
+          <e p="videoControl.xaml.cs" t="Include" />
+        </e>
+        <e p="ControlScreen.xaml" t="Include" />
+        <e p="ControlScreen.xaml.cs" t="Include" />
+        <e p="Flight_Inspection_App.csproj" t="IncludeRecursive" />
+        <e p="Graphs" t="Include">
+          <e p="Data.cs" t="Include" />
+          <e p="ShowGraph1.xaml" t="Include" />
+          <e p="ShowGraph1.xaml.cs" t="Include" />
+          <e p="ViewModels" t="Include">
+            <e p="GraphViewModel.cs" t="Include" />
+          </e>
+        </e>
+        <e p="images" t="Include">
+          <e p="Additional Settings.png" t="Include" />
+          <e p="play_pause.png" t="Include" />
+          <e p="V.jpg" t="Include" />
+          <e p="X.jpg" t="Include" />
+        </e>
+        <e p="MainWindow.xaml" t="Include" />
+        <e p="MainWindow.xaml.cs" t="Include" />
+        <e p="obj" t="ExcludeRecursive">
+          <e p="Debug" t="Include">
+            <e p="App.g.cs" t="Include" />
+            <e p="controls" t="Include">
+              <e p="Dashboard.g.cs" t="Include" />
+              <e p="data.g.cs" t="Include" />
+              <e p="GraphControl.g.cs" t="Include" />
+              <e p="UserControl1.g.cs" t="Include" />
+              <e p="videoControl.g.cs" t="Include" />
+            </e>
+            <e p="ControlScreen.g.cs" t="Include" />
+            <e p="GeneratedInternalTypeHelper.g.cs" t="Include" />
+            <e p="Graphs" t="Include">
+              <e p="ShowGraph1.g.cs" t="Include" />
+            </e>
+            <e p="MainWindow.g.cs" t="Include" />
+          </e>
+        </e>
+        <e p="packages.config" t="Include" />
+        <e p="Properties" t="Include">
+          <e p="AssemblyInfo.cs" t="Include" />
+          <e p="Resources.Designer.cs" t="Include" />
+          <e p="Resources.resx" t="Include" />
+          <e p="Settings.Designer.cs" t="Include" />
+          <e p="Settings.settings" t="Include" />
+        </e>
+        <e p="Settings.cs" t="Include" />
+        <e p="viewModel" t="Include">
+          <e p="dashboardViewModel.cs" t="Include" />
+          <e p="GraphControlViewModel.cs" t="Include" />
+          <e p="joystickViewModel.cs" t="Include" />
+          <e p="videoControlsViewModel.cs" t="Include" />
+        </e>
+      </e>
+      <e p="Flight_Inspection_App.sln" t="IncludeFlat" />
+      <e p="packages" t="ExcludeRecursive" />
+    </e>
+  </component>
+</project>
