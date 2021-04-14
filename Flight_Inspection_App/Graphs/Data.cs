@@ -11,31 +11,31 @@ namespace Flight_Inspection_App.Graphs
 {
     public class Data
     {
+        // constants
         public const int MS_PER_LINE = 100;
         public const int LAST_POINTS = 30;
         public const int LINE_PER_SEC = 10;
-        internal static void CreateDateLine(PlotModel p, List<double> values, int size, DateTime start, string title)
+
+        //// function gets a plot and values for to create a dateLine on plot.
+        internal static void CreateDateLine(PlotModel p, List<double> values, int size, DateTime start)
         {
             var lineSerie = new LineSeries
             {
                 StrokeThickness = 2,
                 MarkerSize = 3,
-                MarkerStroke = OxyColors.Wheat,                   // color always green!
+                MarkerStroke = OxyColors.DarkGreen, 
                 Color = OxyColors.Wheat,
                 CanTrackerInterpolatePoints = false,
-                //Title = string.Format(name),
-                   // need to switch to name from measure?
-                                 //    Title = measurements[0].Name, 
                 Smooth = false,
             };
-            for (int j = 0; j <= size; j++)        // -1?
-            {                                                                             // todo: change from minutes to..??    
-                                                                                          //measurements.Add(new Measurement() { DetectorId = 0, dateTime = start.AddMilliseconds(100 * j), Value = values[j] });
+            for (int j = 0; j <= size; j++)        
+            {                                      
                 lineSerie.Points.Add(new DataPoint(DateTimeAxis.ToDouble(start.AddMilliseconds(MS_PER_LINE * j)), values[j]));
             }
             p.Series.Add(lineSerie);
         }
 
+        //// function create a ScatterLine. got plot and values.
         internal static void CreateScatterLine(PlotModel p, List<double> xValues, List<double> yValues, int start, int end, bool changeing)
         {
             var dots = new LineSeries();
@@ -59,41 +59,41 @@ namespace Flight_Inspection_App.Graphs
             p.Series.Add(dots);
         }
 
-        internal static void CreateLinearLine(PlotModel p, List<double> xValues, List<double> yValues, string title)
+        // create linearLine on plotModel.
+        internal static void CreateLinearLine(PlotModel p, List<double> xValues, List<double> yValues)
         {
             var lineSerie = new LineSeries
             {
                 StrokeThickness = 2,
                 MarkerSize = 3,
-                MarkerStroke = OxyColors.Salmon,                   // color always green!
-                                                                      //MarkerType = markerTypes[5],
+                MarkerStroke = OxyColors.Salmon,                   
                 CanTrackerInterpolatePoints = false,
-                //Title = string.Format(name),
-                   // need to switch to name from measure?
-                                 //    Title = measurements[0].Name, 
                 Smooth = false,
             };
-            for (int j = 0; j < xValues.Count; j++)        // -1?
-            {                                                                             // todo: change from minutes to                        //measurements.Add(new Measurement() { DetectorId = 0, dateTime = start.AddMilliseconds(100 * j), Value = values[j] });
+            for (int j = 0; j < xValues.Count; j++)        
+            {                                                                           
                 lineSerie.Points.Add(new DataPoint(xValues[j], yValues[j]));
             }
             p.Series.Add(lineSerie);
         }
 
+        //get list of values to update DateLine on plot (update first line in plot).
         internal static void UpdateDateLine(PlotModel p, List<double> values, int idx, DateTime updated)
         {
             var line = p.Series[0] as LineSeries;
             line.Points.Add(new DataPoint(DateTimeAxis.ToDouble(updated.AddMilliseconds(100)), values[idx]));
         }
 
-        internal static void UpdateScatterLine(PlotModel p, List<double> xValues, List<double> yValues, int idx)
+        //get list of values to update Scatters on plot (update third line).
+        // removes past 30 sec points and add new.
+        internal static void UpdateScatterLine(PlotModel p, double xValues, double yValues, int idx)
         {
             var line = p.Series[2] as LineSeries;
             if (idx > LAST_POINTS * LINE_PER_SEC)
             {
                 line.Points.RemoveAt(0);
             }
-            line.Points.Add(new DataPoint(xValues[idx], yValues[idx]));
+            line.Points.Add(new DataPoint(xValues, yValues));
         }
 
     }

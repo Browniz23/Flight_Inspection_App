@@ -12,7 +12,11 @@ namespace Flight_Inspection_App.Graphs
 {
     public class GraphViewModel : INotifyPropertyChanged
     {
+        //// fields ///// 
+        // connectModel is the model.
         private PlotModel plotModel;
+        private PlotModel plotModel_reg;
+        private PlotModel plotModel_corr;
         private Connect connectModel;
         private string chosenChunk;
         private string correlatedChunk;
@@ -20,10 +24,7 @@ namespace Flight_Inspection_App.Graphs
         public DateTime lastUpdate;
         public DateTime lastUpdateCorr;
         private int currline = 0;
-
-        private PlotModel plotModel_reg;
-        private PlotModel plotModel_corr;
-
+        // constants
         public const int LINE_PER_SEC = 10;
         public const int MS_PER_LINE = 100;
         public const int LAST_POINTS = 30;
@@ -31,16 +32,14 @@ namespace Flight_Inspection_App.Graphs
         public GraphViewModel()
         {
             PlotModel = new PlotModel();
-            SetUpModel(PlotModel);
             plotModel_corr = new PlotModel();
-            SetUpModel(plotModel_corr);
             plotModel_reg = new PlotModel();
-            setUpModel_reg();
             this.startDate = DateTime.MinValue;
             this.lastUpdate = DateTime.MinValue;
             this.lastUpdateCorr = DateTime.MinValue;
         }
 
+        //// properties
         public PlotModel PlotModel_reg
         {
             get { return plotModel_reg; }
@@ -56,7 +55,7 @@ namespace Flight_Inspection_App.Graphs
             get { return plotModel_corr; }
             set { PlotModel_corr = value; NotifyPropertyChanged("PlotModel_corr"); }
         }
-        internal Connect ConnectModel                   // added
+        internal Connect ConnectModel                  
         {
             get { return connectModel; }
         }
@@ -83,7 +82,7 @@ namespace Flight_Inspection_App.Graphs
         public string ChosenChunk
         {
             // first chosen as defalut
-            get                                                 // maybe doesnt need
+            get                                               
             {
                 if (this.chosenChunk != null)
                 {
@@ -91,15 +90,15 @@ namespace Flight_Inspection_App.Graphs
                 }
                 return vm_ChunkName[0];
             }
-            // when choose another - if we started the run (means there is data) - starts from begining
+            // sets asked chosen chunk. realod appropriate graphs.
             set
             {
                 if (value != null && this.chosenChunk != value)
                 {
                     this.chosenChunk = value;
-                    this.correlatedChunk = connectModel.Settings.Chunks[chosenChunk].CorrChunk;     // can starts with dump value
+                    this.correlatedChunk = connectModel.Settings.Chunks[chosenChunk].CorrChunk;     
 
-                    if (!vm_Stop || vm_currLine > 1)            // todo:check currline addition!!1
+                    if (!vm_Stop || vm_currLine > 1)            
                     {
                         PlotModel.Axes.Clear();
                         PlotModel_reg.Axes.Clear();
@@ -107,10 +106,11 @@ namespace Flight_Inspection_App.Graphs
                         PlotModel.Series.Clear();
                         PlotModel_reg.Series.Clear();
                         PlotModel_corr.Series.Clear();
-                        LoadData(plotModel, ChosenChunk, ref this.lastUpdate);
+                        LoadDate(plotModel, ChosenChunk, ref this.lastUpdate);
+                        // if no correlative only one graph is shown.
                         if (correlatedChunk != "none")
                         {
-                            LoadData(plotModel_corr, correlatedChunk, ref lastUpdateCorr);
+                            LoadDate(plotModel_corr, correlatedChunk, ref lastUpdateCorr);
                             loadScatter();
                         }
                     }
@@ -133,17 +133,17 @@ namespace Flight_Inspection_App.Graphs
         {
             get
             {
-
                 return connectModel.Stop;
             }
         }
+
         public int vm_currLine
         {
             // update currline and load data again if jumped with bar backward or forward
             get
             {
-                //if (currline != connectModel.currLine - 1 && currline != connectModel.currLine)      
-                if (currline > connectModel.currLine || currline + 50 < connectModel.currLine)              // changed to 50 from 1
+                // gets current line. if changed dramaticlly (and even a bit backwards) reaload graph.
+                if (currline > connectModel.currLine || currline + 50 < connectModel.currLine)            
                 {
                     currline = connectModel.currLine;
                     PlotModel.Axes.Clear();
@@ -154,10 +154,11 @@ namespace Flight_Inspection_App.Graphs
                     PlotModel_corr.Series.Clear();
                     lastUpdate = startDate.AddMilliseconds(MS_PER_LINE * currline);
                     lastUpdateCorr = startDate.AddMilliseconds(MS_PER_LINE * currline);
-                    LoadData(plotModel, ChosenChunk, ref lastUpdate);
+                    LoadDate(plotModel, ChosenChunk, ref lastUpdate);
+                    // if no correlative only one graph is shown.
                     if (correlatedChunk != "none")
                     {
-                        LoadData(plotModel_corr, correlatedChunk, ref lastUpdateCorr);
+                        LoadDate(plotModel_corr, correlatedChunk, ref lastUpdateCorr);
                         loadScatter();
                     }
                 }
@@ -168,24 +169,22 @@ namespace Flight_Inspection_App.Graphs
         internal Settings Settings
         {
             get { return connectModel.Settings; }
-            // no need for set
-        }       // needed?
+        }
+
+        //// set model! get Connect and load graphs.
         internal void setConnect(Connect c)
         {
             this.connectModel = c;
-            // updates (first or second time?) first chunk to be chosen
-            //changed now!           //this.ChosenChunk = c.ChunkName[0];      // only this or loadData needed?    needed?????????????????????????
-            //this.vm_ChunkName = c.ChunkName;
             this.connectModel.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)
             {
                 NotifyPropertyChanged("vm_" + e.PropertyName);
             };
-            // LoadData(); // neededd??????????????????????????????????????????????????????????
-            LoadData(plotModel, ChosenChunk, ref lastUpdate);
+            LoadDate(plotModel, ChosenChunk, ref lastUpdate);
             correlatedChunk = c.Settings.Chunks[ChosenChunk].CorrChunk;
+            // if no correaltive only one graph.
             if (correlatedChunk != "none")
             {
-                LoadData(plotModel_corr, correlatedChunk, ref lastUpdateCorr);
+                LoadDate(plotModel_corr, correlatedChunk, ref lastUpdateCorr);
                 loadScatter();
             }
         }
@@ -194,64 +193,19 @@ namespace Flight_Inspection_App.Graphs
             return this.connectModel != null;
         }
 
-
-
-        private readonly List<OxyColor> colors = new List<OxyColor>
-                                        {
-                                            OxyColors.Green,
-                                            OxyColors.IndianRed,
-                                            OxyColors.Coral,
-                                            OxyColors.Chartreuse,
-                                            OxyColors.Azure
-                                        };
-
-        private readonly List<MarkerType> markerTypes = new List<MarkerType>
-                                                {
-                                                    MarkerType.Plus,
-                                                    MarkerType.Star,
-                                                    MarkerType.Diamond,
-                                                    MarkerType.Triangle,
-                                                    MarkerType.Cross,
-                                                    MarkerType.None
-                                                };
-
-
-        private void SetUpModel(PlotModel plot)
-        {
-         /*   plot.LegendTitle = "Chunk:";
-            plot.LegendOrientation = LegendOrientation.Vertical;
-            plot.LegendPlacement = LegendPlacement.Inside;
-            plot.LegendPosition = LegendPosition.TopRight;
-            plot.LegendBackground = OxyColor.FromAColor(200, OxyColors.AliceBlue);
-            plot.LegendBorder = OxyColors.Chocolate;
-            plot.IsLegendVisible = true;
-            plot.LegendTitleFontSize = 9;                                                                                                               // maybe change this?*/
-
-
-        }
-
-        private void setUpModel_reg()
-        {
-            /*plotModel_reg.LegendTitle = "Correlation";
-            plotModel_reg.LegendOrientation = LegendOrientation.Vertical;
-            plotModel_reg.LegendPlacement = LegendPlacement.Inside;
-            plotModel_reg.LegendPosition = LegendPosition.TopRight;
-            plotModel_reg.LegendBackground = OxyColor.FromAColor(200, OxyColors.AliceBlue);
-            plotModel_reg.LegendBorder = OxyColors.Chocolate;
-            plotModel_reg.LegendTitleFontSize = 9;*/
-        }
         private void loadScatter()
         {
+            // calculates min and max values for axes.
             double min1 = connectModel.Settings.Chunks[ChosenChunk].Values.Min(), max1 = connectModel.Settings.Chunks[ChosenChunk].Values.Max();
             double min2 = connectModel.Settings.Chunks[correlatedChunk].Values.Min(), max2 = connectModel.Settings.Chunks[correlatedChunk].Values.Max();
             var chunkAxisX = new LinearAxis(AxisPosition.Bottom, 0) { Minimum = min1, Maximum = max1, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, IntervalLength = 80, Title = "Chunk" };
             var chunkAxisY = new LinearAxis(AxisPosition.Left, 0) { Minimum = min2, Maximum = max2, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Corroleated" };
             plotModel_reg.Title = "regression line";
             plotModel_reg.TitleFontSize = 10;
+            //****** all dots line *******
             Data.CreateScatterLine(plotModel_reg, connectModel.Settings.Chunks[ChosenChunk].Values.ToList(), connectModel.Settings.Chunks[CorrelatedChunk].Values.ToList(), 1, connectModel.lineLength - 2, false);
-
+            // data for regression line
             double a = connectModel.Settings.Chunks[ChosenChunk].lin_reg.a, b = connectModel.Settings.Chunks[ChosenChunk].lin_reg.b;
-
             List<double> valuesX = new List<double>();
             List<double> valuesY = new List<double>();
             valuesX.Add(min1);
@@ -266,11 +220,13 @@ namespace Flight_Inspection_App.Graphs
             min2 -= spaceY; max2 += spaceY;
             chunkAxisX.Minimum = min1; chunkAxisX.Maximum = max1;
             chunkAxisY.Minimum = min2; chunkAxisY.Maximum = max2;
-            Data.CreateLinearLine(plotModel_reg, valuesX, valuesY, "correlation");
-
+            //****** linear regression line *******
+            Data.CreateLinearLine(plotModel_reg, valuesX, valuesY);
+            // add updated axes.
             plotModel_reg.Axes.Add(chunkAxisX);
             plotModel_reg.Axes.Add(chunkAxisY);
 
+            //****** updated 30 second points *******
             int start = 1, end = vm_currLine -1;
             if (connectModel.currLine > LAST_POINTS * LINE_PER_SEC)            // 30 seconds when 10 lines per sec
             {
@@ -282,15 +238,16 @@ namespace Flight_Inspection_App.Graphs
                 end--;
             Data.CreateScatterLine(plotModel_reg, connectModel.Settings.Chunks[ChosenChunk].Values.ToList(), connectModel.Settings.Chunks[CorrelatedChunk].Values.ToList(), start, end, true);
         }
-        private void LoadData(PlotModel plot, string chunk, ref DateTime updated)
+        // load DateLine data. for chosen chunk graph, and for its correlative if exists (for each).
+        private void LoadDate(PlotModel plot, string chunk, ref DateTime updated)
         {
+            // min and max values for axes
             DateTime min1 = new DateTime(), max1 = min1.AddMilliseconds(MS_PER_LINE * this.connectModel.lineLength);
             updated = min1;
             double min2 = connectModel.Settings.Chunks[chunk].Values.Min();
             double max2 = connectModel.Settings.Chunks[chunk].Values.Max();
             double spaceY = (max2 - min2) / 80;
             min2 -= spaceY; max2 += spaceY;
-            
             var dateAxis = new DateTimeAxis(AxisPosition.Bottom, "Time") { StringFormat = "mm:ss", Minimum = DateTimeAxis.ToDouble(min1), Maximum = DateTimeAxis.ToDouble(max1), MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, IntervalType = DateTimeIntervalType.Seconds, IntervalLength = 1 }; // MajorTickSize = 10};
             plot.Title = chunk;
             plot.TitleFontSize = 10;
@@ -298,27 +255,30 @@ namespace Flight_Inspection_App.Graphs
             var valueAxis = new LinearAxis(AxisPosition.Left, 0) { Minimum = min2, Maximum = max2, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Value" };
             plot.Axes.Add(valueAxis);
 
-            //int size = vm_currLine;
-            int size = vm_currLine-1;                            //HEREEEEEE
+            int size = vm_currLine-1;                           
             if (size == connectModel.lineLength)
                 size--;
             if (size == connectModel.lineLength-1)
                 size--;
-            Data.CreateDateLine(plot, ConnectModel.Settings.Chunks[chunk].Values.ToList(), size, updated, chunk);
+            //********* creates DateLine ************
+            Data.CreateDateLine(plot, ConnectModel.Settings.Chunks[chunk].Values.ToList(), size, updated);
 
             updated = startDate.AddMilliseconds((vm_currLine-1) * MS_PER_LINE);
         }
 
+        //// updates regression line.
         public void updateRegLine()
         {
-            if (CorrelatedChunk != "none" && vm_currLine < connectModel.lineLength - 1) // TODO: CHAGNED TO BE < -1
+            if (CorrelatedChunk != "none" && vm_currLine < connectModel.lineLength - 1) 
             {
-                Data.UpdateScatterLine(PlotModel_reg, connectModel.Settings.Chunks[ChosenChunk].Values.ToList(), connectModel.Settings.Chunks[correlatedChunk].Values.ToList(), vm_currLine);
+                double valx = connectModel.getValue(ChosenChunk), valy = connectModel.getValue(correlatedChunk);
+                Data.UpdateScatterLine(PlotModel_reg, valx, valy, vm_currLine);
             }
         }
-        public void UpdateModel(PlotModel plot, string chunk, ref DateTime updated)
+        //// updates Dateline.
+        public void UpdateDateLine(PlotModel plot, string chunk, ref DateTime updated)
         {
-            if (chunk != "none" && vm_currLine < connectModel.lineLength - 1)          // TODO: CHAGNED TO BE < -1
+            if (chunk != "none" && vm_currLine < connectModel.lineLength - 1)          
             {
                 Data.UpdateDateLine(plot, this.connectModel.Settings.Chunks[chunk].Values.ToList(), vm_currLine, updated);
                 updated = startDate.AddMilliseconds((vm_currLine-1) * MS_PER_LINE);
@@ -328,7 +288,6 @@ namespace Flight_Inspection_App.Graphs
 
         public event PropertyChangedEventHandler PropertyChanged;
 
-        //           [NotifyPropertyChangedInvocator]
         protected virtual void NotifyPropertyChanged(string propertyName)
         {
             PropertyChangedEventHandler handler = PropertyChanged;

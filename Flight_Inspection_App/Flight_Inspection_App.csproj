@@ -119,7 +119,6 @@
     <Compile Include="probabilityLib.cs" />
     <Compile Include="viewModel\dashboardViewModel.cs" />
     <Compile Include="viewModel\ErorControlViewModel.cs" />
-    <Compile Include="viewModel\GraphControlViewModel.cs" />
     <Compile Include="viewModel\joystickPanelViewModel.cs" />
     <Compile Include="viewModel\joystickViewModel.cs" />
     <Compile Include="viewModel\videoControlsViewModel.cs" />

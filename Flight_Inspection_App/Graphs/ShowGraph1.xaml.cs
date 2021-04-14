@@ -16,8 +16,7 @@ using System.Windows.Shapes;
 using System.Diagnostics;
 using System.Runtime.InteropServices;
 using Flight_Inspection_App.viewModel;
-// [DllImport("Data_Process.dll")]
-// public static extern float Pearson(float []x, float []y, int size)
+
 
 
 
@@ -41,9 +40,7 @@ namespace Flight_Inspection_App.Graphs
             InitializeComponent();
         }
 
-        // private long frameCounter;
         private System.Diagnostics.Stopwatch stopwatch = new Stopwatch();
-        //private long lastUpdateMilliSeconds;
 
         private void CompositionTargetRendering(object sender, EventArgs e)
         {
@@ -55,12 +52,12 @@ namespace Flight_Inspection_App.Graphs
             {
                 if (!stopwatch.IsRunning)
                     stopwatch.Start();
-                //if (stopwatch.ElapsedMilliseconds > 400)//viewModel.TimeToSleep)
-                //{
-                    viewModel.UpdateModel(viewModel.PlotModel, viewModel.ChosenChunk, ref viewModel.lastUpdate);
-                    viewModel.UpdateModel(viewModel.PlotModel_corr, viewModel.CorrelatedChunk, ref viewModel.lastUpdateCorr);
-                    viewModel.updateRegLine();
-                if (stopwatch.ElapsedMilliseconds > 800)//viewModel.TimeToSleep)
+                // update graphs info
+                viewModel.UpdateDateLine(viewModel.PlotModel, viewModel.ChosenChunk, ref viewModel.lastUpdate);
+                viewModel.UpdateDateLine(viewModel.PlotModel_corr, viewModel.CorrelatedChunk, ref viewModel.lastUpdateCorr);
+                viewModel.updateRegLine();
+                // if 800 milliseconds passed - refresh graphs graphic.
+                if (stopwatch.ElapsedMilliseconds > 800)
                 { 
                     Plot1.RefreshPlot(true);
                     Plot_corr.RefreshPlot(true);
@@ -69,6 +66,7 @@ namespace Flight_Inspection_App.Graphs
                 }
             }
         }
+        // set connect model
         internal void setConnect(Connect c)
         {
             viewModel.setConnect(c);

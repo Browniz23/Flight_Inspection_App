@@ -10,6 +10,8 @@ using System.Threading.Tasks;
 
 namespace Flight_Inspection_App
 {
+
+    // class used to use observableCollection through different thread.
     public class AsyncObservableCollection<T> : ObservableCollection<T>
     {
         private SynchronizationContext _synchronizationContext = SynchronizationContext.Current;

@@ -39,10 +39,6 @@ namespace Flight_Inspection_App
         private float minCorr = 0F;               // todo: add button to change corr
         private string[] lines;
 
-        /*public string ChosenChunk
-        {
-            get; set;
-        }*/
         //***//
 
 
@@ -55,7 +51,7 @@ namespace Flight_Inspection_App
             {
                 stop = value;
                 NotifyPropertyChanged("Stop");
-            }////////////////////////////////
+            }
         }
         public int currLine { get { return currline; } 
             set 
@@ -213,7 +209,7 @@ namespace Flight_Inspection_App
             this.regCSVFileName = CSV_reg_fileName;
             this.settings = settings;
             ChunkName = this.Settings.chunksName;
-            currLine = 1;                               //TODO change to 1 
+            currLine = 1;                              
             timeToSleep = 100;
             stop = true;
             if (CSVFileName != " ")
@@ -228,6 +224,7 @@ namespace Flight_Inspection_App
             }
         }
 
+        // function use dll file for deceting anomalies.
         public List<string> detect(string dllPath)
         {
             var assembly = Assembly.LoadFile(dllPath);
@@ -255,6 +252,7 @@ namespace Flight_Inspection_App
         }
         //***//
 
+        // Updates data from CSV_file file to chunks dictionary values at settings.
         void updateData(string CSV_file)
         {
             lines = File.ReadAllLines(CSV_file);
@@ -312,8 +310,8 @@ namespace Flight_Inspection_App
             Pitch = getValue("pitch-deg");
         }
 
-        /*[DllImport("Data_Process.dll", CallingConvention = CallingConvention.Cdecl)]
-        public static extern float Pearson(float[] x, float[] y, int size);*/
+       
+        // update correlations data in Chunks dictionary. most corelative, pearson and reg.
         public void updateCorrelation()
         {
             int size = 0;
@@ -327,7 +325,6 @@ namespace Flight_Inspection_App
                 for (int j = 0; j < this.settings.chunksName.Length; j++)
                 {
                     if (j != i)
-                    //corr 1 //        if (true)
                     {
                         double[] firstC = settings.Chunks[chunkName[i]].Values.ToArray();
                         double[] secondC = settings.Chunks[chunkName[j]].Values.ToArray();
@@ -343,13 +340,8 @@ namespace Flight_Inspection_App
                 settings.Chunks[chunkName[i]].Correlation = maxCorr;
                 if (bestMatch != "none")
                 {
-     //               settings.Chunks[bestMatch].CorrChunk = chunkName[i];
-     //               settings.Chunks[bestMatch].Correlation = maxCorr;
                     settings.Chunks[chunkName[i]].lin_reg = probabilityLib.linearReg(settings.Chunks[chunkName[i]].Values.ToArray(),
                         settings.Chunks[bestMatch].Values.ToArray());
-                } else
-                {
-                    //settings.Chunks[chunkName[i]].lin_reg = new Line(0, 0);           not really need
                 }
             }
         }
@@ -368,23 +360,20 @@ namespace Flight_Inspection_App
                 try
                 {
                     // Create a TcpClient.
-                    // Note, for this client to work you need to have a TcpServer
-                    // connected to the same address as specified by the server, port
-                    // combination.
                     Int32 port = 5400;
                     TcpClient client = new TcpClient("127.0.0.1", port);
 
                     // Get a client stream for reading and writing.
-                    //  Stream stream = client.GetStream();
                     NetworkStream stream = client.GetStream();
                     lineLength = lines.Length;
 
+                    // infinite loop runs until user exit program.
                     while (true)
                     {
                         // if stop = TRUE, or the csv end, stop send lines from soket.
-                        if (stop || this.currline == this.linelength)                                 //!!!!!!!!!! ADDED +1
+                        if (stop || this.currline == this.linelength)                                
                         {
-                            if (this.currline == this.linelength) Stop = true;                          //!!!!!!!!!! ADDED +1
+                            if (this.currline == this.linelength) Stop = true;                         
                             Thread.Sleep(500);
                             continue;
                         }
@@ -392,34 +381,32 @@ namespace Flight_Inspection_App
                         if (currLine >= lines.Length)
                             currLine = lines.Length - 1;
                         // Translate the passed message into ASCII and store it as a Byte array.
-                        Byte[] data = System.Text.Encoding.ASCII.GetBytes(lines[currLine] + "\n");      //!!!!!!!!!! ADDED +1
+                        Byte[] data = System.Text.Encoding.ASCII.GetBytes(lines[currLine] + "\n");      
 
                         // Send the message to the connected TcpServer.
                         stream.Write(data, 0, data.Length);
 
-                        // added update
+                      
 
-                        string[] separetedLine = lines[currLine].Split(',');                              //!!!!!!!!!! ADDED +1
+                        string[] separetedLine = lines[currLine].Split(',');                             
                         for (int j = 0; j < separetedLine.Length; j++) // this.settings.Chunks.Count -1?
                         {
                             if (this.settings.Chunks.ElementAt(j).Value.IsFloat)
-                            {
-                                //   this.settings.Chunks.ElementAt(j).Value.Values.Add(float.Parse(separetedLine[j])); //maybe need to casr differently
+                            {  
                                 this.settings.Chunks.ElementAt(j).Value.CurrValue = float.Parse(separetedLine[j]);
                             }
                             else
                             {
-                                // this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); //maybe need to casr differently
                                 this.settings.Chunks.ElementAt(j).Value.CurrValue = double.Parse(separetedLine[j]);
                             }
                         }
-
+                        // updates needed chunks.
                         updateDashboardProperty();
                         Throttle = getValue("throttle");
                         Rudder = getValue("rudder");
                         Aileron = getValue("aileron");
                         Elevator = getValue("elevator");
-                        stream.Flush();              // TODO: needed? also works without it.
+                        stream.Flush();             
                         Thread.Sleep(timeToSleep);
                         currLine++;
                     }

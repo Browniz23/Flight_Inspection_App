@@ -11,17 +11,19 @@ using System.Xml;
 
 namespace Flight_Inspection_App
 {
+    // class saves dictionary of all chunks got from xml settings file.
     class Settings : INotifyPropertyChanged 
     {
+        //// fields
         private string XMLFileName;
-      //  public ArrayList values;
-        //public List<Chunk> chunks;
-        private ObservableDictionary<string, Chunk> chunks;
+        private ObservableDictionary<string, Chunk> chunks;         // dictionary which observable, saves all chunks.
         private ObservableDictionary<string, int> namesCount;
+
+        ///// properties
         public ObservableDictionary<string, Chunk> Chunks
         {
             get { return this.chunks; }
-            set { NotifyPropertyChanged("Chunks"); chunks = value; }         // needed?
+            set { NotifyPropertyChanged("Chunks"); chunks = value; }        
         }
 
         public string[] chunksName { get { return Chunks.Keys.ToArray(); } }
@@ -43,9 +45,10 @@ namespace Flight_Inspection_App
             this.namesCount = new ObservableDictionary<string, int>();
         }
 
-        public void UploadSettings()          // need to throw exception  
+        // read xml file and update chunks names and types in Chunks 
+        public void UploadSettings()           
         {
-            using (XmlReader reader = XmlReader.Create(@XMLFileName))           // need @?
+            using (XmlReader reader = XmlReader.Create(@XMLFileName))         
             {
                 bool stop = false;
                 string name = "", type = "";
@@ -70,9 +73,8 @@ namespace Flight_Inspection_App
                                 type = reader.ReadString();
                                 Chunk c = new Chunk(name, type);
                                 chunks.Add(name, c);
-                                // maybe should add idx field in Chunk? (count)
                                 break;
-                            case "input":           // added
+                            case "input":           
                                 stop = true;
                                 break;
                         }
@@ -80,7 +82,6 @@ namespace Flight_Inspection_App
                     Console.WriteLine("");
                 }
             }
-            //Console.ReadKey();        does error
         }
 
     }

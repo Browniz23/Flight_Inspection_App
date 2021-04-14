@@ -8,10 +8,11 @@ using System.Threading.Tasks;
 
 namespace Flight_Inspection_App
 {
+    // Chunk class saves chunk info.
     class Chunk : INotifyPropertyChanged
     {
+        //////// fields
         private string name;
-        //private List<T> values;        // problem!
         private ObservableCollection<double> values;
         private bool isFloat;
         private double currValue;
@@ -22,7 +23,7 @@ namespace Flight_Inspection_App
         public double CurrValue {
             get
             {
-                return currValue;                                // todo:may be problem for some chunks!
+                return currValue;                                
             }
             set
             {
@@ -36,7 +37,7 @@ namespace Flight_Inspection_App
             set 
             {
                 corrChunk = value;
-                NotifyPropertyChanged("CorrChunk");     // added. not sure needed
+                NotifyPropertyChanged("CorrChunk");     
             }      
         }
         public double Correlation
@@ -45,7 +46,7 @@ namespace Flight_Inspection_App
             set
             {
                 correlation = value;
-                NotifyPropertyChanged("Correlation");   // added. not sure needed
+                NotifyPropertyChanged("Correlation");   
             }
         }
 
@@ -78,69 +79,5 @@ namespace Flight_Inspection_App
                 this.PropertyChanged(this, new PropertyChangedEventArgs(name));
             }
         }
-
-        /* private string name;
-         private string type;
-         private double dValue = 0;
-         private float fValue = 0;
-         private float Value
-         {
-             get
-             {
-                 if (dValue == 0)
-                     return fValue;
-                 else
-                     return dValue;
-             }
-             set
-             {
-
-             }
-         }
-
-         public Chunk(string name, string type)
-         {
-             this.name = name;
-             if (type == "double")
-             {
-                 T = Type.Double;
-             }
-         }
-
-         public string Name {
-             get { return name; } 
-             set
-             {
-                 if (value != name)
-                     name = value;
-             }
-         }
-         public string Type
-         {
-             get { return type; }
-             set
-             {
-                 if (value != type)
-                     type = value;
-             }
-         }
-         public float Value
-         {
-             get { return cValue; }
-             set
-             {
-                 if (value != cValue)
-                     cValue = value;
-             }
-         }*/
-
-        /*public event PropertyChangedEventHandler PropertyChanged;
-        public void NotifyPropertyChanged(string name)
-        {
-            if (this.PropertyChanged != null)
-            {
-                this.PropertyChanged(this, new PropertyChangedEventArgs(name));
-            }
-        }*/
     }
 }
