@@ -20,11 +20,11 @@ namespace Flight_Inspection_App.Graphs
             {
                 StrokeThickness = 2,
                 MarkerSize = 3,
-                MarkerStroke = OxyColors.DarkGreen,                   // color always green!
-                                                                      //MarkerType = markerTypes[5],
+                MarkerStroke = OxyColors.Wheat,                   // color always green!
+                Color = OxyColors.Wheat,
                 CanTrackerInterpolatePoints = false,
                 //Title = string.Format(name),
-                Title = title,   // need to switch to name from measure?
+                   // need to switch to name from measure?
                                  //    Title = measurements[0].Name, 
                 Smooth = false,
             };
@@ -41,6 +41,7 @@ namespace Flight_Inspection_App.Graphs
             var dots = new LineSeries();
             dots.MarkerType = MarkerType.Circle;
             dots.StrokeThickness = 0;
+           
             if (!changeing)
             {
                 dots.MarkerSize = 1.2;
@@ -64,11 +65,11 @@ namespace Flight_Inspection_App.Graphs
             {
                 StrokeThickness = 2,
                 MarkerSize = 3,
-                MarkerStroke = OxyColors.DarkGreen,                   // color always green!
+                MarkerStroke = OxyColors.Salmon,                   // color always green!
                                                                       //MarkerType = markerTypes[5],
                 CanTrackerInterpolatePoints = false,
                 //Title = string.Format(name),
-                Title = title,   // need to switch to name from measure?
+                   // need to switch to name from measure?
                                  //    Title = measurements[0].Name, 
                 Smooth = false,
             };

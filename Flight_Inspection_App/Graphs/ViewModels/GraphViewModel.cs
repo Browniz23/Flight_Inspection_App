@@ -218,35 +218,36 @@ namespace Flight_Inspection_App.Graphs
 
         private void SetUpModel(PlotModel plot)
         {
-            plot.LegendTitle = "Chunk:";
+         /*   plot.LegendTitle = "Chunk:";
             plot.LegendOrientation = LegendOrientation.Vertical;
             plot.LegendPlacement = LegendPlacement.Inside;
             plot.LegendPosition = LegendPosition.TopRight;
             plot.LegendBackground = OxyColor.FromAColor(200, OxyColors.AliceBlue);
             plot.LegendBorder = OxyColors.Chocolate;
             plot.IsLegendVisible = true;
-            plot.LegendTitleFontSize = 9;                                                                                                               // maybe change this?
+            plot.LegendTitleFontSize = 9;                                                                                                               // maybe change this?*/
 
 
         }
 
         private void setUpModel_reg()
         {
-            plotModel_reg.LegendTitle = "Correlation";
+            /*plotModel_reg.LegendTitle = "Correlation";
             plotModel_reg.LegendOrientation = LegendOrientation.Vertical;
             plotModel_reg.LegendPlacement = LegendPlacement.Inside;
             plotModel_reg.LegendPosition = LegendPosition.TopRight;
             plotModel_reg.LegendBackground = OxyColor.FromAColor(200, OxyColors.AliceBlue);
             plotModel_reg.LegendBorder = OxyColors.Chocolate;
-            plotModel_reg.LegendTitleFontSize = 9;
+            plotModel_reg.LegendTitleFontSize = 9;*/
         }
         private void loadScatter()
         {
             double min1 = connectModel.Settings.Chunks[ChosenChunk].Values.Min(), max1 = connectModel.Settings.Chunks[ChosenChunk].Values.Max();
             double min2 = connectModel.Settings.Chunks[correlatedChunk].Values.Min(), max2 = connectModel.Settings.Chunks[correlatedChunk].Values.Max();
             var chunkAxisX = new LinearAxis(AxisPosition.Bottom, 0) { Minimum = min1, Maximum = max1, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, IntervalLength = 80, Title = "Chunk" };
-            var chunkAxisY = new LinearAxis(AxisPosition.Left, 0) { Minimum = min2, Maximum = max2, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Corroleated Chunk" };
-
+            var chunkAxisY = new LinearAxis(AxisPosition.Left, 0) { Minimum = min2, Maximum = max2, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Corroleated" };
+            plotModel_reg.Title = "regression line";
+            plotModel_reg.TitleFontSize = 10;
             Data.CreateScatterLine(plotModel_reg, connectModel.Settings.Chunks[ChosenChunk].Values.ToList(), connectModel.Settings.Chunks[CorrelatedChunk].Values.ToList(), 1, connectModel.lineLength - 2, false);
 
             double a = connectModel.Settings.Chunks[ChosenChunk].lin_reg.a, b = connectModel.Settings.Chunks[ChosenChunk].lin_reg.b;
@@ -261,7 +262,10 @@ namespace Flight_Inspection_App.Graphs
                 min2 = min1 * a + b;
             if (max2 < max1 * a + b)
                 max2 = max1 * a + b;
-
+            double spaceY = (max2 - min2) / 80;
+            min2 -= spaceY; max2 += spaceY;
+            chunkAxisX.Minimum = min1; chunkAxisX.Maximum = max1;
+            chunkAxisY.Minimum = min2; chunkAxisY.Maximum = max2;
             Data.CreateLinearLine(plotModel_reg, valuesX, valuesY, "correlation");
 
             plotModel_reg.Axes.Add(chunkAxisX);
@@ -283,9 +287,13 @@ namespace Flight_Inspection_App.Graphs
             DateTime min1 = new DateTime(), max1 = min1.AddMilliseconds(MS_PER_LINE * this.connectModel.lineLength);
             updated = min1;
             double min2 = connectModel.Settings.Chunks[chunk].Values.Min();
-            double max2 = connectModel.Settings.Chunks[chunk].Values.Max();                       // need to do each 10 seconds  
+            double max2 = connectModel.Settings.Chunks[chunk].Values.Max();
+            double spaceY = (max2 - min2) / 80;
+            min2 -= spaceY; max2 += spaceY;
+            
             var dateAxis = new DateTimeAxis(AxisPosition.Bottom, "Time") { StringFormat = "mm:ss", Minimum = DateTimeAxis.ToDouble(min1), Maximum = DateTimeAxis.ToDouble(max1), MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, IntervalType = DateTimeIntervalType.Seconds, IntervalLength = 1 }; // MajorTickSize = 10};
-
+            plot.Title = chunk;
+            plot.TitleFontSize = 10;
             plot.Axes.Add(dateAxis);
             var valueAxis = new LinearAxis(AxisPosition.Left, 0) { Minimum = min2, Maximum = max2, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Value" };
             plot.Axes.Add(valueAxis);

@@ -38,6 +38,11 @@ namespace Flight_Inspection_App
         private string[] chunkName;
         private float minCorr = 0F;               // todo: add button to change corr
         private string[] lines;
+
+        /*public string ChosenChunk
+        {
+            get; set;
+        }*/
         //***//
 
 
@@ -384,6 +389,8 @@ namespace Flight_Inspection_App
                             continue;
                         }
 
+                        if (currLine >= lines.Length)
+                            currLine = lines.Length - 1;
                         // Translate the passed message into ASCII and store it as a Byte array.
                         Byte[] data = System.Text.Encoding.ASCII.GetBytes(lines[currLine] + "\n");      //!!!!!!!!!! ADDED +1
 

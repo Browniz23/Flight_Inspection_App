@@ -6,6 +6,8 @@
              xmlns:local="clr-namespace:Flight_Inspection_App.controls" xmlns:viewmodel="clr-namespace:Flight_Inspection_App.viewModel" d:DataContext="{d:DesignInstance Type=viewmodel:joystickPanelViewModel}"
              mc:Ignorable="d" d:DesignWidth="200" Height="200">
     <Grid x:Name="joystickPanelGrid" Margin="0" Height="200" Width="200" Background="#FF6389E4">
+
+        <Border BorderBrush="#FF143D7E" BorderThickness="5" Grid.ColumnSpan="2" Grid.RowSpan="6"/>
         <local:joystickControl x:Name="joystick" VerticalAlignment="Top" HorizontalAlignment="Right" Height="150" Width="150"/>
         <Slider x:Name="ruddle" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,174,12,4" Width="123" Minimum="-1" Maximum="1" SmallChange="1E-07" Value="{Binding vm_rudder, Mode=OneWay}" Height="22" RenderTransformOrigin="0.552,1.3" IsEnabled="False"/>
         <Slider x:Name="throttle" HorizontalAlignment="Right" VerticalAlignment="Center" Margin="0,31,161,42" Width="23" Orientation="Vertical" Height="127" Maximum="1" SmallChange="1E-07" Value="{Binding vm_throttle, Mode=OneWay}" RenderTransformOrigin="0.315,0.563" IsEnabled="False"/>
