@@ -20,7 +20,7 @@ Controls - Which contains the **View** part.
 
 ViewModel - In which the **View Model** part sits.
 
-Outside the folders you can see the **Model** part.
+Outside the folders you can see the **Model** part, mainly the 'Connect' class.
 
 ## Running
 
