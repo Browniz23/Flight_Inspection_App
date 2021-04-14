@@ -8,7 +8,7 @@
              mc:Ignorable="d" 
              d:DataContext="{d:DesignInstance Type=local:GraphViewModel}"
              d:DesignHeight="350" Width="600">
-    <Grid >
+    <Grid Background="#FF6389E4">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -19,9 +19,10 @@
             <ColumnDefinition/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
-        <oxy:Plot x:Name="Plot1" Title="A Graph" Grid.Column="1" Model="{Binding PlotModel}" Margin="5"/>
-        <oxy:Plot x:Name="Plot_corr" Title="B Graph" Grid.Column="2" Model="{Binding PlotModel_corr}" Margin="5"/>
-        <oxy:Plot x:Name="Plot_reg" Title="A Corr Graph" Model="{Binding PlotModel_reg}" Margin="5" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"/>
+        <Border BorderBrush="#FF143D7E" BorderThickness="5" Grid.ColumnSpan="3" Grid.RowSpan="2"/>
+        <oxy:Plot x:Name="Plot1" Background="Transparent" Title="A Graph" Grid.Column="1" Model="{Binding PlotModel}" Margin="5"/>
+        <oxy:Plot x:Name="Plot_corr" Background="Transparent" Title="B Graph" Grid.Column="2" Model="{Binding PlotModel_corr}" Margin="5"/>
+        <oxy:Plot x:Name="Plot_reg" Background="Transparent" Title="A Corr Graph" Model="{Binding PlotModel_reg}" Margin="5" Grid.Row="1" Grid.Column="1" Grid.ColumnSpan="3"/>
         <ListBox x:Name="listbox" ItemsSource="{Binding vm_ChunkName, Mode=OneWay}" SelectedItem="{Binding ChosenChunk}" Grid.RowSpan="2"  Margin="5"/>
     </Grid>
 </UserControl>

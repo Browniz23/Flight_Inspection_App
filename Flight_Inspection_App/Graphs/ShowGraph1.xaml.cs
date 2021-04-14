@@ -55,11 +55,13 @@ namespace Flight_Inspection_App.Graphs
             {
                 if (!stopwatch.IsRunning)
                     stopwatch.Start();
-                if (stopwatch.ElapsedMilliseconds > viewModel.TimeToSleep)
-                {
+                //if (stopwatch.ElapsedMilliseconds > 400)//viewModel.TimeToSleep)
+                //{
                     viewModel.UpdateModel(viewModel.PlotModel, viewModel.ChosenChunk, ref viewModel.lastUpdate);
                     viewModel.UpdateModel(viewModel.PlotModel_corr, viewModel.CorrelatedChunk, ref viewModel.lastUpdateCorr);
                     viewModel.updateRegLine();
+                if (stopwatch.ElapsedMilliseconds > 800)//viewModel.TimeToSleep)
+                { 
                     Plot1.RefreshPlot(true);
                     Plot_corr.RefreshPlot(true);
                     Plot_reg.RefreshPlot(true);

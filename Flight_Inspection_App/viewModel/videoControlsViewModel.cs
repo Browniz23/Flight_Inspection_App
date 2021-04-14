@@ -60,7 +60,7 @@ namespace Flight_Inspection_App.viewModel
         //CTOR
         public videoControlsViewModel()
         {
-            this.connectModel = new Connect(" ", new Settings(" "));
+            this.connectModel = new Connect(" ", " ", new Settings(" "));
 
             float[] speedArr = { 0.25f, 0.5f, 1.0f, 2.0f, 4.0f };
             vm_speeds = new List<float>(speedArr);
@@ -97,7 +97,7 @@ namespace Flight_Inspection_App.viewModel
 
         public void startAgain()
         {
-            vm_currLine = 0;
+            vm_currLine = 1;
         }
     }
 }

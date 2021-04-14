@@ -8,10 +8,10 @@
              xmlns:viewmodel="clr-namespace:Flight_Inspection_App.viewModel" 
              d:DataContext="{d:DesignInstance Type=viewmodel:videoControlsViewModel}"
              mc:Ignorable="d" 
-             d:DesignHeight="100" d:DesignWidth="400">
+             d:DesignHeight="100" d:DesignWidth="600">
 
 
-    <Grid Background="White">
+    <Grid Background="#FF6389E4">
         <Grid.RowDefinitions>
             <RowDefinition/>
             <RowDefinition/>
@@ -19,35 +19,39 @@
         <Grid.ColumnDefinitions>
             <ColumnDefinition/>
             <ColumnDefinition/>
+            <ColumnDefinition/>
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
-        <TextBox Text="{Binding vm_CurrTime}" HorizontalAlignment="Left" Width="40" VerticalAlignment="Center" FontWeight="Bold" FontSize="13"
-                 Background="{x:Null}" Margin="5"/>
+        <TextBox Text="{Binding vm_CurrTime}" HorizontalAlignment="Left" Width="40" VerticalAlignment="Top" FontWeight="Bold" FontSize="13"
+                 Background="{x:Null}" Margin="10,44,0,0" Grid.RowSpan="2"/>
 
-        <TextBox Name="chooseSpeedBox" Grid.Row="0" Grid.Column="0" Margin="5" HorizontalAlignment="Center" VerticalAlignment="Center" Text="Choose speed:"
-                 Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="13" />
+        <TextBox Name="chooseSpeedBox"  Grid.Column="0" Margin="5" HorizontalAlignment="Right" VerticalAlignment="Center" Text="Choose speed:"
+                 Background="{x:Null}" BorderBrush="{x:Null}" FontWeight="Bold" FontSize="18" />
 
-        <ComboBox Name="speedBox" Grid.Row="0" Grid.Column="0" Height="30" Width="50" Margin="5" FontSize="18" HorizontalAlignment="Right"
-                  SelectedItem="{Binding vm_selectedSpeed, Mode=TwoWay }" ItemsSource="{Binding vm_speeds, Mode=TwoWay}"  />
+        <ComboBox Name="speedBox" Grid.Row="0" Grid.Column="1"  Margin="10,13,0,12" FontSize="18" HorizontalAlignment="left"
+                  SelectedItem="{Binding vm_selectedSpeed, Mode=TwoWay }" ItemsSource="{Binding vm_speeds, Mode=TwoWay}" Width="89"  />
 
-        <Button Name ="playPauseButton" Grid.Row="0" Grid.Column="1" Margin="15" HorizontalAlignment="Left" Background="{x:Null}" BorderBrush="{x:Null}" Click="playPauseButton_Click">
+        <Button Name ="playPauseButton" Grid.Row="0" Grid.Column="2" Margin="5" HorizontalAlignment="Right" Background="{x:Null}" BorderBrush="{x:Null}" Click="playPauseButton_Click">
             <StackPanel>
-                <Image Source="/images/play_pause.png" Height="40" Width="40" />
+                <Image Source="/images/play_pause.png" Margin="5" Height="50" Width="50" />
             </StackPanel>
         </Button>
 
-        <Button x:Name ="startAgainButton" Grid.Row="0" Grid.Column="1" Margin="15" HorizontalAlignment="Right" Background="{x:Null}" BorderBrush="{x:Null}"
+        <Button x:Name ="startAgainButton" Grid.Row="0" Grid.Column="3" Margin="5" HorizontalAlignment="Left" Background="{x:Null}" BorderBrush="{x:Null}"
               Click="startAgain_Click" >
             <StackPanel>
-                <Image Source="/images/start again.png" Height="40" Width="40" />
+                <Image Source="/images/start again.png" Height="50" Width="50" />
             </StackPanel>
         </Button>
 
         <Slider x:Name="timeSlider" Grid.Row="1" Grid.Column="0" Grid.ColumnSpan="3" Margin="5" VerticalAlignment="Center"
-                Value="{Binding vm_currLine}" Maximum="{Binding vm_lineLength}" TickFrequency="2" SmallChange="1" RenderTransformOrigin="0.5,0.5"/>
-        
-        
-  
+                Value="{Binding vm_currLine}" Minimum="1" Maximum="{Binding vm_lineLength}" TickFrequency="2" SmallChange="1"/>
+        <Border BorderBrush="#FF143D7E" BorderThickness="5" Grid.ColumnSpan="4" Grid.RowSpan="2"/>
+
+
+
+
 
 
     </Grid>

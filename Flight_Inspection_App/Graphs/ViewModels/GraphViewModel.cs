@@ -99,7 +99,7 @@ namespace Flight_Inspection_App.Graphs
                     this.chosenChunk = value;
                     this.correlatedChunk = connectModel.Settings.Chunks[chosenChunk].CorrChunk;     // can starts with dump value
 
-                    if (!vm_Stop || vm_currLine > 0)            // todo:check currline addition!!1
+                    if (!vm_Stop || vm_currLine > 1)            // todo:check currline addition!!1
                     {
                         PlotModel.Axes.Clear();
                         PlotModel_reg.Axes.Clear();
@@ -143,7 +143,7 @@ namespace Flight_Inspection_App.Graphs
             get
             {
                 //if (currline != connectModel.currLine - 1 && currline != connectModel.currLine)      
-                if (currline > connectModel.currLine || currline + 1 < connectModel.currLine)
+                if (currline > connectModel.currLine || currline + 50 < connectModel.currLine)              // changed to 50 from 1
                 {
                     currline = connectModel.currLine;
                     PlotModel.Axes.Clear();
@@ -247,7 +247,7 @@ namespace Flight_Inspection_App.Graphs
             var chunkAxisX = new LinearAxis(AxisPosition.Bottom, 0) { Minimum = min1, Maximum = max1, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, IntervalLength = 80, Title = "Chunk" };
             var chunkAxisY = new LinearAxis(AxisPosition.Left, 0) { Minimum = min2, Maximum = max2, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Corroleated Chunk" };
 
-            Data.CreateScatterLine(plotModel_reg, connectModel.Settings.Chunks[ChosenChunk].Values.ToList(), connectModel.Settings.Chunks[CorrelatedChunk].Values.ToList(), 0, connectModel.lineLength - 1, false);
+            Data.CreateScatterLine(plotModel_reg, connectModel.Settings.Chunks[ChosenChunk].Values.ToList(), connectModel.Settings.Chunks[CorrelatedChunk].Values.ToList(), 1, connectModel.lineLength - 2, false);
 
             double a = connectModel.Settings.Chunks[ChosenChunk].lin_reg.a, b = connectModel.Settings.Chunks[ChosenChunk].lin_reg.b;
 
@@ -267,12 +267,14 @@ namespace Flight_Inspection_App.Graphs
             plotModel_reg.Axes.Add(chunkAxisX);
             plotModel_reg.Axes.Add(chunkAxisY);
 
-            int start = 0, end = vm_currLine;
+            int start = 1, end = vm_currLine -1;
             if (connectModel.currLine > LAST_POINTS * LINE_PER_SEC)            // 30 seconds when 10 lines per sec
             {
                 start = connectModel.currLine - LAST_POINTS * LINE_PER_SEC;
             }
             if (end == ConnectModel.lineLength)
+                end--;
+            if (end == ConnectModel.lineLength - 1)
                 end--;
             Data.CreateScatterLine(plotModel_reg, connectModel.Settings.Chunks[ChosenChunk].Values.ToList(), connectModel.Settings.Chunks[CorrelatedChunk].Values.ToList(), start, end, true);
         }
@@ -288,27 +290,30 @@ namespace Flight_Inspection_App.Graphs
             var valueAxis = new LinearAxis(AxisPosition.Left, 0) { Minimum = min2, Maximum = max2, MajorGridlineStyle = LineStyle.Solid, MinorGridlineStyle = LineStyle.Dot, Title = "Value" };
             plot.Axes.Add(valueAxis);
 
-            int size = vm_currLine;
+            //int size = vm_currLine;
+            int size = vm_currLine-1;                            //HEREEEEEE
             if (size == connectModel.lineLength)
+                size--;
+            if (size == connectModel.lineLength-1)
                 size--;
             Data.CreateDateLine(plot, ConnectModel.Settings.Chunks[chunk].Values.ToList(), size, updated, chunk);
 
-            updated = startDate.AddMilliseconds(vm_currLine * MS_PER_LINE);
+            updated = startDate.AddMilliseconds((vm_currLine-1) * MS_PER_LINE);
         }
 
         public void updateRegLine()
         {
-            if (CorrelatedChunk != "none" && vm_currLine != connectModel.lineLength)
+            if (CorrelatedChunk != "none" && vm_currLine < connectModel.lineLength - 1) // TODO: CHAGNED TO BE < -1
             {
                 Data.UpdateScatterLine(PlotModel_reg, connectModel.Settings.Chunks[ChosenChunk].Values.ToList(), connectModel.Settings.Chunks[correlatedChunk].Values.ToList(), vm_currLine);
             }
         }
         public void UpdateModel(PlotModel plot, string chunk, ref DateTime updated)
         {
-            if (chunk != "none" && vm_currLine != connectModel.lineLength)
+            if (chunk != "none" && vm_currLine < connectModel.lineLength - 1)          // TODO: CHAGNED TO BE < -1
             {
                 Data.UpdateDateLine(plot, this.connectModel.Settings.Chunks[chunk].Values.ToList(), vm_currLine, updated);
-                updated = startDate.AddMilliseconds(vm_currLine * MS_PER_LINE);
+                updated = startDate.AddMilliseconds((vm_currLine-1) * MS_PER_LINE);
             }
         }
 

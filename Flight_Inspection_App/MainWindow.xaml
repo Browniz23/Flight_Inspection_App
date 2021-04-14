@@ -31,33 +31,43 @@
                    HorizontalAlignment="Center" FontWeight="Bold" Margin="0,5,0,0" FontSize="40" />
         <TextBlock Text="Before you begin, please check that the simulator settings look like this:" VerticalAlignment="Top" TextWrapping="Wrap"
                    HorizontalAlignment="Center" FontWeight="Bold"  FontSize="23"  Margin="0,52,0,0" />
-       
-        <Image Grid.Row="1" Margin="5" Source="images/Additional Settings.jpg"/>    
-       
-        
+
+        <Image Grid.Row="1" Margin="5" Source="images/Additional Settings.jpg"/>
+
+
 
 
         <Button Content="Load xml File" Grid.Row="2" HorizontalAlignment="Left"
-                VerticalAlignment="Bottom" Margin="99,0,0,50"  Width="114" Height="34" Click="Button_Click_2"/>
+                VerticalAlignment="Bottom" Margin="29,0,0,49"  Width="114" Height="34" Click="Button_Click_XML"/>
         <Image x:Name="V" Grid.Row="2" Source="/images/V.jpg" HorizontalAlignment="Left" Height="34"
-               VerticalAlignment="Bottom" Width="33" Margin="226,0,0,49" Visibility="Hidden"  />
+               VerticalAlignment="Bottom" Width="33" Margin="144,0,0,49" Visibility="Hidden"  />
         <Image x:Name="X" Grid.Row="2" Source="/images/X.jpg"  HorizontalAlignment="Left" Height="34"
-               VerticalAlignment="Top" Width="32" Margin="227,16,0,0"  />
+               VerticalAlignment="Top" Width="32" Margin="145,17,0,0"  />
 
 
-        <Button Content="Load CSV File"  Grid.Row="2"  HorizontalAlignment="Left"
-                Margin="289,15,0,0" VerticalAlignment="Top" Width="114" Height="34"
-                Click="Button_Click"/>
+        <Button Content="Load csv regular flight"  Grid.Row="2"  HorizontalAlignment="Left"
+                Margin="235,17,0,0" VerticalAlignment="Top" Width="125" Height="34"
+                Click="regularFlightButtonClick"/>
         <Image x:Name="X_Copy" Grid.Row="2" Source="/images/X.jpg"  HorizontalAlignment="Left" Height="34"
-            VerticalAlignment="Top" Width="32" Margin="412,16,0,0"  />
+            VerticalAlignment="Top" Width="32" Margin="363,17,0,0"  />
         <Image x:Name="V_Copy" Grid.Row="2" Source="/images/V.jpg" HorizontalAlignment="Left" Height="34"
-            VerticalAlignment="Top" Width="32" Margin="412,16,0,0" Visibility="Hidden"  />
+            VerticalAlignment="Top" Width="32" Margin="362,19,0,0" Visibility="Hidden"  />
 
-        <Button Name="startButton" Grid.Row="2" Width="100" Height="59" Margin="522,14,164,52" Click="startButton_Click" >
+        <Button Name="startButton" Grid.Row="2" Width="100" Height="59" Click="startButton_Click" Margin="659,10,35.667,31" >
             <StackPanel>
                 <Image Source="/images/Fly!.png" Height="59"  HorizontalAlignment="Left" Width="159"/>
             </StackPanel>
         </Button>
+
+        <Button Content="Load csv test flight"  Grid.Row="2"  HorizontalAlignment="Left"
+            Margin="459,17,0,0" VerticalAlignment="Top" Width="114" Height="34"
+            Click="testFlightButtonClick"/>
+        <Image x:Name="X_Copy1" Grid.Row="2" Source="images/X.jpg"  HorizontalAlignment="Left" Height="34"
+            VerticalAlignment="Top" Width="32" Margin="575,17,0,0"  />
+        <Image x:Name="V_Copy1" Grid.Row="2" Source="/images/V.jpg" HorizontalAlignment="Left" Height="34"
+               VerticalAlignment="Top" Width="32" Margin="575,17,0,0"  Visibility="Hidden" />
+
+
 
     </Grid>
 </Window>

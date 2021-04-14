@@ -10,6 +10,7 @@ using System.Threading;
 using System.ComponentModel;
 using System.Windows;
 using System.Runtime.InteropServices;
+using System.Reflection;
 
 namespace Flight_Inspection_App
 {
@@ -17,6 +18,7 @@ namespace Flight_Inspection_App
     {
         // ****model field*****//
         private string CSVFileName;
+        private string regCSVFileName;
         private Settings settings;
         private int currline;
         private int linelength;
@@ -200,21 +202,41 @@ namespace Flight_Inspection_App
         //***///
 
         //CTOR
-        public Connect(String CSV_fileName, Settings settings)
+        public Connect(String CSV_reg_fileName, String CSV_detect_fileName, Settings settings)
         {
-            this.CSVFileName = CSV_fileName;
+            this.CSVFileName = CSV_detect_fileName;
+            this.regCSVFileName = CSV_reg_fileName;
             this.settings = settings;
             ChunkName = this.Settings.chunksName;
-            currLine = 0;
+            currLine = 1;                               //TODO change to 1 
             timeToSleep = 100;
             stop = true;
             if (CSVFileName != " ")
             {
-                lines = File.ReadAllLines(CSVFileName);
-                lineLength = lines.Length;
-                updateData();
+                updateData(CSV_reg_fileName);
+                updateCorrelation();
+                for (int j = 0; j < settings.chunksName.Length; j++)
+                {
+                    this.settings.Chunks.ElementAt(j).Value.Values.Clear();
+                }
+                updateData(CSV_detect_fileName);
             }
         }
+
+        public List<string> detect(string dllPath)
+        {
+            var assembly = Assembly.LoadFile(dllPath);
+            string[] dllNameSplit = dllPath.Split('\\');
+            string dllName = dllNameSplit[dllNameSplit.Length - 1];
+            dllNameSplit = dllName.Split('.');
+            dllName = dllNameSplit[0] + ".Annomalies";
+            var type = assembly.GetType(dllName);
+            var obj = Activator.CreateInstance(type);
+            var detect = type.GetMethod("detect");
+            List<string> annomalies = (List<string>)detect.Invoke(obj, new Object[] { regCSVFileName.ToCharArray(), CSVFileName.ToCharArray() });
+            return annomalies;
+        }
+
 
         //MVVM pattern
         public event PropertyChangedEventHandler PropertyChanged;
@@ -228,9 +250,11 @@ namespace Flight_Inspection_App
         }
         //***//
 
-        void updateData()
+        void updateData(string CSV_file)
         {
-            for (int i = 0; i < lines.Length; i++)
+            lines = File.ReadAllLines(CSV_file);
+            lineLength = lines.Length;
+            for (int i = 1; i < lines.Length; i++)              //TODO change to 1
             {
                 string[] separetedLine = lines[i].Split(',');
                 for (int j = 0; j < separetedLine.Length; j++)
@@ -240,9 +264,7 @@ namespace Flight_Inspection_App
                     else
                         this.settings.Chunks.ElementAt(j).Value.Values.Add(double.Parse(separetedLine[j])); 
                 }
-                //Console.WriteLine(i);
             }
-            updateCorrelation();
         }
         // mvvm function
         /// <summary>
@@ -330,6 +352,8 @@ namespace Flight_Inspection_App
         // main thread, send data to FG
         public void ExecuteClient()
         {
+            // SAVE FIRST LINE
+
             ChunkName = this.Settings.chunksName;
 
             Stop = false;                           // update as property - start running
@@ -353,22 +377,22 @@ namespace Flight_Inspection_App
                     while (true)
                     {
                         // if stop = TRUE, or the csv end, stop send lines from soket.
-                        if (stop || this.currline == this.linelength)
+                        if (stop || this.currline == this.linelength)                                 //!!!!!!!!!! ADDED +1
                         {
-                            if (this.currline == this.linelength) Stop = true;
+                            if (this.currline == this.linelength) Stop = true;                          //!!!!!!!!!! ADDED +1
                             Thread.Sleep(500);
                             continue;
                         }
 
                         // Translate the passed message into ASCII and store it as a Byte array.
-                        Byte[] data = System.Text.Encoding.ASCII.GetBytes(lines[currLine] + "\n");
+                        Byte[] data = System.Text.Encoding.ASCII.GetBytes(lines[currLine] + "\n");      //!!!!!!!!!! ADDED +1
 
                         // Send the message to the connected TcpServer.
                         stream.Write(data, 0, data.Length);
 
                         // added update
 
-                        string[] separetedLine = lines[currLine].Split(',');
+                        string[] separetedLine = lines[currLine].Split(',');                              //!!!!!!!!!! ADDED +1
                         for (int j = 0; j < separetedLine.Length; j++) // this.settings.Chunks.Count -1?
                         {
                             if (this.settings.Chunks.ElementAt(j).Value.IsFloat)

@@ -15,6 +15,7 @@ namespace Flight_Inspection_App
             showGraph.setConnect(c);
             joystick.setConnect(c);
             dashboard.setConnect(c);
+            erorcontrol.setConnect(c);
 
         }
     }

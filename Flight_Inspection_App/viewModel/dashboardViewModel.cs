@@ -15,12 +15,12 @@ namespace Flight_Inspection_App.viewModel
 
         //***property***//
 
-        public double vm_Height{ get { return connectModel.Height; } }
-        public double vm_AirSpeed{ get { return connectModel.AirSpeed; } }
-        public double vm_FlightDirection{ get { return connectModel.FlightDirection; } }
-        public double vm_Yaw{ get { return connectModel.Yaw; } }
-        public double vm_Pitch{ get { return connectModel.Pitch; } }
-        public double vm_Roll{ get { return connectModel.Roll; } }
+        public double vm_Height{ get { return Math.Round((double) connectModel.Height, 8); } }
+        public double vm_AirSpeed{ get { return Math.Round((double)connectModel.AirSpeed, 8); } }
+        public double vm_FlightDirection{ get { return Math.Round((double)connectModel.FlightDirection, 8); } }
+        public double vm_Yaw{ get { return Math.Round((double)connectModel.Yaw, 8); } }
+        public double vm_Pitch{ get { return Math.Round((double)connectModel.Pitch, 8); } }
+        public double vm_Roll{ get { return Math.Round((double)connectModel.Roll, 8); } }
 
 
 
@@ -30,7 +30,7 @@ namespace Flight_Inspection_App.viewModel
         //CTOR
         public dashboardViewModel()
         {
-            this.connectModel = new Connect(" ", new Settings(" "));
+            this.connectModel = new Connect(" ", " ", new Settings(" "));
         }
 
 

@@ -7,30 +7,37 @@ using System.Threading.Tasks;
 
 namespace Flight_Inspection_App.viewModel
 {
-    class GraphControlViewModel : INotifyPropertyChanged
+    class ErorControlViewModel : INotifyPropertyChanged
     {
-
-
         //fields
         private Connect connectModel;
+        private List<string> erorList;
 
-        //***property***//
-        public string[] vm_ChunkName { get { 
-                return connectModel.ChunkName; } }
+        //prop
+        public List<string> vm_ErorList
+        {
+            get { return this.erorList; }
+            set { this.erorList = value; }   
+        }
 
-        public double vm_airSpeed { get { return connectModel.AirSpeed; } }
-
-        public string ChosenChunk { get ; set; }
-
-        //***//
-
+        public string vm_currLine
+        {
+            set {
+                if (value != null)
+                {
+                    string[] valueSplit = value.Split(',');
+                    connectModel.currLine = int.Parse(valueSplit[0]);
+                }
+            }
+        }
 
 
         //CTOR
-        public GraphControlViewModel()
+        public ErorControlViewModel()
         {
             this.connectModel = new Connect(" ", " ", new Settings(" "));
         }
+
 
         //MVVM pattern
         public event PropertyChangedEventHandler PropertyChanged;
@@ -42,15 +49,18 @@ namespace Flight_Inspection_App.viewModel
             }
         }
         //**//
-
         public void setConnect(Connect c)
         {
             this.connectModel = c;
-            this.ChosenChunk = c.ChunkName[0];
             this.connectModel.PropertyChanged += delegate (Object sender, PropertyChangedEventArgs e)
             {
                 NotifyPropertyChanged("vm_" + e.PropertyName);
             };
+        }
+
+        public List<string> detect(string dllPath)
+        {
+            return connectModel.detect(dllPath);
         }
     }
 }

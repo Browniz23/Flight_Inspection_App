@@ -6,7 +6,13 @@
         xmlns:Graph="clr-namespace:Flight_Inspection_App.Graphs"
         xmlns:Controls="clr-namespace:Flight_Inspection_App.controls"
         mc:Ignorable="d"
-        Title="ControlScreen" Height="550" Width="800" MinWidth="800" MinHeight="550">
+        Title="ControlScreen" Height="550" Width="900" ResizeMode="CanMinimize" >
+
+    <Window.Background>
+        <ImageBrush ImageSource="/images/control screen background.jpg"/>
+    </Window.Background>
+
+
     <Grid>
         <Grid.RowDefinitions>
             <RowDefinition/>
@@ -16,17 +22,18 @@
 
 
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
             <ColumnDefinition />
             <ColumnDefinition />
+            <ColumnDefinition/>
         </Grid.ColumnDefinitions>
 
 
-        <Controls:videoControl x:Name="videoControl" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
-        <Controls:Dashboard x:Name="dashboard" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="5" />
-        <Graph:ShowGraph1 x:Name="showGraph" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Margin="2"/>
-        <Controls:joystickPanelControl x:Name="joystick" Grid.Row="1" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.RowSpan="3" Margin="5"/>
-
+        <Controls:videoControl x:Name="videoControl" Grid.Row="2" Grid.Column="1" Grid.ColumnSpan="3" Margin="5, 100,5,5" HorizontalAlignment="Stretch" VerticalAlignment="Stretch"/>
+        <Controls:Dashboard x:Name="dashboard" HorizontalAlignment="Stretch" Grid.Row="0" Grid.Column="0" VerticalAlignment="Stretch" Margin="5" />
+        <Graph:ShowGraph1 x:Name="showGraph" Grid.Column="1" Grid.ColumnSpan="3" Grid.RowSpan="3" HorizontalAlignment="Stretch"
+                          VerticalAlignment="Stretch" Margin="5,5,5,150" />
+        <Controls:joystickPanelControl x:Name="joystick" Grid.Row="2" HorizontalAlignment="Stretch" VerticalAlignment="Stretch" Grid.RowSpan="3" Margin="5"/>
+        <Controls:ErorControl x:Name="erorcontrol" Grid.Row="1" Grid.Column="0" HorizontalAlignment="Stretch" Margin="5"/>
 
     </Grid>
 </Window>

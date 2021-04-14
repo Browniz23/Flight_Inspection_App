@@ -99,6 +99,9 @@
     </Compile>
     <Compile Include="controls\converters\AileronToXConverter.cs" />
     <Compile Include="controls\converters\ElevatorToYConverter.cs" />
+    <Compile Include="controls\ErorControl.xaml.cs">
+      <DependentUpon>ErorControl.xaml</DependentUpon>
+    </Compile>
     <Compile Include="controls\joystickControl.xaml.cs">
       <DependentUpon>joystickControl.xaml</DependentUpon>
     </Compile>
@@ -115,6 +118,7 @@
     <Compile Include="Graphs\ViewModels\GraphViewModel.cs" />
     <Compile Include="probabilityLib.cs" />
     <Compile Include="viewModel\dashboardViewModel.cs" />
+    <Compile Include="viewModel\ErorControlViewModel.cs" />
     <Compile Include="viewModel\GraphControlViewModel.cs" />
     <Compile Include="viewModel\joystickPanelViewModel.cs" />
     <Compile Include="viewModel\joystickViewModel.cs" />
@@ -123,6 +127,10 @@
     <Page Include="controls\Dashboard.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="controls\ErorControl.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="controls\joystickControl.xaml">
       <SubType>Designer</SubType>
@@ -203,6 +211,8 @@
     <Resource Include="images\start again.png" />
   </ItemGroup>
   <ItemGroup>
+    <Resource Include="images\control screen background.jpg" />
+    <Content Include="plugins\LinearReg.dll" />
     <Content Include="plugins\LinearRegDll.dll" />
     <Content Include="plugins\MinCircleDll.dll" />
   </ItemGroup>

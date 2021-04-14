@@ -26,44 +26,14 @@ namespace Flight_Inspection_App
         Settings s;
         Connect c;
         ControlScreen cs;
+        string regualr_CSV_path;
 
         public MainWindow()
         {
             InitializeComponent();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            if (X.Visibility == Visibility.Hidden) // needs to be only if settings are on
-            {
-                // open file dialog so user can pick a CSV file.
-                Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
-                bool? response = openFileDialog.ShowDialog();
-                if (response == true)
-                {
-                    String filePath = openFileDialog.FileName;
-                    if (filePath.EndsWith("csv"))
-                    {
-                        X_Copy.Visibility = Visibility.Hidden;
-                        V_Copy.Visibility = Visibility.Visible;
-                        c = new Connect(filePath, s);
-                        
-                        
-                    }
-                    else
-                    {
-                        MessageBox.Show("Please choose a CSV file");
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Please insert XMl settings before uploading CSV file");
-            }
-        }
-
-
-        private void Button_Click_2(object sender, RoutedEventArgs e)
+        private void Button_Click_XML(object sender, RoutedEventArgs e)
         {
             Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
             bool? response = openFileDialog.ShowDialog();
@@ -81,6 +51,70 @@ namespace Flight_Inspection_App
                 {
                     MessageBox.Show("Please choose a XML file");
                 }
+            }
+        }
+
+
+        private void regularFlightButtonClick(object sender, RoutedEventArgs e) 
+        {
+            if (X.Visibility == Visibility.Hidden) // needs to be only if settings are on
+            {
+                // open file dialog so user can pick a CSV file.
+                Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+                bool? response = openFileDialog.ShowDialog();
+                if (response == true)
+                {
+                    String filePath = openFileDialog.FileName;
+                    if (filePath.EndsWith("csv"))
+                    {
+                        X_Copy.Visibility = Visibility.Hidden;
+                        V_Copy.Visibility = Visibility.Visible;
+                        regualr_CSV_path = filePath;
+                    }
+                    else
+                    {
+                        MessageBox.Show("Please choose a CSV file");
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please insert XMl settings before uploading CSV file");
+            }
+        }
+
+        private void testFlightButtonClick(object sender, RoutedEventArgs e) 
+        {
+            if (X.Visibility == Visibility.Hidden)
+            {
+                if (X_Copy.Visibility == Visibility.Hidden) // needs to be only if settings are on
+                {
+                    // open file dialog so user can pick a CSV file.
+                    Microsoft.Win32.OpenFileDialog openFileDialog = new Microsoft.Win32.OpenFileDialog();
+                    bool? response = openFileDialog.ShowDialog();
+                    if (response == true)
+                    {
+                        String filePath = openFileDialog.FileName;
+                        if (filePath.EndsWith("csv"))
+                        {
+                            X_Copy1.Visibility = Visibility.Hidden;
+                            V_Copy1.Visibility = Visibility.Visible;
+                            c = new Connect(regualr_CSV_path, filePath, s);
+                        }
+                        else
+                        {
+                            MessageBox.Show("Please choose a CSV file");
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Please insert CSV reg_flight before uploading CSV test flight");
+                }
+            }
+            else
+            {
+                MessageBox.Show("Please insert XMl settings before uploading CSV file");
             }
         }
 
