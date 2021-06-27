@@ -26,7 +26,7 @@ Outside the folders you can see the **Model** part, mainly the 'Connect' class.
 
 In order to run the project you should download FlightGear simulator and clone the project to VisualStudio 2019.
 Then you should open the FlightGear app with the following settings:
-![FlightGear settings](https://raw.githubusercontent.com/Browniz23/Flight_Inspection_App/master/Flight_Inspection_App/images/Additional%20Settings.jpg)
+![FlightGear settings]
 
 Now you can run the program on VS.
 
